@@ -18,16 +18,24 @@
 **      @file       Common/SampleDocument.h
 **/
 
-#if !defined( BOWLING_SCORE_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
-#    define   BOWLING_SCORE_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
+#if !defined( BOWLINGSCORE_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
+#    define   BOWLINGSCORE_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
 
-#include    "BowlingSettings.h"
+#if !defined( BOWLINGSCORE_COMMON_INCLUDED_BOWLING_SETTINGS_H )
+#    include    "BowlingSettings.h"
+#endif
 
-#include    <string>
+#if !defined( BOWLINGSCORE_SYS_STL_INCLUDED_STRING )
+#    include    <string>
+#    define   BOWLINGSCORE_SYS_STL_INCLUDED_STRING
+#endif
 
 
 BOWLINGSCORE_NAMESPACE_BEGIN
 namespace  Common  {
+
+//  クラスの前方宣言。  //
+
 
 //========================================================================
 //

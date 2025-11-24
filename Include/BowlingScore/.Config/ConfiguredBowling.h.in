@@ -18,8 +18,8 @@
 **      @file       .Config/ConfiguredBowling.h.in
 **/
 
-#if !defined( BOWLING_SCORE_CONFIG_INCLUDED_CONFIGURED_BOWLING_H )
-#    define   BOWLING_SCORE_CONFIG_INCLUDED_CONFIGURED_BOWLING_H
+#if !defined( BOWLINGSCORE_CONFIG_INCLUDED_CONFIGURED_BOWLING_H )
+#    define   BOWLINGSCORE_CONFIG_INCLUDED_CONFIGURED_BOWLING_H
 
 //========================================================================
 //
