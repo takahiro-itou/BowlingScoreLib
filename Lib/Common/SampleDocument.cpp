@@ -21,7 +21,7 @@
 #include    "BowlingScore/Common/SampleDocument.h"
 
 
-SAMPLE_NAMESPACE_BEGIN
+BOWLINGSCORE_NAMESPACE_BEGIN
 namespace  Common  {
 
 namespace  {
@@ -129,4 +129,4 @@ SampleDocument::setMessage(
 //
 
 }   //  End of namespace  Common
-SAMPLE_NAMESPACE_END
+BOWLINGSCORE_NAMESPACE_END

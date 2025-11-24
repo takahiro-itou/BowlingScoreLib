@@ -22,7 +22,7 @@
 #include    "BowlingScore/Common/SampleSettings.h"
 
 
-SAMPLE_NAMESPACE_BEGIN
+BOWLINGSCORE_NAMESPACE_BEGIN
 
 //========================================================================
 //
@@ -58,7 +58,7 @@ void  SampleSettingsTest::testNameSpace()
     return;
 }
 
-SAMPLE_NAMESPACE_END
+BOWLINGSCORE_NAMESPACE_END
 
 //========================================================================
 //

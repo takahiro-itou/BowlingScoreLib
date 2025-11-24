@@ -28,7 +28,7 @@
 #    include    "BowlingScore/.Config/ConfiguredBowling.h"
 #endif
 
-SAMPLE_NAMESPACE_BEGIN
+BOWLINGSCORE_NAMESPACE_BEGIN
 
 /**
 **    ダミーの型宣言。
@@ -36,6 +36,6 @@ SAMPLE_NAMESPACE_BEGIN
 
 typedef     int     CommonType;
 
-SAMPLE_NAMESPACE_END
+BOWLINGSCORE_NAMESPACE_END
 
 #endif
