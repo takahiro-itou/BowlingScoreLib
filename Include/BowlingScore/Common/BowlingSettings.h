@@ -15,11 +15,11 @@
 /**
 **      プロジェクトの設定。
 **
-**      @file       Common/SampleSettings.h
+**      @file       Common/BowlingSettings.h
 **/
 
-#if !defined( BOWLING_SCORE_COMMON_INCLUDED_SAMPLE_SETTINGS_H )
-#    define   BOWLING_SCORE_COMMON_INCLUDED_SAMPLE_SETTINGS_H
+#if !defined( BOWLING_SCORE_COMMON_INCLUDED_BOWLING_SETTINGS_H )
+#    define   BOWLING_SCORE_COMMON_INCLUDED_BOWLING_SETTINGS_H
 
 //  スクリプトによる設定値が書き込まれたヘッダを読み込む。  //
 #if defined( BOWLING_SCORE_USE_PRE_CONFIGURED_MSVC )
