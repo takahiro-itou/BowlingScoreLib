@@ -162,7 +162,7 @@ AC_CONFIG_FILES([
 ])
 
 AC_CONFIG_FILES([
-    Include/BowlingScore/.Config/ConfiguredSample.h
+    Include/BowlingScore/.Config/ConfiguredBowling.h
 ])
 
 dnl

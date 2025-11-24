@@ -25,7 +25,7 @@
 #if defined( SAMPLE_USE_PRE_CONFIGURED_MSVC )
 #    include    "BowlingScore/.Config/PreConfigSample.msvc.h"
 #else
-#    include    "BowlingScore/.Config/ConfiguredSample.h"
+#    include    "BowlingScore/.Config/ConfiguredBowling.h"
 #endif
 
 SAMPLE_NAMESPACE_BEGIN

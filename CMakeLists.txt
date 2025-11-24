@@ -117,8 +117,8 @@ Find_Package (CppUnit)
 ##
 
 configure_file(
-    "${incpkg_source_dir}/.Config/ConfiguredSample.h.in"
-    "${incpkg_binary_dir}/.Config/ConfiguredSample.h"
+    "${incpkg_source_dir}/.Config/ConfiguredBowling.h.in"
+    "${incpkg_binary_dir}/.Config/ConfiguredBowling.h"
 )
 
 configure_file(
