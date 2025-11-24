@@ -18,7 +18,7 @@
 **      @file       Bin/SampleApplication.cpp
 **/
 
-#include    "Sample/Common/SampleDocument.h"
+#include    "BowlingScore/Common/SampleDocument.h"
 
 #include    <iostream>
 

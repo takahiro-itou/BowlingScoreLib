@@ -1,9 +1,9 @@
 ﻿//  -*-  coding: utf-8-with-signature;  mode: c++  -*-  //
 /*************************************************************************
 **                                                                      **
-**                      ---  Library Project.  ---                      **
+**                      ---   Bowling Score.   ---                      **
 **                                                                      **
-**          Copyright (C), 2016-2024, Takahiro Itou                     **
+**          Copyright (C), 2025-2025, Takahiro Itou                     **
 **          All Rights Reserved.                                        **
 **                                                                      **
 **          License: (See COPYING or LICENSE files)                     **
@@ -19,7 +19,7 @@
 **/
 
 #include    "TestDriver.h"
-#include    "Sample/Common/SampleDocument.h"
+#include    "BowlingScore/Common/SampleDocument.h"
 
 
 SAMPLE_NAMESPACE_BEGIN
