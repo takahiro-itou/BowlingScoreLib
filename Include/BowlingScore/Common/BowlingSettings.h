@@ -15,20 +15,22 @@
 /**
 **      プロジェクトの設定。
 **
-**      @file       Common/SampleSettings.h
+**      @file       Common/BowlingSettings.h
 **/
 
-#if !defined( BOWLING_SCORE_COMMON_INCLUDED_SAMPLE_SETTINGS_H )
-#    define   BOWLING_SCORE_COMMON_INCLUDED_SAMPLE_SETTINGS_H
+#if !defined( BOWLINGSCORE_COMMON_INCLUDED_BOWLING_SETTINGS_H )
+#    define   BOWLINGSCORE_COMMON_INCLUDED_BOWLING_SETTINGS_H
 
 //  スクリプトによる設定値が書き込まれたヘッダを読み込む。  //
-#if defined( SAMPLE_USE_PRE_CONFIGURED_MSVC )
-#    include    "BowlingScore/.Config/PreConfigBowling.msvc.h"
-#else
-#    include    "BowlingScore/.Config/ConfiguredBowling.h"
+#if !defined( BOWLINGSCORE_CONFIG_INCLUDED_CONFIGURED_BOWLING_H )
+#    if defined( BOWLINGSCORE_USE_PRE_CONFIGURED_MSVC )
+#        include    "BowlingScore/.Config/PreConfigBowling.msvc.h"
+#    else
+#        include    "BowlingScore/.Config/ConfiguredBowling.h"
+#    endif
 #endif
 
-SAMPLE_NAMESPACE_BEGIN
+BOWLINGSCORE_NAMESPACE_BEGIN
 
 /**
 **    ダミーの型宣言。
@@ -36,6 +38,6 @@ SAMPLE_NAMESPACE_BEGIN
 
 typedef     int     CommonType;
 
-SAMPLE_NAMESPACE_END
+BOWLINGSCORE_NAMESPACE_END
 
 #endif
