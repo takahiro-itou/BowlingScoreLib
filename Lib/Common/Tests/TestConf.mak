@@ -6,7 +6,8 @@
 extra_tests             =
 TESTS                   =  \
         BowlingSettingsTest     \
-        SampleDocumentTest      \
+        DocumentFileTest        \
+        ScoreDocumentTest       \
         ${extra_tests}
 
 ##
@@ -33,4 +34,5 @@ test_ldflags_common         +=
 ##
 
 BowlingSettingsTest_SOURCES     =  BowlingSettingsTest.cpp
-SampleDocumentTest_SOURCES      =  SampleDocumentTest.cpp
+DocumentFileTest_SOURCES        =  DocumentFileTest.cpp
+ScoreDocumentTest_SOURCES       =  ScoreDocumentTest.cpp
