@@ -86,6 +86,44 @@ ScoreDocument::~ScoreDocument()
 //    Accessors.
 //
 
+//----------------------------------------------------------------
+//    試合の日付を取得する。
+//
+
+const  std::string  &
+ScoreDocument::getGameDate()  const
+{
+}
+
+//----------------------------------------------------------------
+//    試合の日付を設定する。
+//
+
+ErrCode
+ScoreDocument::setGameDate(
+        const  std::string  &value)
+{
+}
+
+//----------------------------------------------------------------
+//    タイトルを取得する。
+//
+
+const  std::string  &
+ScoreDocument::getGameTitle()  const
+{
+}
+
+//----------------------------------------------------------------
+//    タイトルを設定する。
+//
+
+ErrCode
+ScoreDocument::setGameTitle(
+        const  std::string  &title)
+{
+}
+
 //========================================================================
 //
 //    Protected Member Functions.

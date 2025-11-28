@@ -21,8 +21,13 @@
 #if !defined( BOWLINGSCORE_COMMON_INCLUDED_SCORE_DOCUMENT_H )
 #    define   BOWLINGSCORE_COMMON_INCLUDED_SCORE_DOCUMENT_H
 
-#if !defined( BOWLINGSCORE_COMMON_INCLUDED_BOWLING_SETTINGS_H )
-#    include    "BowlingSettings.h"
+#if !defined( BOWLINGSCORE_COMMON_INCLUDED_BOWLING_TYPES_H )
+#    include    "BowlingTypes.h"
+#endif
+
+#if !defined( BOWLINGSCORE_SYS_STL_INCLUDED_STRING )
+#    include    <string>
+#    define   BOWLINGSCORE_SYS_STL_INCLUDED_STRING
 #endif
 
 
@@ -94,6 +99,50 @@ public:
 //
 //    Accessors.
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   試合の日付を取得する。
+    **
+    **  @return     日付を文字列で返す。
+    **/
+    const  std::string  &
+    getGameDate()  const;
+
+    //----------------------------------------------------------------
+    /**   試合の日付を設定する。
+    **
+    **  @param [in] value   日付を表す文字列。
+    **      文字列の内容が正しいかの検証は行わない。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    ErrCode
+    setGameDate(
+            const  std::string  &value);
+
+    //----------------------------------------------------------------
+    /**   タイトルを取得する。
+    **
+    **  @return
+    **/
+    const  std::string  &
+    getGameTitle()  const;
+
+    //----------------------------------------------------------------
+    /**   タイトルを設定する。
+    **
+    **  @param [in] value   設定する値。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    ErrCode
+    setGameTitle(
+            const  std::string  &title);
 
 //========================================================================
 //
