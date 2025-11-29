@@ -4,8 +4,8 @@
 ##    テストの設定。
 ##
 
-add_test(NAME   BowlingSettingsTest
-    COMMAND  $<TARGET_FILE:BowlingSettingsTest>
+add_test(NAME   BowlingProjectTest
+    COMMAND  $<TARGET_FILE:BowlingProjectTest>
 )
 
 add_test(NAME   DocumentFileTest
@@ -21,6 +21,6 @@ add_test(NAME   ScoreDocumentTest
 ##    テストプログラムのビルド。
 ##
 
-add_executable(BowlingSettingsTest      BowlingSettingsTest.cpp)
+add_executable(BowlingProjectTest       BowlingProjectTest.cpp)
 add_executable(DocumentFileTest         DocumentFileTest.cpp)
 add_executable(ScoreDocumentTest        ScoreDocumentTest.cpp)
