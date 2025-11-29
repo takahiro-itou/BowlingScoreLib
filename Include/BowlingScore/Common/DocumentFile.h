@@ -95,6 +95,38 @@ public:
 //
 //    Public Member Functions.
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   データをテキストファイルから読み込む。
+    **
+    **  @param [in] fileName    ファイル名。
+    **  @param[out] ptrDoc      ドキュメントを格納する変数。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    ErrCode
+    readFromTextFile(
+            const  std::string  &fileName,
+            ScoreDocument  *    ptrDoc);
+
+    //----------------------------------------------------------------
+    /**   データをテキストストリームから読み込む。
+    **
+    **  @param [in,out] inStr     入力ストリーム。
+    **  @param    [out] ptrDoc    ドキュメントを格納する変数。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    ErrCode
+    readFromTextStream(
+            std::istream       &inStr,
+            ScoreDocument  *    ptrDoc);
+
 
 //========================================================================
 //
