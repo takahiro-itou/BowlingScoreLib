@@ -21,9 +21,10 @@
 #if !defined( BOWLINGSCORE_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
 #    define   BOWLINGSCORE_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
 
-#if !defined( BOWLINGSCORE_COMMON_INCLUDED_BOWLING_SETTINGS_H )
-#    include    "BowlingSettings.h"
+#if !defined( BOWLINGSCORE_COMMON_INCLUDED_BOWLING_TYPES_H )
+#    include    "BowlingTypes.h"
 #endif
+
 
 #if !defined( BOWLINGSCORE_SYS_STL_INCLUDED_STRING )
 #    include    <string>

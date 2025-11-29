@@ -13,28 +13,28 @@
 *************************************************************************/
 
 /**
-**      An Implementation of Test Case 'BowlingSettings'.
+**      An Implementation of Test Case 'BowlingProject'.
 **
-**      @file       Common/Tests/BowlingSettingsTest.cpp
+**      @file       Common/Tests/BowlingProjectTest.cpp
 **/
 
 #include    "TestDriver.h"
-#include    "BowlingScore/Common/BowlingSettings.h"
+#include    "BowlingScore/Common/BowlingProject.h"
 
 
 BOWLINGSCORE_NAMESPACE_BEGIN
 
 //========================================================================
 //
-//    BowlingSettingsTest  class.
+//    BowlingProjectTest  class.
 //
 /**
-**    クラス BowlingSettings の単体テスト。
+**    クラス BowlingProject の単体テスト。
 **/
 
-class  BowlingSettingsTest : public  TestFixture
+class  BowlingProjectTest : public  TestFixture
 {
-    CPPUNIT_TEST_SUITE(BowlingSettingsTest);
+    CPPUNIT_TEST_SUITE(BowlingProjectTest);
     CPPUNIT_TEST(testNameSpace);
     CPPUNIT_TEST_SUITE_END();
 
@@ -46,14 +46,14 @@ private:
     void  testNameSpace();
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION( BowlingSettingsTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( BowlingProjectTest );
 
 //========================================================================
 //
 //    Tests.
 //
 
-void  BowlingSettingsTest::testNameSpace()
+void  BowlingProjectTest::testNameSpace()
 {
     return;
 }

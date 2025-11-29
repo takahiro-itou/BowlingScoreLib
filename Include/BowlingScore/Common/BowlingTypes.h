@@ -22,7 +22,7 @@
 #    define   BOWLINGSCORE_COMMON_INCLUDED_BOWLING_TYPES_H
 
 #if !defined( BOWLINGSCORE_COMMON_INCLUDED_BOWLING_SETTINGS_H )
-#    include    "BowlingSettings.h"
+#    include    "BowlingProject.h"
 #endif
 
 #if !defined( BOWLINGSCORE_SYS_INCLUDED_CSTDINT )
