@@ -165,6 +165,31 @@ public:
     setNumPlayers(
             const  PlayerIndex  value);
 
+    //----------------------------------------------------------------
+    /**   プレーヤーの名前を取得する。
+    **
+    **  @param [in] index   プレーヤー番号。
+    **  @return     プレーヤーの名前を返す。
+    **/
+    const  std::string  &
+    getPlayerName(
+            const  PlayerIndex  index)  const;
+
+    //----------------------------------------------------------------
+    /**   プレーヤーの名前を設定する。
+    **
+    **  @param [in] index   プレーヤー番号。
+    **  @param [in] value   設定する値。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    ErrCode
+    setPlayerName(
+            const  PlayerIndex  index,
+            const  std::string  &value);
+
 //========================================================================
 //
 //    Protected Member Functions.
