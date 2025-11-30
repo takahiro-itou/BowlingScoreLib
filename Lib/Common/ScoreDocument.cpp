@@ -45,7 +45,8 @@ namespace  {
 
 ScoreDocument::ScoreDocument()
     : m_gameDate(),
-      m_gameTitle()
+      m_gameTitle(),
+      m_gameScore()
 {
 }
 
@@ -139,6 +140,7 @@ ScoreDocument::setGameTitle(
 const   PlayerIndex
 ScoreDocument::getNumPlayers()  const
 {
+    return  static_cast<PlayerIndex>(this->m_gameScore.size());
 }
 
 //----------------------------------------------------------------
@@ -149,6 +151,8 @@ ErrCode
 ScoreDocument::setNumPlayers(
         const  PlayerIndex  value)
 {
+    this->m_gameScore.resize(value);
+    return ( ErrCode::SUCCESS );
 }
 
 //----------------------------------------------------------------
@@ -159,6 +163,7 @@ const  std::string  &
 ScoreDocument::getPlayerName(
         const  PlayerIndex  index)  const
 {
+    return ( this->m_gameScore.at(index).playerName );
 }
 
 //----------------------------------------------------------------
@@ -170,6 +175,11 @@ ScoreDocument::setPlayerName(
         const  PlayerIndex  index,
         const  std::string  &value)
 {
+    if ( (index < 0) || (this->m_gameScore.size() <= index) ) {
+        return ( ErrCode::INDEX_OUT_OF_RANGE );
+    }
+    this->m_gameScore.at(index).playerName = value;
+    return ( ErrCode::SUCCESS );
 }
 
 //========================================================================
