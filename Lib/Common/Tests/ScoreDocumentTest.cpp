@@ -37,6 +37,10 @@ class  ScoreDocumentTest : public  TestFixture
 {
     CPPUNIT_TEST_SUITE(ScoreDocumentTest);
     CPPUNIT_TEST(testCtor);
+    CPPUNIT_TEST(testGameDate);
+    CPPUNIT_TEST(testGameTitle);
+    CPPUNIT_TEST(testNumPlayers);
+    CPPUNIT_TEST(testPlayerName);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -45,6 +49,10 @@ public:
 
 private:
     void  testCtor();
+    void  testGameDate();
+    void  testGameTitle();
+    void  testNumPlayers();
+    void  testPlayerName();
 
     typedef     ScoreDocument   Testee;
 };
@@ -62,6 +70,54 @@ void  ScoreDocumentTest::testCtor()
 
     return;
 }
+
+void  ScoreDocumentTest::testGameDate()
+{
+    Testee  testee;
+    const  std::string  value("2025/11/30");
+
+    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.setGameDate(value));
+    CPPUNIT_ASSERT_EQUAL(value, testee.getGameDate());
+
+    return;
+}
+
+void  ScoreDocumentTest::testGameTitle()
+{
+    Testee  testee;
+    const  std::string  value("TITLE of GAME");
+
+    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.setGameTitle(value));
+    CPPUNIT_ASSERT_EQUAL(value, testee.getGameTitle());
+
+    return;
+}
+
+void  ScoreDocumentTest::testNumPlayers()
+{
+    Testee  testee;
+    const  PlayerIndex  value = 3;
+
+    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.setNumPlayers(value));
+    CPPUNIT_ASSERT_EQUAL(value, testee.getNumPlayers());
+
+    return;
+}
+
+void  ScoreDocumentTest::testPlayerName()
+{
+    Testee  testee;
+    const  std::string  value("TEST PLAYER");
+
+    testee.setNumPlayers(1);
+
+    CPPUNIT_ASSERT_EQUAL(
+            ErrCode::SUCCESS, testee.setPlayerName(0, value));
+    CPPUNIT_ASSERT_EQUAL(value, testee.getPlayerName(0));
+
+    return;
+}
+
 
 }   //  End of namespace  Common
 BOWLINGSCORE_NAMESPACE_END

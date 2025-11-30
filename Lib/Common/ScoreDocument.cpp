@@ -124,6 +124,46 @@ ScoreDocument::setGameTitle(
 {
 }
 
+//----------------------------------------------------------------
+//    プレーヤーの人数を取得する。
+//
+
+const   PlayerIndex
+ScoreDocument::getNumPlayers()  const
+{
+}
+
+//----------------------------------------------------------------
+//    プレーヤーの人数を設定する。
+//
+
+ErrCode
+ScoreDocument::setNumPlayers(
+        const  PlayerIndex  value)
+{
+}
+
+//----------------------------------------------------------------
+//    プレーヤーの名前を取得する。
+//
+
+const  std::string  &
+ScoreDocument::getPlayerName(
+        const  PlayerIndex  index)  const
+{
+}
+
+//----------------------------------------------------------------
+//    プレーヤーの名前を設定する。
+//
+
+ErrCode
+ScoreDocument::setPlayerName(
+        const  PlayerIndex  index,
+        const  std::string  &value)
+{
+}
+
 //========================================================================
 //
 //    Protected Member Functions.
