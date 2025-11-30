@@ -111,7 +111,7 @@ void  ScoreDocumentTest::testComputeScore2()
 
     FrameScore  s1 = {  9, 1, 0, 0, 0, 0, 0, 0 };
     FrameScore  s2 = { 10, 0, 0, 0, 0, 0, 0, 0 };
-    FrameScore  s3 = { 10, 10, 10, 0, 0, 0, 0, 200 };
+    FrameScore  s3 = { 10, 9, 1, 0, 0, 0, 0, 200 };
 
     testee.setNumPlayers(1);
     for ( int i = 0; i < 9; ++ i ) {
