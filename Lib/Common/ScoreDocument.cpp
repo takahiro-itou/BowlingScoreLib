@@ -84,6 +84,17 @@ ScoreDocument::~ScoreDocument()
 //    Public Member Functions.
 //
 
+//----------------------------------------------------------------
+//    点数を計算する。
+//
+
+ErrCode
+ScoreDocument::computeScores(
+        const  PlayerIndex  index)
+{
+    return ( ErrCode::SUCCESS );
+}
+
 //========================================================================
 //
 //    Accessors.
