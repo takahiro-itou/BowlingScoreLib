@@ -38,6 +38,7 @@ dist_noinst_header_files    +=  \
 
 inclib_header_files         +=  \
         ${inclib_source_dir}/BowlingProject.h   \
+        ${inclib_source_dir}/BowlingTypes.h     \
         ${inclib_source_dir}/DocumentFile.h     \
         ${inclib_source_dir}/ScoreDocument.h    \
         ${extra_library_header_files}
