@@ -30,6 +30,11 @@
 #    define   BOWLINGSCORE_SYS_STL_INCLUDED_STRING
 #endif
 
+#if !defined( BOWLINGSCORE_SYS_STL_INCLUDED_VECTOR )
+#    include    <vector>
+#    define   BOWLINGSCORE_SYS_STL_INCLUDED_VECTOR
+#endif
+
 
 BOWLINGSCORE_NAMESPACE_BEGIN
 namespace  Common  {
@@ -49,6 +54,15 @@ class  ScoreDocument
 //
 //    Internal Type Definitions.
 //
+public:
+
+    struct  ScoreSheet
+    {
+        std::string     playerName;
+        FrameScore      frames[11];
+    };
+
+    typedef     std::vector<ScoreSheet>     ScoreArray;
 
 //========================================================================
 //
@@ -94,6 +108,20 @@ public:
 //
 //    Public Member Functions.
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   点数を計算する。
+    **
+    **  @param [in] index   プレーヤー番号。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    ErrCode
+    computeScores(
+            const  PlayerIndex  index);
 
 //========================================================================
 //
@@ -233,6 +261,16 @@ public:
 //
 //    Member Variables.
 //
+private:
+
+    /**   試合の日付。      **/
+    std::string     m_gameDate;
+
+    /**   ゲームタイトル。  **/
+    std::string     m_gameTitle;
+
+    /**   スコアデータ。    **/
+    ScoreArray      m_gameScore;
 
 //========================================================================
 //
