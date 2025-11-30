@@ -37,6 +37,7 @@ class  ScoreDocumentTest : public  TestFixture
 {
     CPPUNIT_TEST_SUITE(ScoreDocumentTest);
     CPPUNIT_TEST(testCtor);
+    CPPUNIT_TEST(testComputeScore);
     CPPUNIT_TEST(testGameDate);
     CPPUNIT_TEST(testGameTitle);
     CPPUNIT_TEST(testNumPlayers);
@@ -49,6 +50,7 @@ public:
 
 private:
     void  testCtor();
+    void  testComputeScore();
     void  testGameDate();
     void  testGameTitle();
     void  testNumPlayers();
@@ -67,6 +69,35 @@ CPPUNIT_TEST_SUITE_REGISTRATION( ScoreDocumentTest );
 void  ScoreDocumentTest::testCtor()
 {
     Testee  testee;
+
+    return;
+}
+
+void  ScoreDocumentTest::testComputeScore()
+{
+    Testee  testee;
+
+    FrameScore  s01 = { 10, 0, 0, 0, 0, 0, 0, 30 };
+    FrameScore  s10 = { 10, 10, 10, 0, 0, 0, 0, 300 };
+
+    testee.setNumPlayers(1);
+    for ( int i = 0; i < 9; ++ i ) {
+        s01.check   = i * 30;
+        CPPUNIT_ASSERT_EQUAL(
+                ErrCode::SUCCESS, testee.setFrameScore(0, i, s01));
+    }
+    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.setFrameScore(0, 9, s10));
+
+    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.computeScores(0));
+
+    CPPUNIT_ASSERT_EQUAL(
+            300, testee.getFrameScore(0, 9).score);
+
+    for ( int i = 0; i < 10; ++ i ) {
+        const   FrameScore  &fs = testee.getFrameScore(0, i);
+        CPPUNIT_ASSERT_EQUAL(i * 30, fs.score);
+        CPPUNIT_ASSERT_EQUAL(fs.check, fs.score);
+    }
 
     return;
 }
