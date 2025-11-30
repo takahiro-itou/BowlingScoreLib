@@ -35,7 +35,7 @@ AM_LDFLAGS              =  -L${libtop_binary_dir}
 ##
 
 bin_PROGRAMS            =  \
-        SampleApplication
+        ScoreViewer
 
 dist_noinst_DATA        =  \
         CMakeLists.txt
@@ -44,5 +44,5 @@ dist_noinst_DATA        =  \
 ##    Build Executables.
 ##
 
-SampleApplication_SOURCES   =  SampleApplication.cpp
-SampleApplication_LDADD     =  -lsampleCommon
+ScoreViewer_SOURCES     =  ScoreViewer.cpp
+ScoreViewer_LDADD       =  -lsampleCommon

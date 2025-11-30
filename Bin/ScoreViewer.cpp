@@ -18,7 +18,8 @@
 **      @file       Bin/SampleApplication.cpp
 **/
 
-#include    "BowlingScore/Common/SampleDocument.h"
+#include    "BowlingScore/Common/DocumentFile.h"
+#include    "BowlingScore/Common/ScoreDocument.h"
 
 #include    <iostream>
 
@@ -26,18 +27,9 @@ using   namespace   BOWLINGSCORE_NAMESPACE;
 
 int  main(int argc, char * argv[])
 {
-    Common::SampleDocument  test;
-    std::string     input;
-
-    std::cout   <<  "Input:";
-    std::cin    >>  input;
-
-    test.setMessage(input);
-    std::cout   <<  "The number of alphabet in "
-                <<  input
-                <<  " = "
-                <<  test.countAlphabet()
-            <<  std::endl;;
+    Common::DocumentFile    docFile;
+    Common::ScoreDocument   objDoc;
+    ErrCode                 retErr;
 
     return ( 0 );
 }

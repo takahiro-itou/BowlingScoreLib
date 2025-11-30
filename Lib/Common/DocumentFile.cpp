@@ -13,12 +13,12 @@
 *************************************************************************/
 
 /**
-**      An Implementation of SampleDocument class.
+**      An Implementation of DocumentFile class.
 **
-**      @file       Common/SampleDocument.cpp
+**      @file       Common/DocumentFile.cpp
 **/
 
-#include    "BowlingScore/Common/SampleDocument.h"
+#include    "BowlingScore/Common/DocumentFile.h"
 
 
 BOWLINGSCORE_NAMESPACE_BEGIN
@@ -31,7 +31,7 @@ namespace  {
 
 //========================================================================
 //
-//    SampleDocument  class.
+//    DocumentFile  class.
 //
 
 //========================================================================
@@ -43,8 +43,7 @@ namespace  {
 //    インスタンスを初期化する
 //  （デフォルトコンストラクタ）。
 
-SampleDocument::SampleDocument()
-    : m_message()
+DocumentFile::DocumentFile()
 {
 }
 
@@ -53,7 +52,7 @@ SampleDocument::SampleDocument()
 //  （デストラクタ）。
 //
 
-SampleDocument::~SampleDocument()
+DocumentFile::~DocumentFile()
 {
 }
 
@@ -77,27 +76,6 @@ SampleDocument::~SampleDocument()
 //    Public Member Functions (Virtual Functions).
 //
 
-//----------------------------------------------------------------
-//    入力メッセージ中に含まれるアルファベットを数える。
-//
-
-int
-SampleDocument::countAlphabet()  const
-{
-    const   size_t  len = this->m_message.length();
-    size_t  cnt = 0;
-    for ( size_t i = 0; i < len; ++ i ) {
-        const  char tmp = this->m_message[i];
-        if ( ('A' <= tmp) && (tmp <= 'Z') ) {
-            ++ cnt;
-        } else if ( ('a' <= tmp) && (tmp <= 'z') ) {
-            ++ cnt;
-        }
-    }
-
-    return ( static_cast<int>(cnt) );
-}
-
 //========================================================================
 //
 //    Public Member Functions.
@@ -107,16 +85,6 @@ SampleDocument::countAlphabet()  const
 //
 //    Accessors.
 //
-
-//----------------------------------------------------------------
-//    メッセージを設定する。
-
-void
-SampleDocument::setMessage(
-        const  std::string  &message)
-{
-    this->m_message = message;
-}
 
 //========================================================================
 //

@@ -23,7 +23,8 @@ extra_noinst_data_files     =
 extra_noinst_header_files   =
 
 library_source_files        +=  \
-        SampleDocument.cpp             \
+        DocumentFile.cpp               \
+        ScoreDocument.cpp              \
         ${extra_library_source_files}
 
 library_instantiations      +=
@@ -36,8 +37,10 @@ dist_noinst_header_files    +=  \
         ${extra_noinst_header_files}
 
 inclib_header_files         +=  \
-        ${inclib_source_dir}/BowlingSettings.h  \
-        ${inclib_source_dir}/SampleDocument.h   \
+        ${inclib_source_dir}/BowlingProject.h   \
+        ${inclib_source_dir}/BowlingTypes.h     \
+        ${inclib_source_dir}/DocumentFile.h     \
+        ${inclib_source_dir}/ScoreDocument.h    \
         ${extra_library_header_files}
 
 inclib_nodist_header_files  +=

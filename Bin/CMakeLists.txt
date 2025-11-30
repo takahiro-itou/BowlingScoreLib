@@ -1,9 +1,9 @@
 
 Include (${common_cmake_dir}/BuildCommon/ConfigTarget.cmake)
 
-add_executable       (SampleApplication     SampleApplication.cpp)
-target_link_libraries(SampleApplication     ${project_target_prefix}Common)
+add_executable       (ScoreViewer       ScoreViewer.cpp)
+target_link_libraries(ScoreViewer       ${project_target_prefix}Common)
 
-install(TARGETS         SampleApplication
+install(TARGETS         ScoreViewer
         DESTINATION     ${bintop_dir_name}/
 )

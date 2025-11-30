@@ -13,29 +13,30 @@
 *************************************************************************/
 
 /**
-**      An Implementation of Test Case 'BowlingSettings'.
+**      An Implementation of Test Case 'DocumentFile'.
 **
-**      @file       Common/Tests/BowlingSettingsTest.cpp
+**      @file       Common/Tests/DocumentFileTest.cpp
 **/
 
 #include    "TestDriver.h"
-#include    "BowlingScore/Common/BowlingSettings.h"
+#include    "BowlingScore/Common/DocumentFile.h"
 
 
 BOWLINGSCORE_NAMESPACE_BEGIN
+namespace  Common  {
 
 //========================================================================
 //
-//    BowlingSettingsTest  class.
+//    DocumentFileTest  class.
 //
 /**
-**    クラス BowlingSettings の単体テスト。
+**    クラス DocumentFile の単体テスト。
 **/
 
-class  BowlingSettingsTest : public  TestFixture
+class  DocumentFileTest : public  TestFixture
 {
-    CPPUNIT_TEST_SUITE(BowlingSettingsTest);
-    CPPUNIT_TEST(testNameSpace);
+    CPPUNIT_TEST_SUITE(DocumentFileTest);
+    CPPUNIT_TEST(testCtor);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -43,21 +44,26 @@ public:
     virtual  void   tearDown()  override    { }
 
 private:
-    void  testNameSpace();
+    void  testCtor();
+
+    typedef     DocumentFile    Testee;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION( BowlingSettingsTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( DocumentFileTest );
 
 //========================================================================
 //
 //    Tests.
 //
 
-void  BowlingSettingsTest::testNameSpace()
+void  DocumentFileTest::testCtor()
 {
+    Testee  testee;
+
     return;
 }
 
+}   //  End of namespace  Common
 BOWLINGSCORE_NAMESPACE_END
 
 //========================================================================
