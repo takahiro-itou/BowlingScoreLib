@@ -84,6 +84,21 @@ void  DocumentFileTest::testReadFromTextStream()
             testee.readFromTextStream(ss, &objDoc)
     );
 
+    const  PlayerIndex  numPlayers  = 3;
+
+    CPPUNIT_ASSERT_EQUAL(
+            std::string("2025/11/30"), objDoc.getGameDate());
+    CPPUNIT_ASSERT_EQUAL(
+            std::string("TITLE of GAME"), objDoc.getGameTitle());
+    CPPUNIT_ASSERT_EQUAL(
+            numPlayers, objDoc.getNumPlayers());
+
+    for ( FrameNumber j = 0; j < 9; ++ j ) {
+        const   FrameScore  &fs = objDoc.getFrameScore(0, j);
+        CPPUNIT_ASSERT_EQUAL(fs.check, fs.score);
+        CPPUNIT_ASSERT_EQUAL((j + 1) * 30, fs.score);
+    }
+
     return;
 }
 
