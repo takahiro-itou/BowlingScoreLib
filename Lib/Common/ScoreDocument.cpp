@@ -136,6 +136,7 @@ ScoreDocument::computeScores(
 
     //  最終10フレームは例外処理。  //
     {
+        pos = offs[9];
         FrameScore &s10 = ss.frames[ 9];
         FrameScore &s11 = ss.frames[10];
         sum += (pins[pos] + pins[pos + 1] + pins[pos + 2]);
