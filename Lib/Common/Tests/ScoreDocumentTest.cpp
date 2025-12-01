@@ -81,25 +81,33 @@ void  ScoreDocumentTest::testComputeScore1()
 {
     Testee  testee;
 
-    FrameScore  s01 = { 10, 0, 0, 0, 0, 0, 0, 30 };
-    FrameScore  s10 = { 10, 10, 10, 0, 0, 0, 0, 300 };
+    FrameScore  s01 = { 10, 0, 0x000, 0x000, 0, 30 };
 
     testee.setNumPlayers(1);
-    for ( int i = 0; i < 9; ++ i ) {
-        s01.check   = (i + 1) * 30;
+    for ( FrameNumber j = 0; j < 10; ++ j ) {
+        s01.check   = (j + 1) * 30;
         CPPUNIT_ASSERT_EQUAL(
-                ErrCode::SUCCESS, testee.setFrameScore(0, i, s01));
+                ErrCode::SUCCESS, testee.setFrameScore(0, j, s01));
     }
-    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.setFrameScore(0, 9, s10));
+    {
+        s01.check   = 300;
+        CPPUNIT_ASSERT_EQUAL(
+                ErrCode::SUCCESS, testee.setFrameScore(0, 10, s01));
+    }
 
     CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.computeScores(0));
     CPPUNIT_ASSERT_EQUAL(
             300, testee.getFrameScore(0, 9).score);
 
-    for ( int i = 0; i < 10; ++ i ) {
-        const   FrameScore  &fs = testee.getFrameScore(0, i);
+    for ( FrameNumber j = 0; j < 10; ++ j ) {
+        const   FrameScore  &fs = testee.getFrameScore(0, j);
         CPPUNIT_ASSERT_EQUAL(fs.check, fs.score);
-        CPPUNIT_ASSERT_EQUAL((i + 1) * 30, fs.score);
+        CPPUNIT_ASSERT_EQUAL((j + 1) * 30, fs.score);
+    }
+    {
+        const   FrameScore  &fs = testee.getFrameScore(0, 10);
+        CPPUNIT_ASSERT_EQUAL(fs.check, fs.score);
+        CPPUNIT_ASSERT_EQUAL(300, fs.score);
     }
 
     return;
@@ -109,32 +117,39 @@ void  ScoreDocumentTest::testComputeScore2()
 {
     Testee  testee;
 
-    FrameScore  s1 = {  9, 1, 0, 0, 0, 0, 0, 0 };
-    FrameScore  s2 = { 10, 0, 0, 0, 0, 0, 0, 0 };
-    FrameScore  s3 = { 10, 9, 1, 0, 0, 0, 0, 200 };
+    FrameScore  scores[11] = {
+        {  9, 1, 0x400, 0x000, 0,  20 },
+        { 10, 0, 0x000, 0x000, 0,  40 },
+        {  9, 1, 0x400, 0x000, 0,  60 },
+        { 10, 0, 0x000, 0x000, 0,  80 },
+        {  9, 1, 0x400, 0x000, 0, 100 },
+        { 10, 0, 0x000, 0x000, 0, 120 },
+        {  9, 1, 0x400, 0x000, 0, 140 },
+        { 10, 0, 0x000, 0x000, 0, 160 },
+        {  9, 1, 0x400, 0x000, 0, 180 },
+        { 10,10, 0x000, 0x000, 0, 200 },
+        { 10, 0, 0x000, 0x000, 0, 200 },
+    };
 
     testee.setNumPlayers(1);
-    for ( int i = 0; i < 9; ++ i ) {
-        s1.check    = (i + 1) * 20;
-        s2.check    = (i + 1) * 20;
-        if ( i & 1 ) {
-            CPPUNIT_ASSERT_EQUAL(
-                    ErrCode::SUCCESS, testee.setFrameScore(0, i, s2));
-        } else {
-            CPPUNIT_ASSERT_EQUAL(
-                    ErrCode::SUCCESS, testee.setFrameScore(0, i, s1));
-        }
+    for ( FrameNumber j = 0; j < 11; ++ j ) {
+        CPPUNIT_ASSERT_EQUAL(
+                ErrCode::SUCCESS, testee.setFrameScore(0, j, scores[j]));
     }
-    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.setFrameScore(0, 9, s3));
 
     CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.computeScores(0));
     CPPUNIT_ASSERT_EQUAL(
             200, testee.getFrameScore(0, 9).score);
 
-    for ( int i = 0; i < 10; ++ i ) {
-        const   FrameScore  &fs = testee.getFrameScore(0, i);
+    for ( FrameNumber j = 0; j < 10; ++ j ) {
+        const   FrameScore  &fs = testee.getFrameScore(0, j);
         CPPUNIT_ASSERT_EQUAL(fs.check, fs.score);
-        CPPUNIT_ASSERT_EQUAL((i + 1) * 20, fs.score);
+        CPPUNIT_ASSERT_EQUAL((j + 1) * 20, fs.score);
+    }
+    {
+        const   FrameScore  &fs = testee.getFrameScore(0, 10);
+        CPPUNIT_ASSERT_EQUAL(fs.check, fs.score);
+        CPPUNIT_ASSERT_EQUAL(200, fs.score);
     }
 
     return;
