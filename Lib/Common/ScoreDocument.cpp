@@ -124,9 +124,11 @@ ScoreDocument::computeScores(
 
     //  最終10フレームは例外処理。  //
     {
-        FrameScore  &sc = ss.frames[9];
-        sum += (sc.got1st + sc.got2nd + sc.got3rd);
-        sc.score    = sum;
+        FrameScore &s10 = ss.frames[ 9];
+        FrameScore &s11 = ss.frames[10];
+        sum += (s10.got1st + s10.got2nd + s11.got1st);
+        s10.score   = sum;
+        s11.score   = sum;
     }
 
     return ( ErrCode::SUCCESS );

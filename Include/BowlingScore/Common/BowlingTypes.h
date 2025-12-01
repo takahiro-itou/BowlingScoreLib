@@ -124,10 +124,6 @@ struct  FrameScore
 
     NumPins     score;      /**<  このフレームの点数。      **/
     NumPins     check;      /**<  点数のチェック用に記録された値。  **/
-
-    //  Obsolete !  //
-    NumPins     got3rd;     /**<  10フレの三投目で倒したピンの数。  **/
-    RemainPins  rem3rd;     /**<  三投目投球後の残りピン。  **/
 };
 
 
