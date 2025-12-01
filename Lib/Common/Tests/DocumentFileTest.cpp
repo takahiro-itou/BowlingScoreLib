@@ -21,6 +21,8 @@
 #include    "TestDriver.h"
 #include    "BowlingScore/Common/DocumentFile.h"
 
+#include    "BowlingScore/Common/ScoreDocument.h"
+
 
 BOWLINGSCORE_NAMESPACE_BEGIN
 namespace  Common  {
@@ -37,6 +39,8 @@ class  DocumentFileTest : public  TestFixture
 {
     CPPUNIT_TEST_SUITE(DocumentFileTest);
     CPPUNIT_TEST(testCtor);
+    CPPUNIT_TEST(testReadFromTextStream);
+    CPPUNIT_TEST(testSaveToTextStream);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -45,6 +49,8 @@ public:
 
 private:
     void  testCtor();
+    void  testReadFromTextStream();
+    void  testSaveToTextStream();
 
     typedef     DocumentFile    Testee;
 };
@@ -62,6 +68,35 @@ void  DocumentFileTest::testCtor()
 
     return;
 }
+
+void  DocumentFileTest::testReadFromTextStream()
+{
+    Testee          testee;
+    ScoreDocument   objDoc;
+
+    std::stringstream   ss;
+    CPPUNIT_ASSERT_EQUAL(
+            ErrCode::SUCCESS,
+            testee.readFromTextStream(ss, &objDoc)
+    );
+
+    return;
+}
+
+void  DocumentFileTest::testSaveToTextStream()
+{
+    Testee          testee;
+    ScoreDocument   objDoc;
+
+    std::stringstream   ss;
+    CPPUNIT_ASSERT_EQUAL(
+            ErrCode::SUCCESS,
+            testee.saveToTextStream(objDoc, ss)
+    );
+
+    return;
+}
+
 
 }   //  End of namespace  Common
 BOWLINGSCORE_NAMESPACE_END
