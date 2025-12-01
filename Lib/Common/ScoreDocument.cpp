@@ -121,6 +121,7 @@ ScoreDocument::computeScores(
     }
     offs[10] = pos;
 
+    sum = 0;
     for ( int i = 0; i < 9; ++ i ) {
         FrameScore  &sc = ss.frames[i];
 
