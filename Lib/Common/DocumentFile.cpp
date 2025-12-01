@@ -81,6 +81,30 @@ DocumentFile::~DocumentFile()
 //    Public Member Functions.
 //
 
+//----------------------------------------------------------------
+//    データをテキストファイルから読み込む。
+//
+
+ErrCode
+DocumentFile::readFromTextFile(
+        const  std::string  &fileName,
+        ScoreDocument  *    ptrDoc)
+{
+    return ( ErrCode::FAILURE );
+}
+
+//----------------------------------------------------------------
+//    データをテキストストリームから読み込む。
+//
+
+ErrCode
+DocumentFile::readFromTextStream(
+        std::istream       &inStr,
+        ScoreDocument  *    ptrDoc)
+{
+    return ( ErrCode::FAILURE );
+}
+
 //========================================================================
 //
 //    Accessors.
