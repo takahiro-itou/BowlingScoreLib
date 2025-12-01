@@ -75,6 +75,10 @@ void  DocumentFileTest::testReadFromTextStream()
     ScoreDocument   objDoc;
 
     std::stringstream   ss;
+
+    ss  <<
+#include    "SampleData.md"
+        <<  "\n";
     CPPUNIT_ASSERT_EQUAL(
             ErrCode::SUCCESS,
             testee.readFromTextStream(ss, &objDoc)
