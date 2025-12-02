@@ -30,6 +30,11 @@
 #    define   BOWLINGSCORE_SYS_INCLUDED_CSTDINT
 #endif
 
+#if !defined( BOWLINGSCORE_SYS_INCLUDED_STDDEF_H )
+#    include    <stddef.h>
+#    define   BOWLINGSCORE_SYS_INCLUDED_STDDEF_H
+#endif
+
 
 BOWLINGSCORE_NAMESPACE_BEGIN
 
@@ -144,6 +149,19 @@ template  <typename  T>
 T  pointer_cast(const  void  *  p)
 {
     return ( static_cast<T>(p) );
+}
+
+
+//========================================================================
+/**
+**    配列の要素数を取得する補助関数。
+**/
+
+template  <typename  T,  size_t  N>
+CONSTEXPR_FUNC
+size_t  getArraySize(T (&)[N])
+{
+    return ( N );
 }
 
 
