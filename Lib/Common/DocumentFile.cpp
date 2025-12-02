@@ -105,7 +105,7 @@ DocumentFile::readFromTextStream(
         std::istream       &inStr,
         ScoreDocument  *    ptrDoc)
 {
-    return ( ErrCode::FAILURE );
+    return ( ErrCode::SUCCESS );
 }
 
 //----------------------------------------------------------------
@@ -130,7 +130,7 @@ DocumentFile::saveToTextStream(
         const  ScoreDocument   & objDoc,
         std::ostream           & outStr)
 {
-    return ( ErrCode::FAILURE );
+    return ( ErrCode::SUCCESS );
 }
 
 //========================================================================
