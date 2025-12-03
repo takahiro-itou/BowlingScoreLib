@@ -21,6 +21,8 @@
 #include    "TestDriver.h"
 #include    "BowlingScore/Common/DocumentFile.h"
 
+#include    "ScoreDocumentTest.h"
+
 #include    "BowlingScore/Common/ScoreDocument.h"
 
 
@@ -139,11 +141,27 @@ void  DocumentFileTest::testSaveToTextStream()
     Testee          testee;
     ScoreDocument   objDoc;
 
+    objDoc.setNumPlayers(3);
+
+    setupFrameScores(objDoc, 0, score1);
+    setupFrameScores(objDoc, 1, score2);
+    setupFrameScores(objDoc, 2, score3);
+
     std::stringstream   ss;
     CPPUNIT_ASSERT_EQUAL(
             ErrCode::SUCCESS,
             testee.saveToTextStream(objDoc, ss)
     );
+
+    const  std::string  buf = ss.str();
+    std::cerr   <<  "\nOutput Stream:\n"
+                <<  buf
+                <<  std::endl;
+
+    const  std::string  expect(
+#include    "SampleData.md"
+    );
+    CPPUNIT_ASSERT_EQUAL(expect, buf);
 
     return;
 }
