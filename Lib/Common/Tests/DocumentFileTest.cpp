@@ -96,15 +96,15 @@ void  DocumentFileTest::testReadFromTextStream()
             numPlayers, objDoc.getNumPlayers());
 
     CPPUNIT_ASSERT_EQUAL(
-            300, testee.getFrameScore(0, 9).score);
+            300, objDoc.getFrameScore(0, 9).score);
     CPPUNIT_ASSERT_EQUAL(
-            200, testee.getFrameScore(1, 9).score);
+            200, objDoc.getFrameScore(1, 9).score);
     CPPUNIT_ASSERT_EQUAL(
-            99,  testee.getFrameScore(2, 9).score);
+            99,  objDoc.getFrameScore(2, 9).score);
 
-    testFrameScores(testee, 0, score1);
-    testFrameScores(testee, 1, score2);
-    testFrameScores(testee, 2, score3);
+    testFrameScores(objDoc, 0, score1);
+    testFrameScores(objDoc, 1, score2);
+    testFrameScores(objDoc, 2, score3);
 
     return;
 }
