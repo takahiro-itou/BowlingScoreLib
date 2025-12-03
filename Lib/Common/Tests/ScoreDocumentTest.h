@@ -21,6 +21,11 @@
 #if !defined( BOWLINGSCORE_COMMON_INCLUDED_SCORE_DOCUMENT_TEST_H )
 #    define   BOWLINGSCORE_COMMON_INCLUDED_SCORE_DOCUMENT_TEST_H
 
+#if !defined( BOWLINGSCORE_COMMON_INCLUDED_SCORE_DOCUMENT_H )
+#    include    "BowlingScore/Common/ScoreDocument.h"
+#endif
+
+
 BOWLINGSCORE_NAMESPACE_BEGIN
 namespace  Common  {
 
