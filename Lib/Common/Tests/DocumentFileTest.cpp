@@ -76,19 +76,6 @@ void  DocumentFileTest::testReadFromTextStream()
     Testee          testee;
     ScoreDocument   objDoc;
 
-    FrameScore  fs3[10] = {
-        { 10, 0, 0x000, 0x000,  0, 21 },
-        { 10, 0, 0x000, 0x000,  0, 32 },
-        {  1, 0, 0x7FE, 0x7FE,  0, 33 },
-        { 10, 0, 0x000, 0x000,  0, 44 },
-        {  1, 0, 0x7FE, 0x7FE,  0, 45 },
-        { 10, 0, 0x000, 0x000,  0, 56 },
-        {  1, 0, 0x7FE, 0x7FE,  0, 57 },
-        {  1, 0, 0x7FE, 0x7FE,  0, 69 },
-        { 10,10, 0x000, 0x000,  0, 99 },
-        { 10, 0, 0x000, 0x000, 99, 99 },
-    };
-
     std::stringstream   ss;
 
     ss  <<
@@ -108,31 +95,17 @@ void  DocumentFileTest::testReadFromTextStream()
     CPPUNIT_ASSERT_EQUAL(
             numPlayers, objDoc.getNumPlayers());
 
-    for ( FrameNumber j = 0; j < 10; ++ j ) {
-        const   FrameScore  &fs = objDoc.getFrameScore(0, j);
-        CPPUNIT_ASSERT_EQUAL(fs.check, fs.score);
-        CPPUNIT_ASSERT_EQUAL((j + 1) * 30, fs.score);
-        CPPUNIT_ASSERT_EQUAL(10, fs.got1st);
-        CPPUNIT_ASSERT_EQUAL( 0, fs.got2nd);
-        CPPUNIT_ASSERT_EQUAL( 0, fs.rem1st);
-        CPPUNIT_ASSERT_EQUAL( 0, fs.rem2nd);
-    }
+    CPPUNIT_ASSERT_EQUAL(
+            300, testee.getFrameScore(0, 9).score);
+    CPPUNIT_ASSERT_EQUAL(
+            200, testee.getFrameScore(1, 9).score);
+    CPPUNIT_ASSERT_EQUAL(
+            99,  testee.getFrameScore(2, 9).score);
 
-    for ( FrameNumber j = 0; j < 10; ++ j ) {
-        const   FrameScore  &fs = objDoc.getFrameScore(1, j);
-        CPPUNIT_ASSERT_EQUAL(fs.check, fs.score);
-        CPPUNIT_ASSERT_EQUAL((j + 1) * 20, fs.score);
-    }
+    testFrameScores(testee, 0, score1);
+    testFrameScores(testee, 1, score2);
+    testFrameScores(testee, 2, score3);
 
-    for ( FrameNumber j = 0; j <= 10; ++ j ) {
-        const   FrameScore  &fs = objDoc.getFrameScore(1, j);
-        CPPUNIT_ASSERT_EQUAL(fs.check,  fs.score);
-        CPPUNIT_ASSERT_EQUAL(fs3[j].check, fs.score);
-        CPPUNIT_ASSERT_EQUAL(fs3[j].got1st, fs.got1st);
-        CPPUNIT_ASSERT_EQUAL(fs3[j].got2nd, fs.got2nd);
-        CPPUNIT_ASSERT_EQUAL(fs3[j].rem1st, fs.rem1st);
-        CPPUNIT_ASSERT_EQUAL(fs3[j].rem2nd, fs.rem2nd);
-    }
     return;
 }
 
