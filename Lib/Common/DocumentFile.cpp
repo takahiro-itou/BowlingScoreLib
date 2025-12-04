@@ -154,12 +154,13 @@ DocumentFile::saveToTextStream(
                 std::stringstream   rm1;
                 std::stringstream   rm2;
 
-                for ( int k = 1; k <= 10; ++ k  ) {
+                for ( int k = 1; k <= 10; ++ k ) {
                     if ( (fs.rem1st >> k) & 1 ) {
                         rm1 << k << ",";
                     }
                 }
-                for ( int k = 1; k <= 10; ++ k  ) {
+
+                for ( int k = 1; k <= 10; ++ k ) {
                     if ( (fs.rem2nd >> k) & 1 ) {
                         rm2 << k << ",";
                     }
@@ -181,6 +182,102 @@ DocumentFile::saveToTextStream(
             }
             outStr  <<  fs.score    <<  "\n";
         }
+
+        outStr  <<  i  <<  ","  <<  10  << ", |";
+
+        std::stringstream   bf1;
+        std::stringstream   bf2;
+        std::stringstream   bf3;
+
+        const  FrameScore  &fs1 = objDoc.getFrameScore(i,  9);
+        const  FrameScore  &fs3 = objDoc.getFrameScore(i, 10);
+
+        if ( fs1.got1st == 10 ) {
+            //  ストライク
+            bf1 <<  "str";
+            if ( fs1.got2nd == 10 ) {
+                //  ダブル
+                bf2 <<  "str";
+                if ( fs3.got1st == 10 ) {
+                    //  ターキー
+                    bf3 <<  "str";
+                } else  {
+                    bf3 <<  fs3.got1st;
+                }
+            } else {
+                bf2 <<  fs1.got2nd;
+                if ( fs1.got2nd + fs3.got1st == 10 ) {
+                    bf3 <<  "sp";
+                } else {
+                    bf3 <<  fs3.got1st;
+                }
+            }
+        } else {
+            //  それ以外
+            bf1 <<  fs1.got1st;
+            if ( fs1.got1st + fs1.got2nd == 10 ) {
+                bf2 <<  "sp";
+                if ( fs3.got1st == 10 ) {
+                    bf3 <<  "str";
+                } else {
+                    bf3 <<  fs3.got1st;
+                }
+            } else {
+                //  スペアミス
+                bf2 <<  fs1.got2nd;
+            }
+        }
+
+        std::stringstream   rm1;
+        std::stringstream   rm2;
+        std::stringstream   rm3;
+
+        if ( fs1.rem1st != 0 ) {
+            for ( int k = 1; k <= 10; ++ k ) {
+                if ( (fs1.rem1st >> k) & 1 ) {
+                    rm1 << k << ",";
+                }
+            }
+        } else {
+            rm1 <<  "*";
+        }
+
+        if ( fs1.rem2nd != 0 ) {
+            for ( int k = 1; k <= 10; ++ k ) {
+                if ( (fs1.rem2nd >> k) & 1 ) {
+                    rm2 << k << ",";
+                }
+            }
+        } else {
+            rm2 <<  "*";
+        }
+
+        if ( fs3.rem1st != 0 ) {
+            for ( int k = 1; k <= 10; ++ k ) {
+                if ( (fs3.rem1st >> k) & 1 ) {
+                    rm3 << k << ",";
+                }
+            }
+        } else {
+            rm3 <<  "*";
+        }
+
+        outStr  <<  bf1.str()
+                <<  ","
+                <<  bf2.str()
+                <<  ", |"
+                <<  rm1.str()
+                <<  " |"
+                <<  rm2.str()
+                <<  " |"
+                <<  fs1.score
+                <<  "\n";
+        outStr  <<  i  <<  ","  <<  11  << ", |"
+                <<  bf3.str()
+                <<  ",, |"
+                <<  rm3.str()
+                <<  " | |";
+        outStr  <<  std::endl;
     }
 
     return ( ErrCode::SUCCESS );
