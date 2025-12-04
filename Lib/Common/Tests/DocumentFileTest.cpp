@@ -152,6 +152,26 @@ void  DocumentFileTest::testSaveToTextStream()
                 <<  buf.size()
                 <<  std::endl;
 
+    std::stringstream   ssAct(buf);
+    std::stringstream   ssExp(expect);
+    int i = 0;
+    for ( ; ; ++ i ) {
+        std::string     exp, act;
+        if ( ! std::getline(ssExp, exp).good() ) {
+            break;
+        }
+        std::getline(ssAct, act);
+
+        if ( exp != act ) {
+            std::cerr   <<  "Test FAILED at "  <<  (i + 1)  <<  std::endl;
+        }
+        CPPUNIT_ASSERT_EQUAL(exp, act);
+        if ( ! ssAct.good() ) {
+            break;
+        }
+    }
+    std::cerr   <<  "Tested "  <<  i  <<  " lines.\n";
+
     CPPUNIT_ASSERT_EQUAL(expect, buf);
 
     return;
