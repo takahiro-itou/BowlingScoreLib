@@ -118,6 +118,9 @@ void  DocumentFileTest::testSaveToTextStream()
 
     objDoc.setGameTitle("TITLEofGAME");
     objDoc.setGameDate("2025/11/30");
+    objDoc.setPlayerName(0, "TESTPLAYER1");
+    objDoc.setPlayerName(1, "TESTPLAYER2");
+    objDoc.setPlayerName(2, "TESTPLAYER3");
 
     setupFrameScores(objDoc, 0, score1);
     setupFrameScores(objDoc, 1, score2);
