@@ -20,7 +20,10 @@
 
 #include    "BowlingScore/Common/DocumentFile.h"
 
+#include    "BowlingScore/Common/ScoreDocument.h"
+
 #include    <fstream>
+#include    <sstream>
 
 
 BOWLINGSCORE_NAMESPACE_BEGIN
