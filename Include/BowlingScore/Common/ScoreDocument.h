@@ -59,7 +59,7 @@ public:
     struct  ScoreSheet
     {
         std::string     playerName;
-        FrameScore      frames[11];
+        FrameArray      frames;
     };
 
     typedef     std::vector<ScoreSheet>     ScoreArray;

@@ -95,39 +95,89 @@ ScoreDocument::computeScores(
     ScoreSheet  &ss = this->m_gameScore.at(index);
     NumPins     sum = 0;
 
-    for ( int i = 0; i < 9; ++ i ) {
-        FrameScore  &sc = ss.frames[i];
-        NumPins     tmp = (sc.got1st + sc.got2nd);
-        if ( sc.got1st == 10 ) {
-            //  ストライク  //
-            //  まず、次のフレームの１投目を加える。    //
-            sum += ss.frames[i + 1].got1st;
-            if ( ss.frames[i + 1].got1st == 10 ) {
-                //  ダブルの時はその次のフレームの１投目も加える。  //
-                if ( i == 8 ) {
-                    //  ９フレーム目のダブルの時は１０フレの１、２投目  //
-                    sum += (ss.frames[i + 1].got2nd);
-                } else {
-                    sum += (ss.frames[i + 2].got1st);
-                }
-            } else {
-                sum += (ss.frames[i + 1].got2nd);
-            }
-        } else if ( tmp == 10 ) {
-            //  スペア。    //
-            sum += ss.frames[i + 1].got1st;
+    NumPins     pins[33] = { 0 };
+    int         offs[11] = { 0 };
+
+    //  最初にデータを正規化する。    //
+    for ( int j = 0; j < 9; ++ j ) {
+        FrameScore &fs1 = ss.frames[j];
+        sum = (10 - fs1.got1st);
+        if ( fs1.got2nd > sum ) {
+            fs1.got2nd   = sum;
         }
-        //  そのフレーム自身の点数も加える。    //
-        sum += tmp;
-        sc.score    = sum;
+    }
+    {
+        FrameScore &fs1 = ss.frames[ 9];
+        FrameScore &fs2 = ss.frames[10];
+        sum = (10 - fs1.got1st);
+        if ( sum <= 0 ) {
+            sum = 10;
+        }
+        if ( fs1.got2nd > sum ) {
+            fs1.got2nd  = sum;
+        }
+        sum -= fs1.got2nd;
+        if ( sum <= 0 ) {
+            sum = 10;
+        }
+        if ( fs2.got1st > sum ) {
+            fs2.got1st  = sum;
+        }
     }
 
-    //  最終10フレームは例外処理。  //
-    {
-        FrameScore  &sc = ss.frames[9];
-        sum += (sc.got1st + sc.got2nd + sc.got3rd);
-        sc.score    = sum;
+    //  倒したピンの数を、バッファに「詰めて」コピー。  //
+    int pos = 0;
+    for ( int i = 0; i < 10; ++ i ) {
+        offs[i] = pos;
+        FrameScore  &sc = ss.frames[i];
+        //  一投目  //
+        if ( ((pins[pos++] = sum = sc.got1st) >= 10) && (i < 9) ) {
+            continue;
+        }
+        //  二投目  //
+        sum += pins[pos++] = sc.got2nd;
+
+        //  オープンフレームの場合は、番兵を挿入する。  //
+        if ( sum < 10 ) {
+            pins[pos++] = 0;
+        }
     }
+    {
+        FrameScore  &sc = ss.frames[10];
+        pins[pos++] = sc.got1st;
+        pins[pos]   = 0;
+    }
+    offs[10] = pos;
+
+    //  配列 pins の内容から、各フレームの点数を計算。  //
+    //  各フレームの先頭位置 pos  を offs から得る。    //
+    //                                          //
+    //  ストライクの場合は、                    //
+    //  そのフレームが pos  にあり、            //
+    //  次の二投 pos+1, pos+2 を加算する。      //
+    //                                          //
+    //  スペアの場合は、                        //
+    //  そのフレームが pos+0, pos+1 にあり      //
+    //  次フレームの一投目が pos+2  にある      //
+    //
+    //  オープンフレームの場合は、              //
+    //  そのフレームが pos+0, pos+1 にあり      //
+    //  番兵として pos+2 に 0 が置かれる。      //
+    //                                          //
+    //  最終 10 フレームについては、            //
+    //  三投分が pos, pos+1, pos+2  にある      //
+    //                                          //
+    //  上記いずれの場合も、                    //
+    //  pos, pos+1, pos+2 番目を合計すれば、    //
+    //  そのフレームで加算される得点となる。    //
+
+    sum = 0;
+    for ( int i = 0; i < 10; ++ i ) {
+        pos = offs[i];
+        sum += (pins[pos] + pins[pos + 1] + pins[pos + 2]);
+        ss.frames[i].score  = sum;
+    }
+    ss.frames[10].score = ss.frames[9].score;
 
     return ( ErrCode::SUCCESS );
 }

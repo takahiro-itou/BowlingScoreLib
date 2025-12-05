@@ -30,6 +30,11 @@
 #    define   BOWLINGSCORE_SYS_INCLUDED_CSTDINT
 #endif
 
+#if !defined( BOWLINGSCORE_SYS_INCLUDED_STDDEF_H )
+#    include    <stddef.h>
+#    define   BOWLINGSCORE_SYS_INCLUDED_STDDEF_H
+#endif
+
 
 BOWLINGSCORE_NAMESPACE_BEGIN
 
@@ -110,21 +115,23 @@ typedef     int         RemainPins;
 //----------------------------------------------------------------
 /**
 **    フレームデータ。
+**
+**    最終10フレームの三投目は11フレームの１投目として扱う。
 **/
 
 struct  FrameScore
 {
     NumPins     got1st;     /**<  一投目で倒したピンの数。  **/
     NumPins     got2nd;     /**<  二投目で倒したピンの数。  **/
-    NumPins     got3rd;     /**<  10フレの三投目で倒したピンの数。  **/
 
     RemainPins  rem1st;     /**<  一投目投球後の残りピン。  **/
     RemainPins  rem2nd;     /**<  二投目投球後の残りピン。  **/
-    RemainPins  rem3rd;     /**<  三投目投球後の残りピン。  **/
 
     NumPins     score;      /**<  このフレームの点数。      **/
     NumPins     check;      /**<  点数のチェック用に記録された値。  **/
 };
+
+typedef     FrameScore  FrameArray[11];
 
 
 //========================================================================
@@ -142,6 +149,19 @@ template  <typename  T>
 T  pointer_cast(const  void  *  p)
 {
     return ( static_cast<T>(p) );
+}
+
+
+//========================================================================
+/**
+**    配列の要素数を取得する補助関数。
+**/
+
+template  <typename  T,  size_t  N>
+CONSTEXPR_FUNC
+size_t  getArraySize(T (&)[N])
+{
+    return ( N );
 }
 
 
