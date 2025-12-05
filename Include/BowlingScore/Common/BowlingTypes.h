@@ -114,6 +114,17 @@ typedef     int         RemainPins;
 
 //----------------------------------------------------------------
 /**
+**    スコアに関する定数。
+**/
+
+enum  {
+    NUM_PINS_PER_FRAME  = 10,
+    NUM_FRAMES          = 10,
+    FRAME_ARRAY_SIZE    = NUM_FRAMES + 1,
+};
+
+//----------------------------------------------------------------
+/**
 **    フレームデータ。
 **
 **    最終10フレームの三投目は11フレームの１投目として扱う。
@@ -131,7 +142,7 @@ struct  FrameScore
     NumPins     check;      /**<  点数のチェック用に記録された値。  **/
 };
 
-typedef     FrameScore  FrameArray[11];
+typedef     FrameScore  FrameArray[FRAME_ARRAY_SIZE];
 
 
 //========================================================================

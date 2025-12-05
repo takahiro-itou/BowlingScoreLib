@@ -168,32 +168,40 @@ ErrCode
 ScoreDocument::normalizeScores(
         const  PlayerIndex  index)
 {
-    NumPins     sum;
+    NumPins     rem;
     ScoreSheet  &ss = this->m_gameScore.at(index);
 
-    for ( int j = 0; j < 9; ++ j ) {
+    for ( FrameNumber j = 0; j < NUM_FRAMES - 1; ++ j ) {
         FrameScore &fs1 = ss.frames[j];
-        sum = (10 - fs1.got1st);
-        if ( fs1.got2nd > sum ) {
-            fs1.got2nd   = sum;
+        if ( fs1.got1st > NUM_PINS_PER_FRAME ) {
+            fs1.got1st  = NUM_PINS_PER_FRAME;
         }
+        //  二投目は残っているピンの数より多く倒すことはない。  //
+        rem = (NUM_PINS_PER_FRAME - fs1.got1st);
+        if ( fs1.got2nd > rem ) { fs1.got2nd   = rem; }
     }
+
+    //  最終フレームは例外処理をする。  //
     {
-        FrameScore &fs1 = ss.frames[ 9];
-        FrameScore &fs2 = ss.frames[10];
-        sum = (10 - fs1.got1st);
-        if ( sum <= 0 ) {
-            sum = 10;
+        FrameScore &fs1 = ss.frames[NUM_FRAMES - 1];
+        FrameScore &fs2 = ss.frames[NUM_FRAMES    ];
+        rem = (NUM_PINS_PER_FRAME - fs1.got1st);
+        if ( rem <= 0 ) {
+            rem = NUM_PINS_PER_FRAME;
         }
-        if ( fs1.got2nd > sum ) {
-            fs1.got2nd  = sum;
+        if ( fs1.got2nd > rem ) {
+            fs1.got2nd  = rem;
         }
-        sum -= fs1.got2nd;
-        if ( sum <= 0 ) {
-            sum = 10;
+        rem -= fs1.got2nd;
+        if ( rem <= 0 ) {
+            rem = NUM_PINS_PER_FRAME;
         }
-        if ( fs2.got1st > sum ) {
-            fs2.got1st  = sum;
+        if ( fs1.got1st + fs1.got2nd < NUM_PINS_PER_FRAME ) {
+            //  二回投げて10未満のときは、  //
+            //  三投目を投げられない。      //
+            fs2.got1st  = 0;
+        } else if ( fs2.got1st > rem ) {
+            fs2.got1st  = rem;
         }
     }
 
