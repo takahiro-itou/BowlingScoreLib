@@ -99,7 +99,7 @@ ScoreDocument::computeScores(
     int         offs[11] = { 0 };
 
     //  最初にデータを正規化する。    //
-    for ( int j = 0; j < 10; ++ j ) {
+    for ( int j = 0; j < 9; ++ j ) {
         FrameScore &fs1 = ss.frames[j];
         sum = (10 - fs1.got1st);
         if ( fs1.got2nd > sum ) {
