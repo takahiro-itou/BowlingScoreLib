@@ -96,6 +96,13 @@ void  DocumentFileTest::testReadFromTextStream()
             numPlayers, objDoc.getNumPlayers());
 
     CPPUNIT_ASSERT_EQUAL(
+            std::string("TEST PLAYER 1"), objDoc.getPlayerName(0));
+    CPPUNIT_ASSERT_EQUAL(
+            std::string("TEST PLAYER 2"), objDoc.getPlayerName(1));
+    CPPUNIT_ASSERT_EQUAL(
+            std::string("TEST PLAYER 3"), objDoc.getPlayerName(2));
+
+    CPPUNIT_ASSERT_EQUAL(
             300, objDoc.getFrameScore(0, 9).score);
     CPPUNIT_ASSERT_EQUAL(
             200, objDoc.getFrameScore(1, 9).score);
