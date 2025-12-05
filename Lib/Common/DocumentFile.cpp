@@ -173,6 +173,21 @@ DocumentFile::readFromTextStream(
                 ptrDoc->setPlayerName(i, vTokens[1]);
             }
         }
+
+        if ( vTokens.size() != 5 ) {
+            continue;
+        }
+
+        TextBuffer  buf2;
+        TokenArray  vSub;
+        vSub.clear();
+        splitText(vTokens[0], ",", buf2, vSub);
+        if ( vSub.size() < 2 ) { continue; }
+        const  PlayerIndex  pi  = atoi(vSub[0]);
+        const  FrameNumber  fj  = atoi(vSub[1]);
+
+        vSub.clear();
+        splitText(vTokens[1], ",", buf2, vSub);
     }
 
 #if defined( _DEBUG )
@@ -219,7 +234,7 @@ DocumentFile::saveToTextStream(
         for ( FrameNumber j = 0; j < 9; ++ j ) {
             outStr  <<  i  <<  ","  <<  (j + 1)  << ", |";
             const   FrameScore  &fs = objDoc.getFrameScore(i, j);
-            if ( fs.got1st == 10 ) {
+            if ( fs.got1st >= 10 ) {
                 outStr  <<  "str,, |* |* |";
             } else {
                 std::stringstream   rm1;
@@ -238,7 +253,7 @@ DocumentFile::saveToTextStream(
                 }
 
                 outStr  <<  fs.got1st  << ",";
-                if ( fs.got1st + fs.got2nd == 10 ) {
+                if ( fs.got1st + fs.got2nd >= 10 ) {
                     outStr  <<  "sp, |"
                             <<  rm1.str()
                             <<  " |"
@@ -263,13 +278,13 @@ DocumentFile::saveToTextStream(
         const  FrameScore  &fs1 = objDoc.getFrameScore(i,  9);
         const  FrameScore  &fs3 = objDoc.getFrameScore(i, 10);
 
-        if ( fs1.got1st == 10 ) {
+        if ( fs1.got1st >= 10 ) {
             //  ストライク
             bf1 <<  "str";
-            if ( fs1.got2nd == 10 ) {
+            if ( fs1.got2nd >= 10 ) {
                 //  ダブル
                 bf2 <<  "str";
-                if ( fs3.got1st == 10 ) {
+                if ( fs3.got1st >= 10 ) {
                     //  ターキー
                     bf3 <<  "str";
                 } else  {
@@ -277,7 +292,7 @@ DocumentFile::saveToTextStream(
                 }
             } else {
                 bf2 <<  fs1.got2nd;
-                if ( fs1.got2nd + fs3.got1st == 10 ) {
+                if ( fs1.got2nd + fs3.got1st >= 10 ) {
                     bf3 <<  "sp";
                 } else {
                     bf3 <<  fs3.got1st;
@@ -286,9 +301,9 @@ DocumentFile::saveToTextStream(
         } else {
             //  それ以外
             bf1 <<  fs1.got1st;
-            if ( fs1.got1st + fs1.got2nd == 10 ) {
+            if ( fs1.got1st + fs1.got2nd >= 10 ) {
                 bf2 <<  "sp";
-                if ( fs3.got1st == 10 ) {
+                if ( fs3.got1st >= 10 ) {
                     bf3 <<  "str";
                 } else {
                     bf3 <<  fs3.got1st;
