@@ -109,6 +109,8 @@ DocumentFile::readFromTextStream(
         std::istream       &inStr,
         ScoreDocument  *    ptrDoc)
 {
+    std::stringstream   ssLogs;
+
     int         lineNo  = 0;
     std::string strLine;
 
@@ -116,9 +118,13 @@ DocumentFile::readFromTextStream(
         if ( ! std::getline(inStr, strLine) ) {
             break;
         }
-        std::cerr   <<  (++lineNo)  <<  " :"
-                    <<  strLine     <<  std::endl;
+        ssLogs  <<  (++lineNo)  <<  " :"
+                <<  strLine     <<  std::endl;
     }
+
+#if defined( _DEBUG )
+    std::cerr   <<  ssLogs.str();
+#endif
 
     return ( ErrCode::SUCCESS );
 }
