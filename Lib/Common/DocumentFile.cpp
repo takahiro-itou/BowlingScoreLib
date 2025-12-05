@@ -150,15 +150,15 @@ DocumentFile::readFromTextStream(
         ssLogs  <<  std::endl;
 #endif
 
-        if ( vTokens[0] == "date" ) {
+        if ( ! strcmp(vTokens[0], "date") ) {
             std::cerr   <<  "DATE:"  <<  vTokens[1];
             ptrDoc->setGameDate(vTokens[1]);
         }
-        if ( vTokens[0] == "title" ) {
+        if ( ! strcmp(vTokens[0], "title") ) {
             std::cerr   <<  "TITLE:"  <<  vTokens[1];
             ptrDoc->setGameTitle(vTokens[1]);
         }
-        if ( vTokens[0] == "players" ) {
+        if ( ! strcmp(vTokens[0], "players") ) {
             std::cerr   <<  "PLAYERS"  <<  vTokens[1];
             ptrDoc->setNumPlayers(atoi(vTokens[1]));
         }
