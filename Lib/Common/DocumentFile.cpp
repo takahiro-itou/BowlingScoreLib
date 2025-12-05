@@ -142,13 +142,26 @@ DocumentFile::readFromTextStream(
 
         vTokens.clear();
         splitText(strLine, "|", buf, vTokens);
-#if 0
+#if defined( _DEBUG )
         std::copy(
                 vTokens.begin(), vTokens.end(),
                 std::ostream_iterator<const char *>(ssLogs, "/")
         );
         ssLogs  <<  std::endl;
 #endif
+
+        if ( vTokens[0] == "date" ) {
+            std::cerr   <<  "DATE:"  <<  vTokens[1];
+            ptrDoc->setGameDate(vTokens[1]);
+        }
+        if ( vTokens[0] == "title" ) {
+            std::cerr   <<  "TITLE:"  <<  vTokens[1];
+            ptrDoc->setGameTitle(vTokens[1]);
+        }
+        if ( vTokens[0] == "players" ) {
+            std::cerr   <<  "PLAYERS"  <<  vTokens[1];
+            ptrDoc->setNumPlayers(atoi(vTokens[1]));
+        }
     }
 
 #if defined( _DEBUG )
