@@ -104,7 +104,7 @@ ScoreDocument::computeScores(
         offs[i] = pos;
         FrameScore  &sc = ss.frames[i];
         //  一投目  //
-        if ( ((pins[pos++] = sum = sc.got1st) == 10) && (i < 9) ) {
+        if ( ((pins[pos++] = sum = sc.got1st) >= 10) && (i < 9) ) {
             continue;
         }
         //  二投目  //

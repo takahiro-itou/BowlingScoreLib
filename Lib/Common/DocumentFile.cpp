@@ -192,9 +192,6 @@ DocumentFile::readFromTextStream(
 
         vSub.clear();
         splitText(vTokens[1], ",", buf2, vSub);
-        std::cerr   <<  "vTokens[1] = "  <<  vTokens[1]
-                    <<  "buf2 = " <<  (const char *)(&buf2[0])  <<  std::endl
-                    <<  vSub.size() << std::endl;
 
         if ( ! strcmp(vSub[0], "str") || ! strcmp(vSub[0], "sp") ) {
             fs1.got1st  = 10;
@@ -206,7 +203,6 @@ DocumentFile::readFromTextStream(
             //  第11フレーム（最終10フレームの三投目）か、  //
             //  一投目でストライクを出した場合は、          //
             //  二投目のデータが必要ないので読み飛ばす。    //
-            std::cerr   <<  "SKIP"  <<  std::endl;
         } if ( ! strcmp(vSub[1], "str") || ! strcmp(vSub[1], "sp") ) {
             fs1.got2nd  = 10;
         } else {
@@ -214,9 +210,14 @@ DocumentFile::readFromTextStream(
         }
 
         fs1.check   = atoi(vTokens[4]);
-        ptrDoc->setFrameScore(pi, fj, fs1);
+        std::cerr   <<  fs1.got1st  << "," << fs1.got2nd
+                    <<  ", check="  <<  fs1.check  <<  std::endl;
+        ptrDoc->setFrameScore(pi, fj - 1, fs1);
     }
 
+    for ( PlayerIndex i = 0; i < numPlayers; ++ i ) {
+        ptrDoc->computeScores(i);
+    }
 
 #if defined( _DEBUG )
     //  std::cerr   <<  ssLogs.str();
