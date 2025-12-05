@@ -117,7 +117,8 @@ DocumentFile::readFromTextStream(
         std::istream       &inStr,
         ScoreDocument  *    ptrDoc)
 {
-    std::stringstream   ssLogs;
+    //std::stringstream   ssLogs;
+    std::ostream  & ssLogs  = std::cerr;
 
     int         lineNo  = 0;
     PlayerIndex numPlayers  = 0;
@@ -185,13 +186,40 @@ DocumentFile::readFromTextStream(
         if ( vSub.size() < 2 ) { continue; }
         const  PlayerIndex  pi  = atoi(vSub[0]);
         const  FrameNumber  fj  = atoi(vSub[1]);
+        ssLogs  <<  "pi = " << pi << ", fj = " << fj << std::endl;
+
+        FrameScore  fs1;
 
         vSub.clear();
         splitText(vTokens[1], ",", buf2, vSub);
+        std::cerr   <<  "vTokens[1] = "  <<  vTokens[1]
+                    <<  "buf2 = " <<  (const char *)(&buf2[0])  <<  std::endl
+                    <<  vSub.size() << std::endl;
+
+        if ( ! strcmp(vSub[0], "str") || ! strcmp(vSub[0], "sp") ) {
+            fs1.got1st  = 10;
+        } else {
+            fs1.got1st  = atoi(vSub[0]);
+        }
+
+        if ( vSub.size() == 1 ) {
+            //  第11フレーム（最終10フレームの三投目）か、  //
+            //  一投目でストライクを出した場合は、          //
+            //  二投目のデータが必要ないので読み飛ばす。    //
+            std::cerr   <<  "SKIP"  <<  std::endl;
+        } if ( ! strcmp(vSub[1], "str") || ! strcmp(vSub[1], "sp") ) {
+            fs1.got2nd  = 10;
+        } else {
+            fs1.got2nd  = atoi(vSub[1]);
+        }
+
+        fs1.check   = atoi(vTokens[4]);
+        ptrDoc->setFrameScore(pi, fj, fs1);
     }
 
+
 #if defined( _DEBUG )
-    std::cerr   <<  ssLogs.str();
+    //  std::cerr   <<  ssLogs.str();
 #endif
 
     return ( ErrCode::SUCCESS );
