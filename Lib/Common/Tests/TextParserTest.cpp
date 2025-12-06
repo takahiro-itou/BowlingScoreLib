@@ -262,15 +262,15 @@ void  TextParserTest::testSubSplit1()
             static_cast<size_t>(3),
             static_cast<size_t>(vTokens2.size()) );
 
-    CPPUNIT_ASSERT_EQUAL( std::string("1,2,"),  std::string(vTokens1[0]) );
-    CPPUNIT_ASSERT_EQUAL( std::string("str,,"), std::string(vTokens1[1]) );
-    CPPUNIT_ASSERT_EQUAL( std::string("*"),     std::string(vTokens1[2]) );
-    CPPUNIT_ASSERT_EQUAL( std::string(""),      std::string(vTokens1[3]) );
-    CPPUNIT_ASSERT_EQUAL( std::string(""),      std::string(vTokens1[4]) );
+    CPPUNIT_ASSERT_EQUAL( std::string("1,2, "),  std::string(vTokens1[0]) );
+    CPPUNIT_ASSERT_EQUAL( std::string("str,, "), std::string(vTokens1[1]) );
+    CPPUNIT_ASSERT_EQUAL( std::string("* "),     std::string(vTokens1[2]) );
+    CPPUNIT_ASSERT_EQUAL( std::string(" "),      std::string(vTokens1[3]) );
+    CPPUNIT_ASSERT_EQUAL( std::string(""),       std::string(vTokens1[4]) );
 
     CPPUNIT_ASSERT_EQUAL( std::string("str"),  std::string(vTokens2[0]) );
     CPPUNIT_ASSERT_EQUAL( std::string(""),     std::string(vTokens2[1]) );
-    CPPUNIT_ASSERT_EQUAL( std::string(""),     std::string(vTokens2[2]) );
+    CPPUNIT_ASSERT_EQUAL( std::string(" "),    std::string(vTokens2[2]) );
 
     return;
 }

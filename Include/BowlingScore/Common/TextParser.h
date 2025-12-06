@@ -58,7 +58,7 @@ private:
 
     typedef     std::vector<char>           TextBuffer;
 
-    typedef     std::vector<const char *>   TokenArray;
+    typedef     std::vector<char  *>        TokenArray;
 
 //========================================================================
 //
@@ -125,6 +125,16 @@ public:
             const  char  *      sepChrs,
             TextBuffer          &bufText,
             TokenArray          &vTokens);
+
+    //----------------------------------------------------------------
+    /**   末尾の空白を削除する。
+    **
+    **  @param [in,out] ptrBuf    入力テキスト。
+    **      この文字列の内容は書き換えられる。
+    **/
+    static  const  char  *
+    stripRightSpace(
+            char  *  const  ptrBuf);
 
 //========================================================================
 //
