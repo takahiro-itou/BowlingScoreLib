@@ -237,7 +237,8 @@ ScoreDocument::setFrameScore(
         const  FrameNumber  frame,
         const  FrameScore  &score)
 {
-    if ( (index < 0) || (this->m_gameScore.size() <= index) ) {
+    const  PlayerIndex  num = getNumPlayers();
+    if ( (index < 0) || (num <= index) ) {
         return ( ErrCode::INDEX_OUT_OF_RANGE );
     }
     if ( (frame < 0) || (10 <= index) ) {
@@ -334,7 +335,8 @@ ScoreDocument::setPlayerName(
         const  PlayerIndex  index,
         const  std::string  &value)
 {
-    if ( (index < 0) || (this->m_gameScore.size() <= index) ) {
+    const  PlayerIndex  num = getNumPlayers();
+    if ( (index < 0) || (num <= index) ) {
         return ( ErrCode::INDEX_OUT_OF_RANGE );
     }
     this->m_gameScore.at(index).playerName = value;

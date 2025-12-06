@@ -122,7 +122,7 @@ typedef     int         FrameFlags;
 namespace  FlagValues  {
 
 enum  {
-    NONE        = 0,
+    NONE        = 0x00000000,
 
     /**   一投目がスプリットになった。  **/
     SPLIT_1ST   = 0x00000001,
