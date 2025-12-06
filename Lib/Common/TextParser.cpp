@@ -114,6 +114,11 @@ const  char  *
 TextParser::stripRightSpace(
         char  *  const  ptrBuf)
 {
+    char *  pp  = ptrBuf + strlen(ptrBuf) - 1;
+    while ( (*pp == ' ') && (pp >= ptrBuf) ) {
+        (* pp)  = '\0';
+        -- pp;
+    }
     return ( ptrBuf );
 }
 
