@@ -124,7 +124,8 @@ public:
             const  std::string  &inText,
             const  char  *      sepChrs,
             TextBuffer          &bufText,
-            TokenArray          &vTokens);
+            TokenArray          &vTokens,
+            const  char  *      delChrs = nullptr);
 
     //----------------------------------------------------------------
     /**   末尾の特定の文字を削除する。
@@ -173,7 +174,8 @@ private:
             char  *  const  ptrBuf,
             char  *  const  ptrEnd,
             const  char  *  sepChrs,
-            TokenArray     &vTokens);
+            TokenArray     &vTokens,
+            const  char  *  delChrs);
 
 //========================================================================
 //

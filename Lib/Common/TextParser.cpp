@@ -93,7 +93,8 @@ TextParser::splitText(
         const  std::string  &inText,
         const  char  *      sepChrs,
         TextBuffer          &bufText,
-        TokenArray          &vTokens)
+        TokenArray          &vTokens,
+        const  char  *      delChrs)
 {
     const   size_t  szText  = inText.size();
     bufText.clear();
@@ -103,7 +104,7 @@ TextParser::splitText(
     memcpy(ptrBuf, inText.c_str(), szText);
     ptrBuf[szText]  = '\0';
 
-    return  splitTextSub(ptrBuf, ptrBuf + szText, sepChrs, vTokens);
+    return  splitTextSub(ptrBuf, ptrBuf + szText, sepChrs, vTokens, delChrs);
 }
 
 //----------------------------------------------------------------
@@ -147,7 +148,8 @@ TextParser::splitTextSub(
         char  *  const  ptrBuf,
         char  *  const  ptrEnd,
         const  char  *  sepChrs,
-        TokenArray     &vTokens)
+        TokenArray     &vTokens,
+        const  char  *  delChrs)
 {
     char  *         pWrite  = nullptr;
     char  *         pToken  = ptrBuf;
