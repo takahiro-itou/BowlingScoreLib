@@ -21,6 +21,12 @@
 #if !defined( BOWLING_SCORE_CONFIG_INCLUDED_CONFIGURED_BOWLING_H )
 #    define   BOWLING_SCORE_CONFIG_INCLUDED_CONFIGURED_BOWLING_H
 
+#if !defined( BOWLINGSCORE_SYS_INCLUDED_CSTDDEF )
+#    include    <cstddef>
+#    define   BOWLINGSCORE_SYS_INCLUDED_CSTDDEF
+#endif
+
+
 //========================================================================
 //
 //    Name Space.
