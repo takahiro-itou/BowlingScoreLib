@@ -106,6 +106,17 @@ TextParser::splitText(
     return  splitTextSub(ptrBuf, ptrBuf + szText, sepChrs, vTokens);
 }
 
+//----------------------------------------------------------------
+//    末尾の空白を削除する。
+//
+
+const  char  *
+TextParser::stripRightSpace(
+        char  *  const  ptrBuf)
+{
+    return ( ptrBuf );
+}
+
 //========================================================================
 //
 //    Accessors.
@@ -132,6 +143,56 @@ TextParser::splitTextSub(
         const  char  *  sepChrs,
         TokenArray     &vTokens)
 {
+    char  *         pWrite  = nullptr;
+    char  *         pToken  = ptrBuf;
+    const  int      cqBegin = '"';
+    const  int      cqEnd   = '"';
+    int             cqLevel = 0;
+
+    for ( char * p = ptrBuf; p < ptrEnd; ++ p ) {
+        const  int  ch  = static_cast<unsigned char>(*p);
+        if ( cqLevel > 0 ) {
+            if ( ch == cqEnd ) {
+                if ( pWrite == nullptr ) {
+                    pWrite  = p;
+                }
+                -- cqLevel;
+            }
+            continue;
+        }
+        if ( ch == cqBegin ) {
+            if ( p == pToken ) {
+                //  トークンの先頭にクォートがある場合は、  //
+                //  そのクォートを削除するため、            //
+                //  トークンの開始位置を調整する。          //
+                pToken  = p + 1;
+            } else if ( pWrite == nullptr ) {
+                pWrite  = p;
+            }
+            ++ cqLevel;
+            continue;
+        }
+        if ( strchr(sepChrs, ch) != NULL ) {
+            //  区切り文字（のいずれか）なので、ここで区切る。  //
+            *p  = '\0';
+            if ( pWrite != nullptr ) {
+                *pWrite = '\0';
+            }
+            vTokens.push_back(pToken);
+            pToken  = p + 1;
+            pWrite  = nullptr;
+        }
+        if ( pWrite != nullptr ) {
+            *pWrite = *p;
+            ++ pWrite;
+        }
+    }
+
+    //  最後の区切り文字以降の分があるのでそれを追加する。  //
+    //  ちょうど文字列の末尾が区切り文字だった場合は、      //
+    //  最後に空文字列があるものとして追加する必要がある。  //
+    vTokens.push_back(pToken);
+
     return ( ErrCode::SUCCESS );
 }
 
