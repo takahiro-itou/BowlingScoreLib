@@ -45,6 +45,7 @@ class  TextParserTest : public  TestFixture
     CPPUNIT_TEST(testSplitText6);
     CPPUNIT_TEST(testStripRight);
     CPPUNIT_TEST(testSubSplit1);
+    CPPUNIT_TEST(testSubSplit2);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -61,6 +62,7 @@ private:
     void  testSplitText6();
     void  testStripRight();
     void  testSubSplit1();
+    void  testSubSplit2();
 
     typedef     TextParser      Testee;
 };
@@ -289,6 +291,44 @@ void  TextParserTest::testSubSplit1()
     CPPUNIT_ASSERT_EQUAL( std::string("str"),  std::string(vTokens2[0]) );
     CPPUNIT_ASSERT_EQUAL( std::string(""),     std::string(vTokens2[1]) );
     CPPUNIT_ASSERT_EQUAL( std::string(" "),    std::string(vTokens2[2]) );
+
+    return;
+}
+
+void  TextParserTest::testSubSplit2()
+{
+    Testee  testee;
+    Testee::TextBuffer  bufText1;
+    Testee::TokenArray  vTokens1;
+
+    Testee::TextBuffer  bufText2;
+    Testee::TokenArray  vTokens2;
+
+    ErrCode retCode;
+    retCode = testee.splitText(
+                    "1,2, |str,, |* | |", "|", bufText1, vTokens1, " ");
+
+    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, retCode);
+    CPPUNIT_ASSERT_EQUAL(
+            static_cast<size_t>(5),
+            static_cast<size_t>(vTokens1.size()) );
+
+    retCode = testee.splitText(
+                    vTokens1[1], ",", bufText2, vTokens2);
+    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, retCode);
+    CPPUNIT_ASSERT_EQUAL(
+            static_cast<size_t>(3),
+            static_cast<size_t>(vTokens2.size()) );
+
+    CPPUNIT_ASSERT_EQUAL( std::string("1,2,"),  std::string(vTokens1[0]) );
+    CPPUNIT_ASSERT_EQUAL( std::string("str,,"), std::string(vTokens1[1]) );
+    CPPUNIT_ASSERT_EQUAL( std::string("*"),     std::string(vTokens1[2]) );
+    CPPUNIT_ASSERT_EQUAL( std::string(""),      std::string(vTokens1[3]) );
+    CPPUNIT_ASSERT_EQUAL( std::string(""),      std::string(vTokens1[4]) );
+
+    CPPUNIT_ASSERT_EQUAL( std::string("str"),  std::string(vTokens2[0]) );
+    CPPUNIT_ASSERT_EQUAL( std::string(""),     std::string(vTokens2[1]) );
+    CPPUNIT_ASSERT_EQUAL( std::string(""),     std::string(vTokens2[2]) );
 
     return;
 }
