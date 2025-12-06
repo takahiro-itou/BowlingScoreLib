@@ -43,6 +43,7 @@ class  TextParserTest : public  TestFixture
     CPPUNIT_TEST(testSplitText4);
     CPPUNIT_TEST(testSplitText5);
     CPPUNIT_TEST(testSplitText6);
+    CPPUNIT_TEST(testStripRight);
     CPPUNIT_TEST(testSubSplit1);
     CPPUNIT_TEST_SUITE_END();
 
@@ -58,6 +59,7 @@ private:
     void  testSplitText4();
     void  testSplitText5();
     void  testSplitText6();
+    void  testStripRight();
     void  testSubSplit1();
 
     typedef     TextParser      Testee;
@@ -233,6 +235,22 @@ void  TextParserTest::testSplitText6()
     CPPUNIT_ASSERT_EQUAL( std::string(""),    std::string(vTokens[5]) );
     CPPUNIT_ASSERT_EQUAL( std::string("h"),   std::string(vTokens[6]) );
     CPPUNIT_ASSERT_EQUAL( std::string(""),    std::string(vTokens[7]) );
+
+    return;
+}
+
+void  TextParserTest::testStripRight()
+{
+    Testee  testee;
+
+    char    buf[] = "1,2,3, \0";
+    const  char  *  ptr;
+
+    ptr = testee.stripRightSpace(buf);
+
+    CPPUNIT_ASSERT_EQUAL( (const void *)(ptr), (const void *)(buf) );
+    CPPUNIT_ASSERT_EQUAL( std::string("1,2,3,"), std::string(buf) );
+    CPPUNIT_ASSERT_EQUAL( std::string("1,2,3,"), std::string(ptr) );
 
     return;
 }
