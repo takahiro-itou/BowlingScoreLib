@@ -104,6 +104,27 @@ public:
 //
 //    Public Member Functions.
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   文字列を指定した文字で分割する。
+    **
+    **  @param [in] inText    入力テキスト。
+    **  @param [in] sepChrs   区切り文字。
+    **  @param[out] bufText   テキストバッファ。
+    **  @param[out] vTokens   分割結果を追記する変数。
+    **      必要なら呼び出す前に内容をクリアしておく。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    static  ErrCode
+    splitText(
+            const  std::string  &inText,
+            const  char  *      sepChrs,
+            TextBuffer          &bufText,
+            TokenArray          &vTokens);
 
 //========================================================================
 //
@@ -119,6 +140,27 @@ public:
 //
 //    For Internal Use Only.
 //
+private:
+
+    //----------------------------------------------------------------
+    /**   文字列を指定した文字で分割する。
+    **
+    **  @param [in,out] ptrBuf    入力テキスト。
+    **      この文字列の内容は書き換えられる。
+    **  @param [in]     ptrEnd
+    **  @param [in]     sepChar   区切り文字。
+    **  @param    [out] vTokens   分割結果を追記する変数。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    static  ErrCode
+    splitTextSub(
+            char  *  const  ptrBuf,
+            char  *  const  ptrEnd,
+            const  char  *  sepChrs,
+            TokenArray     &vTokens);
 
 //========================================================================
 //

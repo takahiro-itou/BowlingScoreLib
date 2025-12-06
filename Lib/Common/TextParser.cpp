@@ -82,6 +82,20 @@ TextParser::~TextParser()
 //    Public Member Functions.
 //
 
+//----------------------------------------------------------------
+//    文字列を指定した文字で分割する。
+//
+
+ErrCode
+TextParser::splitText(
+        const  std::string  &inText,
+        const  char  *      sepChrs,
+        TextBuffer          &bufText,
+        TokenArray          &vTokens)
+{
+    return ( ErrCode::FAILURE );
+}
+
 //========================================================================
 //
 //    Accessors.
@@ -96,6 +110,20 @@ TextParser::~TextParser()
 //
 //    For Internal Use Only.
 //
+
+//----------------------------------------------------------------
+//    文字列を指定した文字で分割する。
+//
+
+ErrCode
+TextParser::splitTextSub(
+        char  *  const  ptrBuf,
+        char  *  const  ptrEnd,
+        const  char  *  sepChrs,
+        TokenArray     &vTokens)
+{
+    return ( ErrCode::FAILURE );
+}
 
 }   //  End of namespace  Common
 BOWLINGSCORE_NAMESPACE_END
