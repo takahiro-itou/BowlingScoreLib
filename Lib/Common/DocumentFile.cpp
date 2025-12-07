@@ -400,7 +400,19 @@ DocumentFile::saveToTextStream(
             }
         } else {
             //  それ以外
-            bf1 <<  fs1.got1st;
+            if ( fs1.flags & FlagValues::MISS_1ST ) {
+                bf1 <<  "-";
+            } else if ( fs1.flags & FlagValues::GUTTER_1ST ) {
+                bf1 <<  "G";
+            } else if ( fs1.flags & FlagValues::FAUL_1ST ) {
+                bf1 <<  "F";
+            } else {
+                bf1 <<  fs1.got1st;
+                if ( fs1.flags & FlagValues::SPLIT_1ST ) {
+                    bf1 <<  "s";
+                }
+            }
+
             if ( fs1.got1st + fs1.got2nd >= 10 ) {
                 bf2 <<  "sp";
                 if ( fs3.got1st >= 10 ) {
