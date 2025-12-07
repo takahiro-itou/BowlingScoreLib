@@ -21,6 +21,7 @@
 #include    "BowlingScore/Common/DocumentFile.h"
 
 #include    "BowlingScore/Common/ScoreDocument.h"
+#include    "BowlingScore/Common/TextParser.h"
 
 #include    <iostream>
 #include    <iterator>
@@ -123,8 +124,8 @@ DocumentFile::readFromTextStream(
     int         lineNo  = 0;
     PlayerIndex numPlayers  = 0;
     std::string strLine;
-    TextBuffer  buf;
-    TokenArray  vTokens;
+    TextParser::TextBuffer  buf;
+    TextParser::TokenArray  vTokens;
 
     while ( inStr.good() ) {
         if ( ! std::getline(inStr, strLine) ) {
@@ -143,7 +144,7 @@ DocumentFile::readFromTextStream(
         }
 
         vTokens.clear();
-        splitText(strLine, "|", buf, vTokens);
+        TextParser::splitText(strLine, "|", buf, vTokens, " \t");
 #if defined( _DEBUG )
         std::copy(
                 vTokens.begin(), vTokens.end(),
@@ -175,23 +176,24 @@ DocumentFile::readFromTextStream(
             }
         }
 
-        if ( vTokens.size() != 4 && vTokens.size() != 5 ) {
+        if ( vTokens.size() != 5 ) {
             continue;
         }
 
-        TextBuffer  buf2;
-        TokenArray  vSub;
+        TextParser::TextBuffer  buf2;
+        TextParser::TokenArray  vSub;
         vSub.clear();
-        splitText(vTokens[0], ",", buf2, vSub);
+        TextParser::splitText(vTokens[0], ",", buf2, vSub, " \t");
         if ( vSub.size() < 2 ) { continue; }
         const  PlayerIndex  pi  = atoi(vSub[0]);
         const  FrameNumber  fj  = atoi(vSub[1]);
         ssLogs  <<  "pi = " << pi << ", fj = " << fj  <<  ", ";
 
         FrameScore  fs1;
+        fs1.flags   = 0;
 
         vSub.clear();
-        splitText(vTokens[1], ",", buf2, vSub);
+        TextParser::splitText(vTokens[1], ",", buf2, vSub, " \t");
 
         if ( ! strcmp(vSub[0], "str") || ! strcmp(vSub[0], "sp") ) {
             fs1.got1st  = 10;
@@ -209,10 +211,17 @@ DocumentFile::readFromTextStream(
             fs1.got2nd  = atoi(vSub[1]);
         }
 
-        if ( fj == 11 && vTokens.size() == 4 ) {
-            //  第11フレームのカラム数が足りない時は、  //
-            //  検証用スコアデータが省略されたと場合。  //
-            fs1.check   = ptrDoc->getFrameScore(pi, 9).check;
+        if ( fj == 11 ) {
+            if ( vTokens.size() == 4 ) {
+                //  第11フレームのカラム数が足りない時は、  //
+                //  検証用スコアデータが省略されたと場合。  //
+                fs1.check   = 0;
+            } else {
+                fs1.check   = atoi(vTokens[4]);
+            }
+            if ( fs1.check == 0 ) {
+                fs1.check   = ptrDoc->getFrameScore(pi, 9).check;
+            }
         } else {
             fs1.check   = atoi(vTokens[4]);
         }
@@ -220,8 +229,24 @@ DocumentFile::readFromTextStream(
                     <<  ", check="  <<  fs1.check  <<  std::endl;
 
         //  一投目の残りピン。  //
+        if ( fs1.got1st == 0 ) {
+            //  スコアがゼロ、つまりピンが全部残っている。  //
+            fs1.rem1st  = 0x07FE;
+            if ( fj == 11 ) {
+                //  最終フレームの例外処理。        //
+                const  FrameScore  &fs2 = ptrDoc->getFrameScore(pi, 9);
+                fs1.rem1st  =  fs2.rem2nd;
+                if ( fs1.rem1st == 0 ) {
+                    fs1.rem1st  = 0x07FE;
+                }
+                if ( fs2.got1st + fs2.got2nd < NUM_PINS_PER_FRAME ) {
+                    //  スペアミスの場合、三投目はない。    //
+                    fs1.rem1st  = 0;
+                }
+            }
+        } else {
         vSub.clear();
-        splitText(vTokens[2], ",", buf2, vSub);
+        TextParser::splitText(vTokens[2], ",", buf2, vSub, " \t");
         fs1.rem1st  = 0;
         for ( size_t i = 0; i < vSub.size(); ++ i ) {
             int k = atoi(vSub[i]);
@@ -229,16 +254,27 @@ DocumentFile::readFromTextStream(
                 fs1.rem1st  |= (1 << k);
             }
         }
+        }
 
         //  二投目の残りピン。  //
+        if ( fs1.got2nd == 0 ) {
+            //  スコアがゼロ、つまり一投目の残ピンと同じ。  //
+            fs1.rem2nd  = fs1.rem1st;
+            if ( fj == 10 && fs1.got1st >= 10 ) {
+                //  最終フレームの例外処理。        //
+                //  一投目ストライク、二投目ゼロ。  //
+                fs1.rem2nd  = 0x07FE;
+            }
+        } else {
         vSub.clear();
-        splitText(vTokens[3], ",", buf2, vSub);
+        TextParser::splitText(vTokens[3], ",", buf2, vSub, " \t");
         fs1.rem2nd  = 0;
         for ( size_t i = 0; i < vSub.size(); ++ i ) {
             int k = atoi(vSub[i]);
             if ( k != 0 ) {
                 fs1.rem2nd  |= (1 << k);
             }
+        }
         }
 
         ptrDoc->setFrameScore(pi, fj - 1, fs1);
@@ -298,31 +334,63 @@ DocumentFile::saveToTextStream(
                 std::stringstream   rm1;
                 std::stringstream   rm2;
 
+                if ( fs.flags & FlagValues::GUTTER_1ST ) {
+                    rm1 <<  "G,";
+                } else if ( fs.flags & FlagValues::FAUL_1ST ) {
+                    rm1 <<  "F,";
+                } else {
                 for ( int k = 1; k <= 10; ++ k ) {
                     if ( (fs.rem1st >> k) & 1 ) {
                         rm1 << k << ",";
                     }
                 }
+                }
 
+                if ( fs.flags & FlagValues::GUTTER_2ND ) {
+                    rm2 <<  "G,";
+                } else if ( fs.flags & FlagValues::FAUL_2ND ) {
+                    rm2 <<  "F,";
+                } else {
                 for ( int k = 1; k <= 10; ++ k ) {
                     if ( (fs.rem2nd >> k) & 1 ) {
                         rm2 << k << ",";
                     }
                 }
-
-                outStr  <<  fs.got1st  << ",";
-                if ( fs.got1st + fs.got2nd >= 10 ) {
-                    outStr  <<  "sp, |"
-                            <<  rm1.str()
-                            <<  " |"
-                            <<  "* |";
-                } else {
-                    outStr  <<  fs.got2nd << ", |"
-                            <<  rm1.str()
-                            <<  " |"
-                            <<  rm2.str()
-                            <<  " |";
                 }
+
+                if ( fs.flags & FlagValues::GUTTER_1ST ) {
+                    outStr  <<  "G";
+                } else if ( fs.flags & FlagValues::FAUL_1ST ) {
+                    outStr  <<  "F";
+                } else {
+                    outStr  <<  fs.got1st;
+                    if ( fs.flags & FlagValues::SPLIT_1ST ) {
+                        outStr  <<  "s";
+                    }
+                }
+                outStr  <<  ",";
+
+                if ( fs.got1st + fs.got2nd >= 10 ) {
+                    outStr  <<  "sp";
+                    rm2.clear();
+                    rm2.str("*");
+                } else if ( fs.flags & FlagValues::MISS_2ND ) {
+                    outStr  <<  "-";
+                } else if ( fs.flags & FlagValues::GUTTER_2ND ) {
+                    outStr  <<  "G";
+                } else if ( fs.flags & FlagValues::FAUL_2ND ) {
+                    outStr  <<  "F";
+                } else {
+                    outStr  <<  fs.got2nd;
+                    if ( fs.flags & FlagValues::SPLIT_2ND ) {
+                        outStr  <<  "s";
+                    }
+                }
+                outStr  <<  ", |"
+                        <<  rm1.str()
+                        <<  " |"
+                        <<  rm2.str()
+                        <<  " |";
             }
             outStr  <<  fs.score    <<  "\n";
         }
@@ -346,19 +414,65 @@ DocumentFile::saveToTextStream(
                     //  ターキー
                     bf3 <<  "str";
                 } else  {
-                    bf3 <<  fs3.got1st;
+                    if ( fs3.flags & FlagValues::MISS_1ST ) {
+                        bf3 <<  "-";
+                    } else if ( fs3.flags & FlagValues::GUTTER_1ST ) {
+                        bf3 <<  "G";
+                    } else if ( fs3.flags & FlagValues::FAUL_1ST ) {
+                        bf3 <<  "F";
+                    } else {
+                        bf3 <<  fs3.got1st;
+                        if ( fs3.flags & FlagValues::SPLIT_1ST ) {
+                            bf3 <<  "s";
+                        }
+                    }
                 }
             } else {
-                bf2 <<  fs1.got2nd;
+                if ( fs1.flags & FlagValues::MISS_2ND ) {
+                    bf2 <<  "-";
+                } else if ( fs1.flags & FlagValues::GUTTER_2ND ) {
+                    bf2 <<  "G";
+                } else if ( fs1.flags & FlagValues::FAUL_2ND ) {
+                    bf2 <<  "F";
+                } else {
+                    bf2 <<  fs1.got2nd;
+                    if ( fs1.flags & FlagValues::SPLIT_2ND ) {
+                        bf2 <<  "s";
+                    }
+                }
+
                 if ( fs1.got2nd + fs3.got1st >= 10 ) {
                     bf3 <<  "sp";
                 } else {
-                    bf3 <<  fs3.got1st;
+                    if ( fs3.flags & FlagValues::MISS_1ST ) {
+                        bf3 <<  "-";
+                    } else if ( fs3.flags & FlagValues::GUTTER_1ST ) {
+                        bf3 <<  "G";
+                    } else if ( fs3.flags & FlagValues::FAUL_1ST ) {
+                        bf3 <<  "F";
+                    } else {
+                        bf3 <<  fs3.got1st;
+                        if ( fs3.flags & FlagValues::SPLIT_1ST ) {
+                            bf3 <<  "s";
+                        }
+                    }
                 }
             }
         } else {
             //  それ以外
-            bf1 <<  fs1.got1st;
+            if ( fs1.flags & FlagValues::MISS_1ST ) {
+                bf1 <<  "-";
+            } else if ( fs1.flags & FlagValues::GUTTER_1ST ) {
+                bf1 <<  "G";
+            } else if ( fs1.flags & FlagValues::FAUL_1ST ) {
+                bf1 <<  "F";
+            } else {
+                bf1 <<  fs1.got1st;
+                if ( fs1.flags & FlagValues::SPLIT_1ST ) {
+                    bf1 <<  "s";
+                }
+            }
+
             if ( fs1.got1st + fs1.got2nd >= 10 ) {
                 bf2 <<  "sp";
                 if ( fs3.got1st >= 10 ) {
@@ -368,7 +482,19 @@ DocumentFile::saveToTextStream(
                 }
             } else {
                 //  スペアミス
-                bf2 <<  fs1.got2nd;
+                if ( fs1.flags & FlagValues::MISS_2ND ) {
+                    bf2 <<  "-";
+                } else if ( fs1.flags & FlagValues::GUTTER_2ND ) {
+                    bf2 <<  "G";
+                } else if ( fs1.flags & FlagValues::FAUL_2ND ) {
+                    bf2 <<  "F";
+                } else {
+                    bf2 <<  fs1.got2nd;
+                    if ( fs1.flags & FlagValues::SPLIT_2ND ) {
+                        bf2 <<  "s";
+                    }
+                }
+                bf3 <<  "*";
             }
         }
 
@@ -376,6 +502,11 @@ DocumentFile::saveToTextStream(
         std::stringstream   rm2;
         std::stringstream   rm3;
 
+        if ( fs1.flags & FlagValues::GUTTER_1ST ) {
+            rm1 <<  "G,";
+        } else if ( fs1.flags & FlagValues::FAUL_1ST ) {
+            rm1 <<  "F,";
+        } else {
         if ( fs1.rem1st != 0 ) {
             for ( int k = 1; k <= 10; ++ k ) {
                 if ( (fs1.rem1st >> k) & 1 ) {
@@ -385,7 +516,13 @@ DocumentFile::saveToTextStream(
         } else {
             rm1 <<  "*";
         }
+        }
 
+        if ( fs1.flags & FlagValues::GUTTER_2ND ) {
+            rm2 <<  "G,";
+        } else if ( fs1.flags & FlagValues::FAUL_2ND ) {
+            rm2 <<  "F,";
+        } else {
         if ( fs1.rem2nd != 0 ) {
             for ( int k = 1; k <= 10; ++ k ) {
                 if ( (fs1.rem2nd >> k) & 1 ) {
@@ -395,7 +532,13 @@ DocumentFile::saveToTextStream(
         } else {
             rm2 <<  "*";
         }
+        }
 
+        if ( fs3.flags & FlagValues::GUTTER_1ST ) {
+            rm3 <<  "G,";
+        } else if ( fs3.flags & FlagValues::FAUL_1ST ) {
+            rm1 <<  "F,";
+        } else {
         if ( fs3.rem1st != 0 ) {
             for ( int k = 1; k <= 10; ++ k ) {
                 if ( (fs3.rem1st >> k) & 1 ) {
@@ -404,6 +547,7 @@ DocumentFile::saveToTextStream(
             }
         } else {
             rm3 <<  "*";
+        }
         }
 
         outStr  <<  bf1.str()

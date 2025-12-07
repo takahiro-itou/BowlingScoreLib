@@ -49,13 +49,13 @@ CONSTEXPR_VAR
 FrameArray  score2 = {
     { 10,  0, 0x000, 0x000,   0,  21, 0x00000000 },
     { 10,  0, 0x000, 0x000,   0,  32, 0x00000000 },
-    {  1,  0, 0x3FE, 0x3FE,   0,  33, 0x00000000 },
+    {  1,  0, 0x3FE, 0x3FE,   0,  33, 0x00002000 },
     { 10,  0, 0x000, 0x000,   0,  44, 0x00000000 },
-    {  1,  0, 0x3FE, 0x3FE,   0,  45, 0x00000000 },
+    {  1,  0, 0x3FE, 0x3FE,   0,  45, 0x00002000 },
     { 10,  0, 0x000, 0x000,   0,  56, 0x00000000 },
-    {  1,  0, 0x3FE, 0x3FE,   0,  57, 0x00000000 },
+    {  1,  0, 0x3FE, 0x3FE,   0,  57, 0x00002000 },
     { 10,  0, 0x000, 0x000,   0,  68, 0x00000000 },
-    {  1,  0, 0x3FE, 0x3FE,   0,  69, 0x00000000 },
+    {  1,  0, 0x3FE, 0x3FE,   0,  69, 0x00002000 },
     { 10, 10, 0x000, 0x000,   0,  99, 0x00000000 },
     { 10,  0, 0x000, 0x000,   0,  99, 0x00000000 },
 };
@@ -90,6 +90,21 @@ FrameArray  score4 = {
     {  1,  0, 0x000, 0x000,   0, 200, 0x00000000 },
 };
 
+CONSTEXPR_VAR
+FrameArray  score5 = {
+    {  0, 10, 0x7FE, 0x000,   0,  18, 0x00000010 },
+    {  8,  1, 0x480, 0x080,   0,  27, 0x00000001 },
+    {  0, 10, 0x7FE, 0x000,   0,  37, 0x00000100 },
+    {  0,  8, 0x7FE, 0x480,   0,  45, 0x00000102 },
+    {  0,  0, 0x7FE, 0x7FE,   0,  45, 0x00000210 },
+    { 10,  0, 0x000, 0x000,   0,  65, 0x00000000 },
+    { 10,  0, 0x000, 0x000,   0,  84, 0x00000000 },
+    {  0,  9, 0x7FE, 0x080,   0,  93, 0x00000010 },
+    { 10,  0, 0x000, 0x000,   0, 111, 0x00000000 },
+    {  8,  0, 0x480, 0x480,   0, 119, 0x00002001 },
+    {  0,  0, 0x000, 0x000,   0, 119, 0x00000000 },
+};
+
 
 inline  void
 setupFrameScores(
@@ -115,6 +130,7 @@ testFrameScores(
     for ( FrameNumber j = 0; j < FRAME_ARRAY_SIZE; ++ j ) {
         const   FrameScore  &fs = objDoc.getFrameScore(player, j);
 
+        //  std::cerr   <<  "test: "  << player  <<  ", " <<  j;
         CPPUNIT_ASSERT_EQUAL(fs.check, fs.score);
         CPPUNIT_ASSERT_EQUAL(scores[j].got1st, fs.got1st);
         CPPUNIT_ASSERT_EQUAL(scores[j].got2nd, fs.got2nd);
@@ -122,6 +138,7 @@ testFrameScores(
         CPPUNIT_ASSERT_EQUAL(scores[j].rem2nd, fs.rem2nd);
         CPPUNIT_ASSERT_EQUAL(scores[j].check,  fs.score );
         CPPUNIT_ASSERT_EQUAL(scores[j].check,  fs.check );
+        //  std::cerr   <<  "...OK" <<  std::endl;
     }
 
     return;

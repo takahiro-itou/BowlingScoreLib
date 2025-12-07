@@ -86,7 +86,7 @@ void  DocumentFileTest::testReadFromTextStream()
             testee.readFromTextStream(ss, &objDoc)
     );
 
-    const  PlayerIndex  numPlayers  = 3;
+    const  PlayerIndex  numPlayers  = 4;
 
     CPPUNIT_ASSERT_EQUAL(
             std::string("2025/11/30"), objDoc.getGameDate());
@@ -101,6 +101,8 @@ void  DocumentFileTest::testReadFromTextStream()
             std::string("TEST PLAYER 2"), objDoc.getPlayerName(1));
     CPPUNIT_ASSERT_EQUAL(
             std::string("TEST PLAYER 3"), objDoc.getPlayerName(2));
+    CPPUNIT_ASSERT_EQUAL(
+            std::string("TEST PLAYER 4"), objDoc.getPlayerName(3));
 
     CPPUNIT_ASSERT_EQUAL(
             300, objDoc.getFrameScore(0, 9).score);
@@ -108,10 +110,13 @@ void  DocumentFileTest::testReadFromTextStream()
             99,  objDoc.getFrameScore(1, 9).score);
     CPPUNIT_ASSERT_EQUAL(
             200, objDoc.getFrameScore(2, 9).score);
+    CPPUNIT_ASSERT_EQUAL(
+            119, objDoc.getFrameScore(3, 9).score);
 
     testFrameScores(objDoc, 0, score1);
     testFrameScores(objDoc, 1, score2);
     testFrameScores(objDoc, 2, score3);
+    testFrameScores(objDoc, 3, score5);
 
     return;
 }
@@ -121,21 +126,24 @@ void  DocumentFileTest::testSaveToTextStream()
     Testee          testee;
     ScoreDocument   objDoc;
 
-    objDoc.setNumPlayers(3);
+    objDoc.setNumPlayers(4);
 
     objDoc.setGameTitle("TITLEofGAME");
     objDoc.setGameDate("2025/11/30");
     objDoc.setPlayerName(0, "TESTPLAYER1");
     objDoc.setPlayerName(1, "TESTPLAYER2");
     objDoc.setPlayerName(2, "TESTPLAYER3");
+    objDoc.setPlayerName(3, "TESTPLAYER4");
 
     setupFrameScores(objDoc, 0, score1);
     setupFrameScores(objDoc, 1, score2);
     setupFrameScores(objDoc, 2, score4);
+    setupFrameScores(objDoc, 3, score5);
 
     objDoc.computeScores(0);
     objDoc.computeScores(1);
     objDoc.computeScores(2);
+    objDoc.computeScores(3);
 
     std::stringstream   ss;
     CPPUNIT_ASSERT_EQUAL(
