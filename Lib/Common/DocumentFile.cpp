@@ -144,7 +144,7 @@ DocumentFile::readFromTextStream(
         }
 
         vTokens.clear();
-        TextParser::splitText(strLine, "|", buf, vTokens, "\t ");
+        TextParser::splitText(strLine, "|", buf, vTokens, " \t");
 #if defined( _DEBUG )
         std::copy(
                 vTokens.begin(), vTokens.end(),
@@ -180,10 +180,10 @@ DocumentFile::readFromTextStream(
             continue;
         }
 
-        TextBuffer  buf2;
-        TokenArray  vSub;
+        TextParser::TextBuffer  buf2;
+        TextParser::TokenArray  vSub;
         vSub.clear();
-        splitText(vTokens[0], ",", buf2, vSub);
+        TextParser::splitText(vTokens[0], ",", buf2, vSub, " \t");
         if ( vSub.size() < 2 ) { continue; }
         const  PlayerIndex  pi  = atoi(vSub[0]);
         const  FrameNumber  fj  = atoi(vSub[1]);
@@ -192,7 +192,7 @@ DocumentFile::readFromTextStream(
         FrameScore  fs1;
 
         vSub.clear();
-        splitText(vTokens[1], ",", buf2, vSub);
+        TextParser::splitText(vTokens[1], ",", buf2, vSub, " \t");
 
         if ( ! strcmp(vSub[0], "str") || ! strcmp(vSub[0], "sp") ) {
             fs1.got1st  = 10;
@@ -227,9 +227,11 @@ DocumentFile::readFromTextStream(
         std::cerr   <<  fs1.got1st  << "," << fs1.got2nd
                     <<  ", check="  <<  fs1.check  <<  std::endl;
 
+        fs1.flags   = 0;
+
         //  一投目の残りピン。  //
         vSub.clear();
-        splitText(vTokens[2], ",", buf2, vSub);
+        TextParser::splitText(vTokens[2], ",", buf2, vSub, " \t");
         fs1.rem1st  = 0;
         for ( size_t i = 0; i < vSub.size(); ++ i ) {
             int k = atoi(vSub[i]);
@@ -240,7 +242,7 @@ DocumentFile::readFromTextStream(
 
         //  二投目の残りピン。  //
         vSub.clear();
-        splitText(vTokens[3], ",", buf2, vSub);
+        TextParser::splitText(vTokens[3], ",", buf2, vSub, " \t");
         fs1.rem2nd  = 0;
         for ( size_t i = 0; i < vSub.size(); ++ i ) {
             int k = atoi(vSub[i]);
