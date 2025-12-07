@@ -456,7 +456,19 @@ DocumentFile::saveToTextStream(
                 }
             } else {
                 //  スペアミス
-                bf2 <<  fs1.got2nd;
+                if ( fs1.flags & FlagValues::MISS_2ND ) {
+                    bf2 <<  "-";
+                } else if ( fs1.flags & FlagValues::GUTTER_2ND ) {
+                    bf2 <<  "G";
+                } else if ( fs1.flags & FlagValues::FAUL_2ND ) {
+                    bf2 <<  "F";
+                } else {
+                    bf2 <<  fs1.got2nd;
+                    if ( fs1.flags & FlagValues::SPLIT_2ND ) {
+                        bf2 <<  "s";
+                    }
+                }
+                bf3 <<  "0";
             }
         }
 
