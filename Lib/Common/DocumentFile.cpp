@@ -333,16 +333,18 @@ DocumentFile::saveToTextStream(
                 }
 
                 if ( fs.flags & FlagValues::GUTTER_1ST ) {
-                    outStr  <<  "G,";
+                    outStr  <<  "G";
                 } else if ( fs.flags & FlagValues::FAUL_1ST ) {
-                    outStr  <<  "F,";
+                    outStr  <<  "F";
                 } else {
                     if ( fs.flags & FlagValues::SPLIT_1ST ) {
-                        outStr  <<  fs.got1st  << "s,";
+                        outStr  <<  fs.got1st  << "s";
                     } else {
-                        outStr  <<  fs.got1st  <<  ",";
+                        outStr  <<  fs.got1st;
                     }
                 }
+                outStr  <<  ",";
+
                 if ( fs.got1st + fs.got2nd >= 10 ) {
                     outStr  <<  "sp";
                     rm2.clear();
