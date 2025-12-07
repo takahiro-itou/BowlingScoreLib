@@ -308,10 +308,16 @@ DocumentFile::saveToTextStream(
                 std::stringstream   rm1;
                 std::stringstream   rm2;
 
+                if ( fs.flags & FlagValues::GUTTER_1ST ) {
+                    rm1 <<  "G,";
+                } else if ( fs.flags & FlagValues::FAUL_1ST ) {
+                    rm1 <<  "F,";
+                } else {
                 for ( int k = 1; k <= 10; ++ k ) {
                     if ( (fs.rem1st >> k) & 1 ) {
                         rm1 << k << ",";
                     }
+                }
                 }
 
                 for ( int k = 1; k <= 10; ++ k ) {
