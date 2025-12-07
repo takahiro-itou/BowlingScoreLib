@@ -190,6 +190,7 @@ DocumentFile::readFromTextStream(
         ssLogs  <<  "pi = " << pi << ", fj = " << fj  <<  ", ";
 
         FrameScore  fs1;
+        fs1.flags   = 0;
 
         vSub.clear();
         TextParser::splitText(vTokens[1], ",", buf2, vSub, " \t");
@@ -226,8 +227,6 @@ DocumentFile::readFromTextStream(
         }
         std::cerr   <<  fs1.got1st  << "," << fs1.got2nd
                     <<  ", check="  <<  fs1.check  <<  std::endl;
-
-        fs1.flags   = 0;
 
         //  一投目の残りピン。  //
         vSub.clear();
