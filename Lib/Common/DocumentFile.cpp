@@ -337,10 +337,9 @@ DocumentFile::saveToTextStream(
                 } else if ( fs.flags & FlagValues::FAUL_1ST ) {
                     outStr  <<  "F";
                 } else {
+                    outStr  <<  fs.got1st;
                     if ( fs.flags & FlagValues::SPLIT_1ST ) {
-                        outStr  <<  fs.got1st  << "s";
-                    } else {
-                        outStr  <<  fs.got1st;
+                        outStr  <<  "s";
                     }
                 }
                 outStr  <<  ",";
