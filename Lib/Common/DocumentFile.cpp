@@ -494,7 +494,7 @@ DocumentFile::saveToTextStream(
                         bf2 <<  "s";
                     }
                 }
-                bf3 <<  "0";
+                bf3 <<  "*";
             }
         }
 
