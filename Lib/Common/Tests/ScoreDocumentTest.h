@@ -99,7 +99,7 @@ FrameArray  score5 = {
     {  0,  0, 0x7FE, 0x7FE,   0,  45, 0x00000210 },
     { 10,  0, 0x000, 0x000,   0,  65, 0x00000000 },
     { 10,  0, 0x000, 0x000,   0,  84, 0x00000000 },
-    {  0,  9, 0x000, 0x080,   0,  93, 0x00000010 },
+    {  0,  9, 0x7FE, 0x080,   0,  93, 0x00000010 },
     { 10,  0, 0x000, 0x000,   0, 111, 0x00000000 },
     {  8,  0, 0x480, 0x480,   0, 119, 0x00002001 },
     {  0,  0, 0x000, 0x000,   0, 119, 0x00000000 },
@@ -130,6 +130,7 @@ testFrameScores(
     for ( FrameNumber j = 0; j < FRAME_ARRAY_SIZE; ++ j ) {
         const   FrameScore  &fs = objDoc.getFrameScore(player, j);
 
+        //  std::cerr   <<  "test: "  << player  <<  ", " <<  j;
         CPPUNIT_ASSERT_EQUAL(fs.check, fs.score);
         CPPUNIT_ASSERT_EQUAL(scores[j].got1st, fs.got1st);
         CPPUNIT_ASSERT_EQUAL(scores[j].got2nd, fs.got2nd);
@@ -137,6 +138,7 @@ testFrameScores(
         CPPUNIT_ASSERT_EQUAL(scores[j].rem2nd, fs.rem2nd);
         CPPUNIT_ASSERT_EQUAL(scores[j].check,  fs.score );
         CPPUNIT_ASSERT_EQUAL(scores[j].check,  fs.check );
+        //  std::cerr   <<  "...OK" <<  std::endl;
     }
 
     return;

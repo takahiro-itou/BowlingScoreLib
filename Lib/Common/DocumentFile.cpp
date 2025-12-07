@@ -232,6 +232,18 @@ DocumentFile::readFromTextStream(
         if ( fs1.got1st == 0 ) {
             //  スコアがゼロ、つまりピンが全部残っている。  //
             fs1.rem1st  = 0x07FE;
+            if ( fj == 11 ) {
+                //  最終フレームの例外処理。        //
+                const  FrameScore  &fs2 = ptrDoc->getFrameScore(pi, 9);
+                fs1.rem1st  =  fs2.rem2nd;
+                if ( fs1.rem1st == 0 ) {
+                    fs1.rem1st  = 0x07FE;
+                }
+                if ( fs2.got1st + fs2.got2nd < NUM_PINS_PER_FRAME ) {
+                    //  スペアミスの場合、三投目はない。    //
+                    fs1.rem1st  = 0;
+                }
+            }
         } else {
         vSub.clear();
         TextParser::splitText(vTokens[2], ",", buf2, vSub, " \t");
@@ -245,6 +257,15 @@ DocumentFile::readFromTextStream(
         }
 
         //  二投目の残りピン。  //
+        if ( fs1.got2nd == 0 ) {
+            //  スコアがゼロ、つまり一投目の残ピンと同じ。  //
+            fs1.rem2nd  = fs1.rem1st;
+            if ( fj == 10 && fs1.got1st >= 10 ) {
+                //  最終フレームの例外処理。        //
+                //  一投目ストライク、二投目ゼロ。  //
+                fs1.rem2nd  = 0x07FE;
+            }
+        } else {
         vSub.clear();
         TextParser::splitText(vTokens[3], ",", buf2, vSub, " \t");
         fs1.rem2nd  = 0;
@@ -253,6 +274,7 @@ DocumentFile::readFromTextStream(
             if ( k != 0 ) {
                 fs1.rem2nd  |= (1 << k);
             }
+        }
         }
 
         ptrDoc->setFrameScore(pi, fj - 1, fs1);
