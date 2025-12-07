@@ -348,8 +348,17 @@ DocumentFile::saveToTextStream(
                     outStr  <<  "sp";
                     rm2.clear();
                     rm2.str("*");
+                } else if ( fs.flags & FlagValues::MISS_2ND ) {
+                    outStr  <<  "-";
+                } else if ( fs.flags & FlagValues::GUTTER_2ND ) {
+                    outStr  <<  "G";
+                } else if ( fs.flags & FlagValues::FAUL_2ND ) {
+                    outStr  <<  "F";
                 } else {
                     outStr  <<  fs.got2nd;
+                    if ( fs.flags & FlagValues::SPLIT_2ND ) {
+                        outStr  <<  "s";
+                    }
                 }
                 outStr  <<  ", |"
                         <<  rm1.str()
