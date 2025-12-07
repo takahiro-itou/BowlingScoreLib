@@ -450,6 +450,11 @@ DocumentFile::saveToTextStream(
         }
         }
 
+        if ( fs3.flags & FlagValues::GUTTER_1ST ) {
+            rm3 <<  "G,";
+        } else if ( fs3.flags & FlagValues::FAUL_1ST ) {
+            rm1 <<  "F,";
+        } else {
         if ( fs3.rem1st != 0 ) {
             for ( int k = 1; k <= 10; ++ k ) {
                 if ( (fs3.rem1st >> k) & 1 ) {
@@ -458,6 +463,7 @@ DocumentFile::saveToTextStream(
             }
         } else {
             rm3 <<  "*";
+        }
         }
 
         outStr  <<  bf1.str()
