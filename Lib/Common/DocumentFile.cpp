@@ -23,7 +23,7 @@
 #include    "BowlingScore/Common/ScoreDocument.h"
 #include    "BowlingScore/Common/TextParser.h"
 
-#include    <iostream>
+
 #include    <iterator>
 #include    <fstream>
 #include    <sstream>
@@ -118,8 +118,8 @@ DocumentFile::readFromTextStream(
         std::istream       &inStr,
         ScoreDocument  *    ptrDoc)
 {
-    //std::stringstream   ssLogs;
-    std::ostream  & ssLogs  = std::cerr;
+    std::stringstream   ssLogs;
+    //  std::ostream  & ssLogs  = std::cerr;
 
     int         lineNo  = 0;
     PlayerIndex numPlayers  = 0;
@@ -154,15 +154,12 @@ DocumentFile::readFromTextStream(
 #endif
 
         if ( ! strcmp(vTokens[0], "date") ) {
-            std::cerr   <<  "DATE:"  <<  vTokens[1];
             ptrDoc->setGameDate(vTokens[1]);
         }
         if ( ! strcmp(vTokens[0], "title") ) {
-            std::cerr   <<  "TITLE:"  <<  vTokens[1];
             ptrDoc->setGameTitle(vTokens[1]);
         }
         if ( ! strcmp(vTokens[0], "players") ) {
-            std::cerr   <<  "PLAYERS"  <<  vTokens[1];
             numPlayers  = atoi(vTokens[1]);
             ptrDoc->setNumPlayers(numPlayers);
         }
@@ -170,8 +167,6 @@ DocumentFile::readFromTextStream(
             std::stringstream   ss;
             ss  <<  "player"    <<  i;
             if ( ss.str() == vTokens[0] ) {
-                std::cerr   <<  "PLAYER" <<  i  << ":"
-                            <<  vTokens[1];
                 ptrDoc->setPlayerName(i, vTokens[1]);
             }
         }
@@ -225,8 +220,6 @@ DocumentFile::readFromTextStream(
         } else {
             fs1.check   = atoi(vTokens[4]);
         }
-        std::cerr   <<  fs1.got1st  << "," << fs1.got2nd
-                    <<  ", check="  <<  fs1.check  <<  std::endl;
 
         //  一投目の残りピン。  //
         if ( fs1.got1st == 0 ) {
@@ -585,54 +578,6 @@ DocumentFile::saveToTextStream(
 //
 //    For Internal Use Only.
 //
-
-//----------------------------------------------------------------
-//    文字列を指定した文字で分割する。
-//
-
-ErrCode
-DocumentFile::splitText(
-        const  std::string  &inText,
-        const  char  *      sepChrs,
-        TextBuffer          &bufText,
-        TokenArray          &vTokens)
-{
-    const   size_t  szText  = inText.size();
-    bufText.clear();
-    bufText.resize(szText + 1);
-    char  *  const  ptrBuf  = &(bufText[0]);
-
-    ::memcpy(ptrBuf, inText.c_str(), szText);
-    ptrBuf[szText]  = '\0';
-
-    char *  pSaved  = nullptr;
-    char *  pToken  = nullptr;
-
-#if defined( _WIN32 )
-    pToken  = strtok_s(ptrBuf, sepChrs, &pSaved);
-#else
-    pToken  = strtok_r(ptrBuf, sepChrs, &pSaved);
-#endif
-
-    while ( pToken != nullptr ) {
-        //  末尾にある空白は捨てる。    //
-        char *  pp  = pToken + strlen(pToken) - 1;
-        while ( *pp == ' ' ) {
-            (* pp)  = '\0';
-            -- pp;
-        }
-
-        vTokens.push_back(pToken);
-#if defined( _WIN32 )
-        pToken  = strtok_s(nullptr, sepChrs, &pSaved);
-#else
-        pToken  = strtok_r(nullptr, sepChrs, &pSaved);
-#endif
-    }
-
-    return ( ErrCode::SUCCESS );
-}
-
 
 }   //  End of namespace  Common
 BOWLINGSCORE_NAMESPACE_END
