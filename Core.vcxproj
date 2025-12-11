@@ -57,8 +57,8 @@
   <PropertyGroup Label="UserMacros">
   </PropertyGroup>
 
-  <Import Project="..\..\Props\OutputLibs.props" />
-  <Import Project="..\..\Props\OutputCommon.props" />
+  <Import Project="..\Props\OutputLibs.props" />
+  <Import Project="..\Props\OutputCommon.props" />
 
   <!--
     Import in Directory.Build.props
@@ -77,16 +77,16 @@
   </ItemDefinitionGroup>
 
   <ItemGroup>
-    <ClCompile Include="..\..\Core\Lib\Common\DocumentFile.cpp" />
-    <ClCompile Include="..\..\Core\Lib\Common\ScoreDocument.cpp" />
-    <ClCompile Include="..\..\Core\Lib\Common\TextParser.cpp" />
+    <ClCompile Include="..\Core\Lib\Common\DocumentFile.cpp" />
+    <ClCompile Include="..\Core\Lib\Common\ScoreDocument.cpp" />
+    <ClCompile Include="..\Core\Lib\Common\TextParser.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Core\Include\BowlingScore\Common\BowlingProject.h" />
-    <ClInclude Include="..\..\Core\Include\BowlingScore\Common\BowlingTypes.h" />
-    <ClInclude Include="..\..\Core\Include\BowlingScore\Common\DocumentFile.h" />
-    <ClInclude Include="..\..\Core\Include\BowlingScore\Common\ScoreDocument.h" />
-    <ClInclude Include="..\..\Core\Include\BowlingScore\Common\TextParser.h" />
+    <ClInclude Include="..\Core\Include\BowlingScore\Common\BowlingProject.h" />
+    <ClInclude Include="..\Core\Include\BowlingScore\Common\BowlingTypes.h" />
+    <ClInclude Include="..\Core\Include\BowlingScore\Common\DocumentFile.h" />
+    <ClInclude Include="..\Core\Include\BowlingScore\Common\ScoreDocument.h" />
+    <ClInclude Include="..\Core\Include\BowlingScore\Common\TextParser.h" />
   </ItemGroup>
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
