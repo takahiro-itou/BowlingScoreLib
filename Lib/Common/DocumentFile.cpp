@@ -599,6 +599,16 @@ DocumentFile::writeRemainPins(
         const   RemainPins  rPins,
         std::ostream      & outStr)
 {
+    if ( rPins != 0 ) {
+        for ( int k = 1; k <= 10; ++ k ) {
+            if ( (rPins >> k) & 1 ) {
+                outStr  <<  k  <<  ",";
+            }
+        }
+    } else {
+        outStr  <<  "*";
+    }
+
     return ( outStr );
 }
 
