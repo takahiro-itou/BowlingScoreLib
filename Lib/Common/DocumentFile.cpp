@@ -332,11 +332,7 @@ DocumentFile::saveToTextStream(
                 } else if ( fs.flags & FlagValues::FAUL_1ST ) {
                     rm1 <<  "F,";
                 } else {
-                for ( int k = 1; k <= 10; ++ k ) {
-                    if ( (fs.rem1st >> k) & 1 ) {
-                        rm1 << k << ",";
-                    }
-                }
+                    writeRemainPins(fs.rem1st, rm1);
                 }
 
                 if ( fs.flags & FlagValues::GUTTER_2ND ) {
@@ -344,11 +340,7 @@ DocumentFile::saveToTextStream(
                 } else if ( fs.flags & FlagValues::FAUL_2ND ) {
                     rm2 <<  "F,";
                 } else {
-                for ( int k = 1; k <= 10; ++ k ) {
-                    if ( (fs.rem2nd >> k) & 1 ) {
-                        rm2 << k << ",";
-                    }
-                }
+                    writeRemainPins(fs.rem2nd, rm2);
                 }
 
                 if ( fs.flags & FlagValues::GUTTER_1ST ) {
