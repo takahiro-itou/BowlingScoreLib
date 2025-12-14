@@ -555,6 +555,20 @@ const   RemainPins
 DocumentFile::parseRemainPins(
         const  char  *  text)
 {
+    TextParser::TextBuffer  buf2;
+    TextParser::TokenArray  vSub;
+
+    vSub.clear();
+    TextParser::splitText(text, ",", buf2, vSub, " \t");
+
+    RemainPins  rp  = 0;
+    for ( size_t i = 0; i < vSub.size(); ++ i ) {
+        int k = atoi(vSub[i]);
+        if ( k != 0 ) {
+            rp  |= (1 << k);
+        }
+    }
+
     return ( 0 );
 }
 
