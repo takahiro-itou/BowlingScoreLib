@@ -590,5 +590,17 @@ DocumentFile::parseRemainPins(
     return ( 0 );
 }
 
+//----------------------------------------------------------------
+//    残りピンの情報を出力する。
+//
+
+std::ostream  &
+DocumentFile::writeRemainPins(
+        const   RemainPins  rPins,
+        std::ostream      & outStr)
+{
+    return ( outStr );
+}
+
 }   //  End of namespace  Common
 BOWLINGSCORE_NAMESPACE_END

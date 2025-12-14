@@ -200,6 +200,18 @@ private:
     parseRemainPins(
             const  char  *  text);
 
+    //----------------------------------------------------------------
+    /**   残りピンの情報を出力する。
+    **
+    **  @param [in] rPins     残りぴんの情報。[24~
+    **  @param[out] outStr    出力ストリーム。
+    **  @return     出力ストリームの参照を返す。
+    **/
+    static  std::ostream  &
+    writeRemainPins(
+            const   RemainPins  rPins,
+            std::ostream      & outStr);
+
 //========================================================================
 //
 //    Member Variables.
