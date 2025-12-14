@@ -238,15 +238,7 @@ DocumentFile::readFromTextStream(
                 }
             }
         } else {
-        vSub.clear();
-        TextParser::splitText(vTokens[2], ",", buf2, vSub, " \t");
-        fs1.rem1st  = 0;
-        for ( size_t i = 0; i < vSub.size(); ++ i ) {
-            int k = atoi(vSub[i]);
-            if ( k != 0 ) {
-                fs1.rem1st  |= (1 << k);
-            }
-        }
+            fs1.rem1st  = parseRemainPins(vTokens[2]);
         }
 
         //  二投目の残りピン。  //
@@ -259,15 +251,7 @@ DocumentFile::readFromTextStream(
                 fs1.rem2nd  = 0x07FE;
             }
         } else {
-        vSub.clear();
-        TextParser::splitText(vTokens[3], ",", buf2, vSub, " \t");
-        fs1.rem2nd  = 0;
-        for ( size_t i = 0; i < vSub.size(); ++ i ) {
-            int k = atoi(vSub[i]);
-            if ( k != 0 ) {
-                fs1.rem2nd  |= (1 << k);
-            }
-        }
+            fs1.rem2nd  = parseRemainPins(vTokens[3]);
         }
 
         ptrDoc->setFrameScore(pi, fj - 1, fs1);
