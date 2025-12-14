@@ -579,5 +579,16 @@ DocumentFile::saveToTextStream(
 //    For Internal Use Only.
 //
 
+//----------------------------------------------------------------
+//    残りピンの情報を解析する。
+//
+
+const   RemainPins
+DocumentFile::parseRemainPins(
+        const  char  *  text)
+{
+    return ( 0 );
+}
+
 }   //  End of namespace  Common
 BOWLINGSCORE_NAMESPACE_END
