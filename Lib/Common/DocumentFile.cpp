@@ -191,7 +191,7 @@ DocumentFile::readFromTextStream(
         TextParser::splitText(vTokens[1], ",", buf2, vSub, " \t");
 
         if ( ! strcmp(vSub[0], "str") || ! strcmp(vSub[0], "sp") ) {
-            fs1.got1st  = 10;
+            fs1.got1st  = NUM_PINS_PER_FRAME;
         } else {
             fs1.got1st  = atoi(vSub[0]);
         }
@@ -201,7 +201,7 @@ DocumentFile::readFromTextStream(
             //  一投目でストライクを出した場合は、          //
             //  二投目のデータが必要ないので読み飛ばす。    //
         } if ( ! strcmp(vSub[1], "str") || ! strcmp(vSub[1], "sp") ) {
-            fs1.got2nd  = 10;
+            fs1.got2nd  = NUM_PINS_PER_FRAME;
         } else {
             fs1.got2nd  = atoi(vSub[1]);
         }
@@ -224,13 +224,13 @@ DocumentFile::readFromTextStream(
         //  一投目の残りピン。  //
         if ( fs1.got1st == 0 ) {
             //  スコアがゼロ、つまりピンが全部残っている。  //
-            fs1.rem1st  = 0x07FE;
+            fs1.rem1st  = REMAIN_ALL_PINS;
             if ( fj == 11 ) {
                 //  最終フレームの例外処理。        //
                 const  FrameScore  &fs2 = ptrDoc->getFrameScore(pi, 9);
                 fs1.rem1st  =  fs2.rem2nd;
                 if ( fs1.rem1st == 0 ) {
-                    fs1.rem1st  = 0x07FE;
+                    fs1.rem1st  = REMAIN_ALL_PINS;
                 }
                 if ( fs2.got1st + fs2.got2nd < NUM_PINS_PER_FRAME ) {
                     //  スペアミスの場合、三投目はない。    //
@@ -238,36 +238,20 @@ DocumentFile::readFromTextStream(
                 }
             }
         } else {
-        vSub.clear();
-        TextParser::splitText(vTokens[2], ",", buf2, vSub, " \t");
-        fs1.rem1st  = 0;
-        for ( size_t i = 0; i < vSub.size(); ++ i ) {
-            int k = atoi(vSub[i]);
-            if ( k != 0 ) {
-                fs1.rem1st  |= (1 << k);
-            }
-        }
+            fs1.rem1st  = parseRemainPins(vTokens[2]);
         }
 
         //  二投目の残りピン。  //
         if ( fs1.got2nd == 0 ) {
             //  スコアがゼロ、つまり一投目の残ピンと同じ。  //
             fs1.rem2nd  = fs1.rem1st;
-            if ( fj == 10 && fs1.got1st >= 10 ) {
+            if ( fj == NUM_FRAMES && fs1.got1st >= NUM_PINS_PER_FRAME ) {
                 //  最終フレームの例外処理。        //
                 //  一投目ストライク、二投目ゼロ。  //
-                fs1.rem2nd  = 0x07FE;
+                fs1.rem2nd  = REMAIN_ALL_PINS;
             }
         } else {
-        vSub.clear();
-        TextParser::splitText(vTokens[3], ",", buf2, vSub, " \t");
-        fs1.rem2nd  = 0;
-        for ( size_t i = 0; i < vSub.size(); ++ i ) {
-            int k = atoi(vSub[i]);
-            if ( k != 0 ) {
-                fs1.rem2nd  |= (1 << k);
-            }
-        }
+            fs1.rem2nd  = parseRemainPins(vTokens[3]);
         }
 
         ptrDoc->setFrameScore(pi, fj - 1, fs1);
@@ -318,10 +302,10 @@ DocumentFile::saveToTextStream(
 
     outStr  <<  "\n\n# score\n\n";
     for ( PlayerIndex i = 0; i < objDoc.getNumPlayers(); ++ i ) {
-        for ( FrameNumber j = 0; j < 9; ++ j ) {
+        for ( FrameNumber j = 0; j < (NUM_FRAMES - 1); ++ j ) {
             outStr  <<  i  <<  ","  <<  (j + 1)  << ", |";
             const   FrameScore  &fs = objDoc.getFrameScore(i, j);
-            if ( fs.got1st >= 10 ) {
+            if ( fs.got1st >= NUM_PINS_PER_FRAME ) {
                 outStr  <<  "str,, |* |* |";
             } else {
                 std::stringstream   rm1;
@@ -332,11 +316,7 @@ DocumentFile::saveToTextStream(
                 } else if ( fs.flags & FlagValues::FAUL_1ST ) {
                     rm1 <<  "F,";
                 } else {
-                for ( int k = 1; k <= 10; ++ k ) {
-                    if ( (fs.rem1st >> k) & 1 ) {
-                        rm1 << k << ",";
-                    }
-                }
+                    writeRemainPins(fs.rem1st, rm1);
                 }
 
                 if ( fs.flags & FlagValues::GUTTER_2ND ) {
@@ -344,11 +324,7 @@ DocumentFile::saveToTextStream(
                 } else if ( fs.flags & FlagValues::FAUL_2ND ) {
                     rm2 <<  "F,";
                 } else {
-                for ( int k = 1; k <= 10; ++ k ) {
-                    if ( (fs.rem2nd >> k) & 1 ) {
-                        rm2 << k << ",";
-                    }
-                }
+                    writeRemainPins(fs.rem2nd, rm2);
                 }
 
                 if ( fs.flags & FlagValues::GUTTER_1ST ) {
@@ -363,7 +339,7 @@ DocumentFile::saveToTextStream(
                 }
                 outStr  <<  ",";
 
-                if ( fs.got1st + fs.got2nd >= 10 ) {
+                if ( fs.got1st + fs.got2nd >= NUM_PINS_PER_FRAME ) {
                     outStr  <<  "sp";
                     rm2.clear();
                     rm2.str("*");
@@ -388,22 +364,22 @@ DocumentFile::saveToTextStream(
             outStr  <<  fs.score    <<  "\n";
         }
 
-        outStr  <<  i  <<  ","  <<  10  << ", |";
+        outStr  <<  i  <<  ","  <<  NUM_FRAMES  << ", |";
 
         std::stringstream   bf1;
         std::stringstream   bf2;
         std::stringstream   bf3;
 
-        const  FrameScore  &fs1 = objDoc.getFrameScore(i,  9);
-        const  FrameScore  &fs3 = objDoc.getFrameScore(i, 10);
+        const  FrameScore  &fs1 = objDoc.getFrameScore(i, NUM_FRAMES - 1);
+        const  FrameScore  &fs3 = objDoc.getFrameScore(i, NUM_FRAMES    );
 
-        if ( fs1.got1st >= 10 ) {
+        if ( fs1.got1st >= NUM_PINS_PER_FRAME ) {
             //  ストライク
             bf1 <<  "str";
-            if ( fs1.got2nd >= 10 ) {
+            if ( fs1.got2nd >= NUM_PINS_PER_FRAME ) {
                 //  ダブル
                 bf2 <<  "str";
-                if ( fs3.got1st >= 10 ) {
+                if ( fs3.got1st >= NUM_PINS_PER_FRAME ) {
                     //  ターキー
                     bf3 <<  "str";
                 } else  {
@@ -434,7 +410,7 @@ DocumentFile::saveToTextStream(
                     }
                 }
 
-                if ( fs1.got2nd + fs3.got1st >= 10 ) {
+                if ( fs1.got2nd + fs3.got1st >= NUM_PINS_PER_FRAME ) {
                     bf3 <<  "sp";
                 } else {
                     if ( fs3.flags & FlagValues::MISS_1ST ) {
@@ -466,9 +442,9 @@ DocumentFile::saveToTextStream(
                 }
             }
 
-            if ( fs1.got1st + fs1.got2nd >= 10 ) {
+            if ( fs1.got1st + fs1.got2nd >= NUM_PINS_PER_FRAME ) {
                 bf2 <<  "sp";
-                if ( fs3.got1st >= 10 ) {
+                if ( fs3.got1st >= NUM_PINS_PER_FRAME ) {
                     bf3 <<  "str";
                 } else {
                     bf3 <<  fs3.got1st;
@@ -500,15 +476,7 @@ DocumentFile::saveToTextStream(
         } else if ( fs1.flags & FlagValues::FAUL_1ST ) {
             rm1 <<  "F,";
         } else {
-        if ( fs1.rem1st != 0 ) {
-            for ( int k = 1; k <= 10; ++ k ) {
-                if ( (fs1.rem1st >> k) & 1 ) {
-                    rm1 << k << ",";
-                }
-            }
-        } else {
-            rm1 <<  "*";
-        }
+            writeRemainPins(fs1.rem1st, rm1);
         }
 
         if ( fs1.flags & FlagValues::GUTTER_2ND ) {
@@ -516,15 +484,7 @@ DocumentFile::saveToTextStream(
         } else if ( fs1.flags & FlagValues::FAUL_2ND ) {
             rm2 <<  "F,";
         } else {
-        if ( fs1.rem2nd != 0 ) {
-            for ( int k = 1; k <= 10; ++ k ) {
-                if ( (fs1.rem2nd >> k) & 1 ) {
-                    rm2 << k << ",";
-                }
-            }
-        } else {
-            rm2 <<  "*";
-        }
+            writeRemainPins(fs1.rem2nd, rm2);
         }
 
         if ( fs3.flags & FlagValues::GUTTER_1ST ) {
@@ -532,15 +492,7 @@ DocumentFile::saveToTextStream(
         } else if ( fs3.flags & FlagValues::FAUL_1ST ) {
             rm1 <<  "F,";
         } else {
-        if ( fs3.rem1st != 0 ) {
-            for ( int k = 1; k <= 10; ++ k ) {
-                if ( (fs3.rem1st >> k) & 1 ) {
-                    rm3 << k << ",";
-                }
-            }
-        } else {
-            rm3 <<  "*";
-        }
+            writeRemainPins(fs3.rem1st, rm3);
         }
 
         outStr  <<  bf1.str()
@@ -553,7 +505,7 @@ DocumentFile::saveToTextStream(
                 <<  " |"
                 <<  fs1.score
                 <<  "\n";
-        outStr  <<  i  <<  ","  <<  11  << ", |"
+        outStr  <<  i  <<  ","  <<  FRAME_ARRAY_SIZE  << ", |"
                 <<  bf3.str()
                 <<  ",, |"
                 <<  rm3.str()
@@ -578,6 +530,53 @@ DocumentFile::saveToTextStream(
 //
 //    For Internal Use Only.
 //
+
+//----------------------------------------------------------------
+//    残りピンの情報を解析する。
+//
+
+const   RemainPins
+DocumentFile::parseRemainPins(
+        const  char  *  text)
+{
+    TextParser::TextBuffer  buf2;
+    TextParser::TokenArray  vSub;
+
+    vSub.clear();
+    TextParser::splitText(text, ",", buf2, vSub, " \t");
+
+    RemainPins  rp  = 0;
+    for ( size_t i = 0; i < vSub.size(); ++ i ) {
+        int k = atoi(vSub[i]);
+        if ( k != 0 ) {
+            rp  |= (1 << k);
+        }
+    }
+
+    return ( rp );
+}
+
+//----------------------------------------------------------------
+//    残りピンの情報を出力する。
+//
+
+std::ostream  &
+DocumentFile::writeRemainPins(
+        const   RemainPins  rPins,
+        std::ostream      & outStr)
+{
+    if ( rPins != 0 ) {
+        for ( int k = 1; k <= 10; ++ k ) {
+            if ( (rPins >> k) & 1 ) {
+                outStr  <<  k  <<  ",";
+            }
+        }
+    } else {
+        outStr  <<  "*";
+    }
+
+    return ( outStr );
+}
 
 }   //  End of namespace  Common
 BOWLINGSCORE_NAMESPACE_END

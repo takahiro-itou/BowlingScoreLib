@@ -111,6 +111,9 @@ typedef     int         NumPins;
 
 typedef     int         RemainPins;
 
+/**   全てのピンが残っている状態。  **/
+CONSTEXPR_VAR
+RemainPins  REMAIN_ALL_PINS = 0x07FE;
 
 //----------------------------------------------------------------
 /**
