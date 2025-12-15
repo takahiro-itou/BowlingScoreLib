@@ -248,7 +248,7 @@ DocumentFile::readFromTextStream(
             if ( fj == 10 && fs1.got1st >= 10 ) {
                 //  最終フレームの例外処理。        //
                 //  一投目ストライク、二投目ゼロ。  //
-                fs1.rem2nd  = 0x07FE;
+                fs1.rem2nd  = REMAIN_ALL_PINS;
             }
         } else {
             fs1.rem2nd  = parseRemainPins(vTokens[3]);
