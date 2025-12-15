@@ -442,9 +442,9 @@ DocumentFile::saveToTextStream(
                 }
             }
 
-            if ( fs1.got1st + fs1.got2nd >= 10 ) {
+            if ( fs1.got1st + fs1.got2nd >= NUM_PINS_PER_FRAME ) {
                 bf2 <<  "sp";
-                if ( fs3.got1st >= 10 ) {
+                if ( fs3.got1st >= NUM_PINS_PER_FRAME ) {
                     bf3 <<  "str";
                 } else {
                     bf3 <<  fs3.got1st;
