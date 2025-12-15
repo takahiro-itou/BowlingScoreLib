@@ -191,7 +191,7 @@ DocumentFile::readFromTextStream(
         TextParser::splitText(vTokens[1], ",", buf2, vSub, " \t");
 
         if ( ! strcmp(vSub[0], "str") || ! strcmp(vSub[0], "sp") ) {
-            fs1.got1st  = 10;
+            fs1.got1st  = NUM_PINS_PER_FRAME;
         } else {
             fs1.got1st  = atoi(vSub[0]);
         }
@@ -201,7 +201,7 @@ DocumentFile::readFromTextStream(
             //  一投目でストライクを出した場合は、          //
             //  二投目のデータが必要ないので読み飛ばす。    //
         } if ( ! strcmp(vSub[1], "str") || ! strcmp(vSub[1], "sp") ) {
-            fs1.got2nd  = 10;
+            fs1.got2nd  = NUM_PINS_PER_FRAME;
         } else {
             fs1.got2nd  = atoi(vSub[1]);
         }
@@ -245,7 +245,7 @@ DocumentFile::readFromTextStream(
         if ( fs1.got2nd == 0 ) {
             //  スコアがゼロ、つまり一投目の残ピンと同じ。  //
             fs1.rem2nd  = fs1.rem1st;
-            if ( fj == 10 && fs1.got1st >= 10 ) {
+            if ( fj == NUM_FRAMES && fs1.got1st >= NUM_PINS_PER_FRAME ) {
                 //  最終フレームの例外処理。        //
                 //  一投目ストライク、二投目ゼロ。  //
                 fs1.rem2nd  = REMAIN_ALL_PINS;
@@ -364,7 +364,7 @@ DocumentFile::saveToTextStream(
             outStr  <<  fs.score    <<  "\n";
         }
 
-        outStr  <<  i  <<  ","  <<  10  << ", |";
+        outStr  <<  i  <<  ","  <<  NUM_FRAMES  << ", |";
 
         std::stringstream   bf1;
         std::stringstream   bf2;
@@ -505,7 +505,7 @@ DocumentFile::saveToTextStream(
                 <<  " |"
                 <<  fs1.score
                 <<  "\n";
-        outStr  <<  i  <<  ","  <<  11  << ", |"
+        outStr  <<  i  <<  ","  <<  FRAME_ARRAY_SIZE  << ", |"
                 <<  bf3.str()
                 <<  ",, |"
                 <<  rm3.str()
