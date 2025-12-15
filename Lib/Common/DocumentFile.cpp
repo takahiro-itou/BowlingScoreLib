@@ -373,13 +373,13 @@ DocumentFile::saveToTextStream(
         const  FrameScore  &fs1 = objDoc.getFrameScore(i, NUM_FRAMES - 1);
         const  FrameScore  &fs3 = objDoc.getFrameScore(i, NUM_FRAMES    );
 
-        if ( fs1.got1st >= 10 ) {
+        if ( fs1.got1st >= NUM_PINS_PER_FRAME ) {
             //  ストライク
             bf1 <<  "str";
-            if ( fs1.got2nd >= 10 ) {
+            if ( fs1.got2nd >= NUM_PINS_PER_FRAME ) {
                 //  ダブル
                 bf2 <<  "str";
-                if ( fs3.got1st >= 10 ) {
+                if ( fs3.got1st >= NUM_PINS_PER_FRAME ) {
                     //  ターキー
                     bf3 <<  "str";
                 } else  {
@@ -410,7 +410,7 @@ DocumentFile::saveToTextStream(
                     }
                 }
 
-                if ( fs1.got2nd + fs3.got1st >= 10 ) {
+                if ( fs1.got2nd + fs3.got1st >= NUM_PINS_PER_FRAME ) {
                     bf3 <<  "sp";
                 } else {
                     if ( fs3.flags & FlagValues::MISS_1ST ) {
