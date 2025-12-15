@@ -224,13 +224,13 @@ DocumentFile::readFromTextStream(
         //  一投目の残りピン。  //
         if ( fs1.got1st == 0 ) {
             //  スコアがゼロ、つまりピンが全部残っている。  //
-            fs1.rem1st  = 0x07FE;
+            fs1.rem1st  = REMAIN_ALL_PINS;
             if ( fj == 11 ) {
                 //  最終フレームの例外処理。        //
                 const  FrameScore  &fs2 = ptrDoc->getFrameScore(pi, 9);
                 fs1.rem1st  =  fs2.rem2nd;
                 if ( fs1.rem1st == 0 ) {
-                    fs1.rem1st  = 0x07FE;
+                    fs1.rem1st  = REMAIN_ALL_PINS;
                 }
                 if ( fs2.got1st + fs2.got2nd < NUM_PINS_PER_FRAME ) {
                     //  スペアミスの場合、三投目はない。    //
