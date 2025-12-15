@@ -302,10 +302,10 @@ DocumentFile::saveToTextStream(
 
     outStr  <<  "\n\n# score\n\n";
     for ( PlayerIndex i = 0; i < objDoc.getNumPlayers(); ++ i ) {
-        for ( FrameNumber j = 0; j < 9; ++ j ) {
+        for ( FrameNumber j = 0; j < (NUM_FRAMES - 1); ++ j ) {
             outStr  <<  i  <<  ","  <<  (j + 1)  << ", |";
             const   FrameScore  &fs = objDoc.getFrameScore(i, j);
-            if ( fs.got1st >= 10 ) {
+            if ( fs.got1st >= NUM_PINS_PER_FRAME ) {
                 outStr  <<  "str,, |* |* |";
             } else {
                 std::stringstream   rm1;
@@ -339,7 +339,7 @@ DocumentFile::saveToTextStream(
                 }
                 outStr  <<  ",";
 
-                if ( fs.got1st + fs.got2nd >= 10 ) {
+                if ( fs.got1st + fs.got2nd >= NUM_PINS_PER_FRAME ) {
                     outStr  <<  "sp";
                     rm2.clear();
                     rm2.str("*");
