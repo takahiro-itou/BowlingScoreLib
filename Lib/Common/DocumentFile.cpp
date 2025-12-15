@@ -370,8 +370,8 @@ DocumentFile::saveToTextStream(
         std::stringstream   bf2;
         std::stringstream   bf3;
 
-        const  FrameScore  &fs1 = objDoc.getFrameScore(i,  9);
-        const  FrameScore  &fs3 = objDoc.getFrameScore(i, 10);
+        const  FrameScore  &fs1 = objDoc.getFrameScore(i, NUM_FRAMES - 1);
+        const  FrameScore  &fs3 = objDoc.getFrameScore(i, NUM_FRAMES    );
 
         if ( fs1.got1st >= 10 ) {
             //  ストライク
