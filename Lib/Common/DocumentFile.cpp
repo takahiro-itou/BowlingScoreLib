@@ -185,7 +185,8 @@ DocumentFile::readFromTextStream(
         ssLogs  <<  "pi = " << pi << ", fj = " << fj  <<  ", ";
 
         FrameScore  fs1;
-        fs1.flags   = 0;
+        fs1.flg1st  = 0;
+        fs1.flg2nd  = 0;
 
         vSub.clear();
         TextParser::splitText(vTokens[1], ",", buf2, vSub, " \t");
