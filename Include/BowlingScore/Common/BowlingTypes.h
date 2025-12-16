@@ -215,6 +215,9 @@ struct  FrameScore
     NumPins     score;      /**<  このフレームの点数。      **/
     NumPins     check;      /**<  点数のチェック用に記録された値。  **/
 
+    FrameFlags  flg1st;     /**<  一投目に関するフラグ。    **/
+    FrameFlags  flg2nd;     /**<  二投目に関するフラグ。    **/
+
     FrameFlags  flags;      /**<  その他のフラグ。          **/
 };
 
