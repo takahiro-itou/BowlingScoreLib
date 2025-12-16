@@ -344,15 +344,15 @@ DocumentFile::saveToTextStream(
                     outStr  <<  "sp";
                     rm2.clear();
                     rm2.str("*");
-                } else if ( fs.flags & FlagValues::MISS_2ND ) {
+                } else if ( fs.flg2nd & FlagValues::MISS ) {
                     outStr  <<  "-";
-                } else if ( fs.flags & FlagValues::GUTTER_2ND ) {
+                } else if ( fs.flg2nd & FlagValues::GUTTER ) {
                     outStr  <<  "G";
-                } else if ( fs.flags & FlagValues::FAUL_2ND ) {
+                } else if ( fs.flg2nd & FlagValues::FAUL ) {
                     outStr  <<  "F";
                 } else {
                     outStr  <<  fs.got2nd;
-                    if ( fs.flags & FlagValues::SPLIT_2ND ) {
+                    if ( fs.flg2nd & FlagValues::SPLIT ) {
                         outStr  <<  "s";
                     }
                 }
@@ -384,29 +384,29 @@ DocumentFile::saveToTextStream(
                     //  ターキー
                     bf3 <<  "str";
                 } else  {
-                    if ( fs3.flags & FlagValues::MISS_1ST ) {
+                    if ( fs3.flg1st & FlagValues::MISS ) {
                         bf3 <<  "-";
-                    } else if ( fs3.flags & FlagValues::GUTTER_1ST ) {
+                    } else if ( fs3.flg1st & FlagValues::GUTTER ) {
                         bf3 <<  "G";
-                    } else if ( fs3.flags & FlagValues::FAUL_1ST ) {
+                    } else if ( fs3.flg1st & FlagValues::FAUL ) {
                         bf3 <<  "F";
                     } else {
                         bf3 <<  fs3.got1st;
-                        if ( fs3.flags & FlagValues::SPLIT_1ST ) {
+                        if ( fs3.flg1st & FlagValues::SPLIT ) {
                             bf3 <<  "s";
                         }
                     }
                 }
             } else {
-                if ( fs1.flags & FlagValues::MISS_2ND ) {
+                if ( fs1.flg2nd & FlagValues::MISS ) {
                     bf2 <<  "-";
-                } else if ( fs1.flags & FlagValues::GUTTER_2ND ) {
+                } else if ( fs1.flg2nd & FlagValues::GUTTER ) {
                     bf2 <<  "G";
-                } else if ( fs1.flags & FlagValues::FAUL_2ND ) {
+                } else if ( fs1.flg2nd & FlagValues::FAUL ) {
                     bf2 <<  "F";
                 } else {
                     bf2 <<  fs1.got2nd;
-                    if ( fs1.flags & FlagValues::SPLIT_2ND ) {
+                    if ( fs1.flg2nd & FlagValues::SPLIT ) {
                         bf2 <<  "s";
                     }
                 }
