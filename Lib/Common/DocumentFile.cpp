@@ -414,15 +414,15 @@ DocumentFile::saveToTextStream(
                 if ( fs1.got2nd + fs3.got1st >= NUM_PINS_PER_FRAME ) {
                     bf3 <<  "sp";
                 } else {
-                    if ( fs3.flags & FlagValues::MISS_1ST ) {
+                    if ( fs3.flg1st & FlagValues::MISS ) {
                         bf3 <<  "-";
-                    } else if ( fs3.flags & FlagValues::GUTTER_1ST ) {
+                    } else if ( fs3.flg1st & FlagValues::GUTTER ) {
                         bf3 <<  "G";
-                    } else if ( fs3.flags & FlagValues::FAUL_1ST ) {
+                    } else if ( fs3.flg1st & FlagValues::FAUL ) {
                         bf3 <<  "F";
                     } else {
                         bf3 <<  fs3.got1st;
-                        if ( fs3.flags & FlagValues::SPLIT_1ST ) {
+                        if ( fs3.flg1st & FlagValues::SPLIT ) {
                             bf3 <<  "s";
                         }
                     }
@@ -430,15 +430,15 @@ DocumentFile::saveToTextStream(
             }
         } else {
             //  それ以外
-            if ( fs1.flags & FlagValues::MISS_1ST ) {
+            if ( fs1.flg1st & FlagValues::MISS ) {
                 bf1 <<  "-";
-            } else if ( fs1.flags & FlagValues::GUTTER_1ST ) {
+            } else if ( fs1.flg1st & FlagValues::GUTTER ) {
                 bf1 <<  "G";
-            } else if ( fs1.flags & FlagValues::FAUL_1ST ) {
+            } else if ( fs1.flg1st & FlagValues::FAUL ) {
                 bf1 <<  "F";
             } else {
                 bf1 <<  fs1.got1st;
-                if ( fs1.flags & FlagValues::SPLIT_1ST ) {
+                if ( fs1.flg1st & FlagValues::SPLIT ) {
                     bf1 <<  "s";
                 }
             }
@@ -452,15 +452,15 @@ DocumentFile::saveToTextStream(
                 }
             } else {
                 //  スペアミス
-                if ( fs1.flags & FlagValues::MISS_2ND ) {
+                if ( fs1.flg2nd & FlagValues::MISS ) {
                     bf2 <<  "-";
-                } else if ( fs1.flags & FlagValues::GUTTER_2ND ) {
+                } else if ( fs1.flg2nd & FlagValues::GUTTER ) {
                     bf2 <<  "G";
-                } else if ( fs1.flags & FlagValues::FAUL_2ND ) {
+                } else if ( fs1.flg2nd & FlagValues::FAUL ) {
                     bf2 <<  "F";
                 } else {
                     bf2 <<  fs1.got2nd;
-                    if ( fs1.flags & FlagValues::SPLIT_2ND ) {
+                    if ( fs1.flg2nd & FlagValues::SPLIT ) {
                         bf2 <<  "s";
                     }
                 }
