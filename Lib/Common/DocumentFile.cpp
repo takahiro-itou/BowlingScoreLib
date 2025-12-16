@@ -472,25 +472,25 @@ DocumentFile::saveToTextStream(
         std::stringstream   rm2;
         std::stringstream   rm3;
 
-        if ( fs1.flags & FlagValues::GUTTER_1ST ) {
+        if ( fs1.flg1st & FlagValues::GUTTER ) {
             rm1 <<  "G,";
-        } else if ( fs1.flags & FlagValues::FAUL_1ST ) {
+        } else if ( fs1.flg1st & FlagValues::FAUL ) {
             rm1 <<  "F,";
         } else {
             writeRemainPins(fs1.rem1st, rm1);
         }
 
-        if ( fs1.flags & FlagValues::GUTTER_2ND ) {
+        if ( fs1.flg2nd & FlagValues::GUTTER ) {
             rm2 <<  "G,";
-        } else if ( fs1.flags & FlagValues::FAUL_2ND ) {
+        } else if ( fs1.flg2nd & FlagValues::FAUL ) {
             rm2 <<  "F,";
         } else {
             writeRemainPins(fs1.rem2nd, rm2);
         }
 
-        if ( fs3.flags & FlagValues::GUTTER_1ST ) {
+        if ( fs3.flg1st & FlagValues::GUTTER ) {
             rm3 <<  "G,";
-        } else if ( fs3.flags & FlagValues::FAUL_1ST ) {
+        } else if ( fs3.flg1st & FlagValues::FAUL ) {
             rm1 <<  "F,";
         } else {
             writeRemainPins(fs3.rem1st, rm3);
