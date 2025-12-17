@@ -130,7 +130,18 @@ testFrameScores(
     for ( FrameNumber j = 0; j < FRAME_ARRAY_SIZE; ++ j ) {
         const   FrameScore  &fs = objDoc.getFrameScore(player, j);
 
-        //  std::cerr   <<  "test: "  << player  <<  ", " <<  j;
+        if ( (fs.check != fs.score)
+                || (scores[j].got1st != fs.got1st)
+                || (scores[j].got2nd != fs.got2nd)
+                || (scores[j].rem1st != fs.rem1st)
+                || (scores[j].rem2nd != fs.rem2nd)
+                || (scores[j].check  != fs.score )
+                || (scores[j].check  != fs.check )
+                || (scores[j].flg1st != fs.flg1st)
+                || (scores[j].flg2nd != fs.flg2nd) )
+        {
+            std::cerr   << "Fail: " << player << ", " << j;
+        }
         CPPUNIT_ASSERT_EQUAL(fs.check, fs.score);
         CPPUNIT_ASSERT_EQUAL(scores[j].got1st, fs.got1st);
         CPPUNIT_ASSERT_EQUAL(scores[j].got2nd, fs.got2nd);
@@ -140,7 +151,6 @@ testFrameScores(
         CPPUNIT_ASSERT_EQUAL(scores[j].check,  fs.check );
         CPPUNIT_ASSERT_EQUAL(scores[j].flg1st, fs.flg1st);
         CPPUNIT_ASSERT_EQUAL(scores[j].flg2nd, fs.flg2nd);
-        //  std::cerr   <<  "...OK" <<  std::endl;
     }
 
     return;
