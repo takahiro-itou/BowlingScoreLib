@@ -214,7 +214,7 @@ ScoreDocument::normalizeScores(
         if ( fs1.got1st + fs1.got2nd < NUM_PINS_PER_FRAME ) {
             //  二回投げて10未満のときは、  //
             //  三投目を投げられない。      //
-            fs2.flg1st  = FlagValues::NO_SCORE;
+            fs2.flg1st  |= FlagValues::NO_SCORE;
             fs2.got1st  = 0;
         } else if ( fs2.got1st >= rem ) {
             if ( rem == NUM_PINS_PER_FRAME ) {
@@ -224,7 +224,7 @@ ScoreDocument::normalizeScores(
             }
             fs2.got1st  = rem;
         }
-        fs2.flg2nd  = FlagValues::NO_SCORE;
+        fs2.flg2nd  |= FlagValues::NO_SCORE;
     }
 
     return ( ErrCode::SUCCESS );
