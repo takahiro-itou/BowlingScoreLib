@@ -196,6 +196,13 @@ DocumentFile::readFromTextStream(
         } else {
             fs1.got1st  = atoi(vSub[0]);
         }
+        if ( ! strcmp(vSub[0], "-") ) {
+            fs1.flg1st  |= FlagValues::MISS;
+        } else if ( ! strcmp(vSub[0], "G") ) {
+            fs1.flg1st  |= FlagValues::GUTTER;
+        } else if ( ! strcmp(vSub[0], "F") ) {
+            fs1.flg1st  |= FlagValues::FAUL;
+        }
 
         if ( vSub.size() == 1 ) {
             //  第11フレーム（最終10フレームの三投目）か、  //
@@ -205,6 +212,13 @@ DocumentFile::readFromTextStream(
             fs1.got2nd  = NUM_PINS_PER_FRAME;
         } else {
             fs1.got2nd  = atoi(vSub[1]);
+        }
+        if ( ! strcmp(vSub[1], "-") ) {
+            fs1.flg2nd  |= FlagValues::MISS;
+        } else if ( ! strcmp(vSub[1], "G") ) {
+            fs1.flg2nd  |= FlagValues::GUTTER;
+        } else if ( ! strcmp(vSub[1], "F") ) {
+            fs1.flg2nd  |= FlagValues::FAUL;
         }
 
         if ( fj == 11 ) {
@@ -218,6 +232,7 @@ DocumentFile::readFromTextStream(
             if ( fs1.check == 0 ) {
                 fs1.check   = ptrDoc->getFrameScore(pi, 9).check;
             }
+            fs1.flg2nd  = FlagValues::NO_SCORE;
         } else {
             fs1.check   = atoi(vTokens[4]);
         }
