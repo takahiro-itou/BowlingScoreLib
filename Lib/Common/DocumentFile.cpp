@@ -195,6 +195,9 @@ DocumentFile::readFromTextStream(
             fs1.got1st  = NUM_PINS_PER_FRAME;
         } else {
             fs1.got1st  = atoi(vSub[0]);
+            if ( (fs1.got1st >= 1) && (vSub[0][1] == 's') ) {
+                fs1.flg1st  |= FlagValues::SPLIT;
+            }
         }
         if ( ! strcmp(vSub[0], "-") ) {
             fs1.flg1st  |= FlagValues::MISS;
@@ -212,6 +215,9 @@ DocumentFile::readFromTextStream(
             fs1.got2nd  = NUM_PINS_PER_FRAME;
         } else {
             fs1.got2nd  = atoi(vSub[1]);
+            if ( (fs1.got2nd >= 1) && (vSub[1][1] == 's') ) {
+                fs1.flg2nd  |= FlagValues::SPLIT;
+            }
         }
         if ( ! strcmp(vSub[1], "-") ) {
             fs1.flg2nd  |= FlagValues::MISS;
