@@ -262,6 +262,22 @@ DocumentFile::readFromTextStream(
         } else {
             fs1.rem1st  = parseRemainPins(vTokens[2]);
         }
+        {
+            TextParser::TextBuffer  buf3;
+            TextParser::TokenArray  vSub3;
+
+            vSub3.clear();
+            TextParser::splitText(vTokens[2], ",", buf3, vSub3, " \t");
+            for ( size_t i = 0; i < vSub3.size(); ++ i ) {
+                if ( ! strcmp(vSub3[i], "-") ) {
+                    fs1.flg1st  |= FlagValues::MISS;
+                } else if ( ! strcmp(vSub3[i], "G") ) {
+                    fs1.flg1st  |= FlagValues::GUTTER;
+                } else if ( ! strcmp(vSub3[i], "F") ) {
+                    fs1.flg1st  |= FlagValues::FAUL;
+                }
+            }
+        }
 
         //  二投目の残りピン。  //
         if ( fs1.got2nd == 0 ) {
@@ -274,6 +290,22 @@ DocumentFile::readFromTextStream(
             }
         } else {
             fs1.rem2nd  = parseRemainPins(vTokens[3]);
+        }
+        {
+            TextParser::TextBuffer  buf3;
+            TextParser::TokenArray  vSub3;
+
+            vSub3.clear();
+            TextParser::splitText(vTokens[3], ",", buf3, vSub3, " \t");
+            for ( size_t i = 0; i < vSub3.size(); ++ i ) {
+                if ( ! strcmp(vSub3[i], "-") ) {
+                    fs1.flg2nd  |= FlagValues::MISS;
+                } else if ( ! strcmp(vSub3[i], "G") ) {
+                    fs1.flg2nd  |= FlagValues::GUTTER;
+                } else if ( ! strcmp(vSub3[i], "F") ) {
+                    fs1.flg2nd  |= FlagValues::FAUL;
+                }
+            }
         }
 
         ptrDoc->setFrameScore(pi, fj - 1, fs1);
