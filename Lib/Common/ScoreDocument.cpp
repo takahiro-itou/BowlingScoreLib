@@ -176,11 +176,18 @@ ScoreDocument::normalizeScores(
     for ( FrameNumber j = 0; j < NUM_FRAMES - 1; ++ j ) {
         FrameScore &fs1 = ss.frames[j];
         if ( fs1.got1st > NUM_PINS_PER_FRAME ) {
-            fs1.got1st  = NUM_PINS_PER_FRAME;
+            fs1.got1st  =  NUM_PINS_PER_FRAME;
         }
         //  二投目は残っているピンの数より多く倒すことはない。  //
         rem = (NUM_PINS_PER_FRAME - fs1.got1st);
-        if ( fs1.got2nd > rem ) { fs1.got2nd   = rem; }
+        if ( fs1.got2nd >= rem ) {
+            fs1.flg2nd  |= FlagValues::SPARE;
+            fs1.got2nd  =  rem;
+        }
+        if ( fs1.got1st >= NUM_PINS_PER_FRAME ) {
+            fs1.flg1st  = FlagValues::STRIKE;
+            fs1.flg2nd  = FlagValues::NO_SCORE;
+        }
     }
 
     //  最終フレームは例外処理をする。  //
@@ -189,9 +196,15 @@ ScoreDocument::normalizeScores(
         FrameScore &fs2 = ss.frames[NUM_FRAMES    ];
         rem = (NUM_PINS_PER_FRAME - fs1.got1st);
         if ( rem <= 0 ) {
+            fs1.flg1st  |= FlagValues::STRIKE;
             rem = NUM_PINS_PER_FRAME;
         }
-        if ( fs1.got2nd > rem ) {
+        if ( fs1.got2nd >= rem ) {
+            if ( rem == NUM_PINS_PER_FRAME ) {
+                fs1.flg2nd  |= FlagValues::STRIKE;
+            } else {
+                fs1.flg2nd  |= FlagValues::SPARE;
+            }
             fs1.got2nd  = rem;
         }
         rem -= fs1.got2nd;
@@ -201,10 +214,17 @@ ScoreDocument::normalizeScores(
         if ( fs1.got1st + fs1.got2nd < NUM_PINS_PER_FRAME ) {
             //  二回投げて10未満のときは、  //
             //  三投目を投げられない。      //
+            fs2.flg1st  |= FlagValues::NO_SCORE;
             fs2.got1st  = 0;
-        } else if ( fs2.got1st > rem ) {
+        } else if ( fs2.got1st >= rem ) {
+            if ( rem == NUM_PINS_PER_FRAME ) {
+                fs2.flg1st  |= FlagValues::STRIKE;
+            } else {
+                fs2.flg1st  |= FlagValues::SPARE;
+            }
             fs2.got1st  = rem;
         }
+        fs2.flg2nd  |= FlagValues::NO_SCORE;
     }
 
     return ( ErrCode::SUCCESS );

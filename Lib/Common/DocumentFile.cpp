@@ -185,7 +185,8 @@ DocumentFile::readFromTextStream(
         ssLogs  <<  "pi = " << pi << ", fj = " << fj  <<  ", ";
 
         FrameScore  fs1;
-        fs1.flags   = 0;
+        fs1.flg1st  = 0;
+        fs1.flg2nd  = 0;
 
         vSub.clear();
         TextParser::splitText(vTokens[1], ",", buf2, vSub, " \t");
@@ -194,6 +195,16 @@ DocumentFile::readFromTextStream(
             fs1.got1st  = NUM_PINS_PER_FRAME;
         } else {
             fs1.got1st  = atoi(vSub[0]);
+            if ( (fs1.got1st >= 1) && (vSub[0][1] == 's') ) {
+                fs1.flg1st  |= FlagValues::SPLIT;
+            }
+        }
+        if ( ! strcmp(vSub[0], "-") ) {
+            fs1.flg1st  |= FlagValues::MISS;
+        } else if ( ! strcmp(vSub[0], "G") ) {
+            fs1.flg1st  |= FlagValues::GUTTER;
+        } else if ( ! strcmp(vSub[0], "F") ) {
+            fs1.flg1st  |= FlagValues::FAUL;
         }
 
         if ( vSub.size() == 1 ) {
@@ -204,6 +215,16 @@ DocumentFile::readFromTextStream(
             fs1.got2nd  = NUM_PINS_PER_FRAME;
         } else {
             fs1.got2nd  = atoi(vSub[1]);
+            if ( (fs1.got2nd >= 1) && (vSub[1][1] == 's') ) {
+                fs1.flg2nd  |= FlagValues::SPLIT;
+            }
+        }
+        if ( ! strcmp(vSub[1], "-") ) {
+            fs1.flg2nd  |= FlagValues::MISS;
+        } else if ( ! strcmp(vSub[1], "G") ) {
+            fs1.flg2nd  |= FlagValues::GUTTER;
+        } else if ( ! strcmp(vSub[1], "F") ) {
+            fs1.flg2nd  |= FlagValues::FAUL;
         }
 
         if ( fj == 11 ) {
@@ -217,6 +238,7 @@ DocumentFile::readFromTextStream(
             if ( fs1.check == 0 ) {
                 fs1.check   = ptrDoc->getFrameScore(pi, 9).check;
             }
+            fs1.flg2nd  = FlagValues::NO_SCORE;
         } else {
             fs1.check   = atoi(vTokens[4]);
         }
@@ -240,6 +262,22 @@ DocumentFile::readFromTextStream(
         } else {
             fs1.rem1st  = parseRemainPins(vTokens[2]);
         }
+        {
+            TextParser::TextBuffer  buf3;
+            TextParser::TokenArray  vSub3;
+
+            vSub3.clear();
+            TextParser::splitText(vTokens[2], ",", buf3, vSub3, " \t");
+            for ( size_t i = 0; i < vSub3.size(); ++ i ) {
+                if ( ! strcmp(vSub3[i], "-") ) {
+                    fs1.flg1st  |= FlagValues::MISS;
+                } else if ( ! strcmp(vSub3[i], "G") ) {
+                    fs1.flg1st  |= FlagValues::GUTTER;
+                } else if ( ! strcmp(vSub3[i], "F") ) {
+                    fs1.flg1st  |= FlagValues::FAUL;
+                }
+            }
+        }
 
         //  二投目の残りピン。  //
         if ( fs1.got2nd == 0 ) {
@@ -252,6 +290,22 @@ DocumentFile::readFromTextStream(
             }
         } else {
             fs1.rem2nd  = parseRemainPins(vTokens[3]);
+        }
+        {
+            TextParser::TextBuffer  buf3;
+            TextParser::TokenArray  vSub3;
+
+            vSub3.clear();
+            TextParser::splitText(vTokens[3], ",", buf3, vSub3, " \t");
+            for ( size_t i = 0; i < vSub3.size(); ++ i ) {
+                if ( ! strcmp(vSub3[i], "-") ) {
+                    fs1.flg2nd  |= FlagValues::MISS;
+                } else if ( ! strcmp(vSub3[i], "G") ) {
+                    fs1.flg2nd  |= FlagValues::GUTTER;
+                } else if ( ! strcmp(vSub3[i], "F") ) {
+                    fs1.flg2nd  |= FlagValues::FAUL;
+                }
+            }
         }
 
         ptrDoc->setFrameScore(pi, fj - 1, fs1);
@@ -311,29 +365,29 @@ DocumentFile::saveToTextStream(
                 std::stringstream   rm1;
                 std::stringstream   rm2;
 
-                if ( fs.flags & FlagValues::GUTTER_1ST ) {
+                writeRemainPins(fs.rem1st, rm1);
+                if ( fs.flg1st & FlagValues::GUTTER ) {
                     rm1 <<  "G,";
-                } else if ( fs.flags & FlagValues::FAUL_1ST ) {
+                }
+                if ( fs.flg1st & FlagValues::FAUL ) {
                     rm1 <<  "F,";
-                } else {
-                    writeRemainPins(fs.rem1st, rm1);
                 }
 
-                if ( fs.flags & FlagValues::GUTTER_2ND ) {
+                writeRemainPins(fs.rem2nd, rm2);
+                if ( fs.flg2nd & FlagValues::GUTTER ) {
                     rm2 <<  "G,";
-                } else if ( fs.flags & FlagValues::FAUL_2ND ) {
+                }
+                if ( fs.flg2nd & FlagValues::FAUL ) {
                     rm2 <<  "F,";
-                } else {
-                    writeRemainPins(fs.rem2nd, rm2);
                 }
 
-                if ( fs.flags & FlagValues::GUTTER_1ST ) {
+                if ( fs.flg1st & FlagValues::GUTTER ) {
                     outStr  <<  "G";
-                } else if ( fs.flags & FlagValues::FAUL_1ST ) {
+                } else if ( fs.flg1st & FlagValues::FAUL ) {
                     outStr  <<  "F";
                 } else {
                     outStr  <<  fs.got1st;
-                    if ( fs.flags & FlagValues::SPLIT_1ST ) {
+                    if ( fs.flg1st & FlagValues::SPLIT ) {
                         outStr  <<  "s";
                     }
                 }
@@ -343,15 +397,15 @@ DocumentFile::saveToTextStream(
                     outStr  <<  "sp";
                     rm2.clear();
                     rm2.str("*");
-                } else if ( fs.flags & FlagValues::MISS_2ND ) {
+                } else if ( fs.flg2nd & FlagValues::MISS ) {
                     outStr  <<  "-";
-                } else if ( fs.flags & FlagValues::GUTTER_2ND ) {
+                } else if ( fs.flg2nd & FlagValues::GUTTER ) {
                     outStr  <<  "G";
-                } else if ( fs.flags & FlagValues::FAUL_2ND ) {
+                } else if ( fs.flg2nd & FlagValues::FAUL ) {
                     outStr  <<  "F";
                 } else {
                     outStr  <<  fs.got2nd;
-                    if ( fs.flags & FlagValues::SPLIT_2ND ) {
+                    if ( fs.flg2nd & FlagValues::SPLIT ) {
                         outStr  <<  "s";
                     }
                 }
@@ -383,29 +437,29 @@ DocumentFile::saveToTextStream(
                     //  ターキー
                     bf3 <<  "str";
                 } else  {
-                    if ( fs3.flags & FlagValues::MISS_1ST ) {
+                    if ( fs3.flg1st & FlagValues::MISS ) {
                         bf3 <<  "-";
-                    } else if ( fs3.flags & FlagValues::GUTTER_1ST ) {
+                    } else if ( fs3.flg1st & FlagValues::GUTTER ) {
                         bf3 <<  "G";
-                    } else if ( fs3.flags & FlagValues::FAUL_1ST ) {
+                    } else if ( fs3.flg1st & FlagValues::FAUL ) {
                         bf3 <<  "F";
                     } else {
                         bf3 <<  fs3.got1st;
-                        if ( fs3.flags & FlagValues::SPLIT_1ST ) {
+                        if ( fs3.flg1st & FlagValues::SPLIT ) {
                             bf3 <<  "s";
                         }
                     }
                 }
             } else {
-                if ( fs1.flags & FlagValues::MISS_2ND ) {
+                if ( fs1.flg2nd & FlagValues::MISS ) {
                     bf2 <<  "-";
-                } else if ( fs1.flags & FlagValues::GUTTER_2ND ) {
+                } else if ( fs1.flg2nd & FlagValues::GUTTER ) {
                     bf2 <<  "G";
-                } else if ( fs1.flags & FlagValues::FAUL_2ND ) {
+                } else if ( fs1.flg2nd & FlagValues::FAUL ) {
                     bf2 <<  "F";
                 } else {
                     bf2 <<  fs1.got2nd;
-                    if ( fs1.flags & FlagValues::SPLIT_2ND ) {
+                    if ( fs1.flg2nd & FlagValues::SPLIT ) {
                         bf2 <<  "s";
                     }
                 }
@@ -413,15 +467,15 @@ DocumentFile::saveToTextStream(
                 if ( fs1.got2nd + fs3.got1st >= NUM_PINS_PER_FRAME ) {
                     bf3 <<  "sp";
                 } else {
-                    if ( fs3.flags & FlagValues::MISS_1ST ) {
+                    if ( fs3.flg1st & FlagValues::MISS ) {
                         bf3 <<  "-";
-                    } else if ( fs3.flags & FlagValues::GUTTER_1ST ) {
+                    } else if ( fs3.flg1st & FlagValues::GUTTER ) {
                         bf3 <<  "G";
-                    } else if ( fs3.flags & FlagValues::FAUL_1ST ) {
+                    } else if ( fs3.flg1st & FlagValues::FAUL ) {
                         bf3 <<  "F";
                     } else {
                         bf3 <<  fs3.got1st;
-                        if ( fs3.flags & FlagValues::SPLIT_1ST ) {
+                        if ( fs3.flg1st & FlagValues::SPLIT ) {
                             bf3 <<  "s";
                         }
                     }
@@ -429,15 +483,15 @@ DocumentFile::saveToTextStream(
             }
         } else {
             //  それ以外
-            if ( fs1.flags & FlagValues::MISS_1ST ) {
+            if ( fs1.flg1st & FlagValues::MISS ) {
                 bf1 <<  "-";
-            } else if ( fs1.flags & FlagValues::GUTTER_1ST ) {
+            } else if ( fs1.flg1st & FlagValues::GUTTER ) {
                 bf1 <<  "G";
-            } else if ( fs1.flags & FlagValues::FAUL_1ST ) {
+            } else if ( fs1.flg1st & FlagValues::FAUL ) {
                 bf1 <<  "F";
             } else {
                 bf1 <<  fs1.got1st;
-                if ( fs1.flags & FlagValues::SPLIT_1ST ) {
+                if ( fs1.flg1st & FlagValues::SPLIT ) {
                     bf1 <<  "s";
                 }
             }
@@ -451,15 +505,15 @@ DocumentFile::saveToTextStream(
                 }
             } else {
                 //  スペアミス
-                if ( fs1.flags & FlagValues::MISS_2ND ) {
+                if ( fs1.flg2nd & FlagValues::MISS ) {
                     bf2 <<  "-";
-                } else if ( fs1.flags & FlagValues::GUTTER_2ND ) {
+                } else if ( fs1.flg2nd & FlagValues::GUTTER ) {
                     bf2 <<  "G";
-                } else if ( fs1.flags & FlagValues::FAUL_2ND ) {
+                } else if ( fs1.flg2nd & FlagValues::FAUL ) {
                     bf2 <<  "F";
                 } else {
                     bf2 <<  fs1.got2nd;
-                    if ( fs1.flags & FlagValues::SPLIT_2ND ) {
+                    if ( fs1.flg2nd & FlagValues::SPLIT ) {
                         bf2 <<  "s";
                     }
                 }
@@ -471,28 +525,28 @@ DocumentFile::saveToTextStream(
         std::stringstream   rm2;
         std::stringstream   rm3;
 
-        if ( fs1.flags & FlagValues::GUTTER_1ST ) {
+        writeRemainPins(fs1.rem1st, rm1);
+        if ( fs1.flg1st & FlagValues::GUTTER ) {
             rm1 <<  "G,";
-        } else if ( fs1.flags & FlagValues::FAUL_1ST ) {
+        }
+        if ( fs1.flg1st & FlagValues::FAUL ) {
             rm1 <<  "F,";
-        } else {
-            writeRemainPins(fs1.rem1st, rm1);
         }
 
-        if ( fs1.flags & FlagValues::GUTTER_2ND ) {
+        writeRemainPins(fs1.rem2nd, rm2);
+        if ( fs1.flg2nd & FlagValues::GUTTER ) {
             rm2 <<  "G,";
-        } else if ( fs1.flags & FlagValues::FAUL_2ND ) {
+        }
+        if ( fs1.flg2nd & FlagValues::FAUL ) {
             rm2 <<  "F,";
-        } else {
-            writeRemainPins(fs1.rem2nd, rm2);
         }
 
-        if ( fs3.flags & FlagValues::GUTTER_1ST ) {
+        writeRemainPins(fs3.rem1st, rm3);
+        if ( fs3.flg1st & FlagValues::GUTTER ) {
             rm3 <<  "G,";
-        } else if ( fs3.flags & FlagValues::FAUL_1ST ) {
+        }
+        if ( fs3.flg1st & FlagValues::FAUL ) {
             rm1 <<  "F,";
-        } else {
-            writeRemainPins(fs3.rem1st, rm3);
         }
 
         outStr  <<  bf1.str()
