@@ -154,18 +154,20 @@ void  DocumentFileTest::testSaveToTextStream()
     const  std::string  expect(
 #include    "SampleExpect.md"
     );
-    std::cerr   <<  "\nExpect:\n"
-                <<  expect
-                <<  "---  Size = "
-                <<  expect.size()
-                <<  std::endl;
 
     const  std::string  buf = ss.str();
-    std::cerr   <<  "\nOutput Stream:\n"
-                <<  buf
-                <<  "---  Size = "
-                <<  buf.size()
-                <<  std::endl;
+    if ( expect != buf ) {
+        std::cerr   <<  "\nExpect:\n"
+                    <<  expect
+                    <<  "---  Size = "
+                    <<  expect.size()
+                    <<  std::endl;
+        std::cerr   <<  "\nOutput Stream:\n"
+                    <<  buf
+                    <<  "---  Size = "
+                    <<  buf.size()
+                    <<  std::endl;
+    }
 
     std::stringstream   ssAct(buf);
     std::stringstream   ssExp(expect);
