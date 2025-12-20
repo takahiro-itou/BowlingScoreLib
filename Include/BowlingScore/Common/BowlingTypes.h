@@ -225,8 +225,6 @@ struct  FrameScore
 
     FrameFlags  flg1st;     /**<  一投目に関するフラグ。    **/
     FrameFlags  flg2nd;     /**<  二投目に関するフラグ。    **/
-
-    FrameFlags  flags;      /**<  その他のフラグ。          **/
 };
 
 typedef     FrameScore  FrameArray[FRAME_ARRAY_SIZE];
