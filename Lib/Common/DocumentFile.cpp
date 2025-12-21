@@ -244,6 +244,7 @@ DocumentFile::readFromTextStream(
         }
 
         //  一投目の残りピン。  //
+        fs1.rem1st  = parseRemainPins(vTokens[2], fs1.flg1st);
         if ( fs1.got1st == 0 ) {
             //  スコアがゼロ、つまりピンが全部残っている。  //
             fs1.rem1st  = REMAIN_ALL_PINS;
@@ -259,27 +260,10 @@ DocumentFile::readFromTextStream(
                     fs1.rem1st  = 0;
                 }
             }
-        } else {
-            fs1.rem1st  = parseRemainPins(vTokens[2]);
-        }
-        {
-            TextParser::TextBuffer  buf3;
-            TextParser::TokenArray  vSub3;
-
-            vSub3.clear();
-            TextParser::splitText(vTokens[2], ",", buf3, vSub3, " \t");
-            for ( size_t i = 0; i < vSub3.size(); ++ i ) {
-                if ( ! strcmp(vSub3[i], "-") ) {
-                    fs1.flg1st  |= FlagValues::MISS;
-                } else if ( ! strcmp(vSub3[i], "G") ) {
-                    fs1.flg1st  |= FlagValues::GUTTER;
-                } else if ( ! strcmp(vSub3[i], "F") ) {
-                    fs1.flg1st  |= FlagValues::FAUL;
-                }
-            }
         }
 
         //  二投目の残りピン。  //
+        fs1.rem2nd  = parseRemainPins(vTokens[3], fs1.flg2nd);
         if ( fs1.got2nd == 0 ) {
             //  スコアがゼロ、つまり一投目の残ピンと同じ。  //
             fs1.rem2nd  = fs1.rem1st;
@@ -287,24 +271,6 @@ DocumentFile::readFromTextStream(
                 //  最終フレームの例外処理。        //
                 //  一投目ストライク、二投目ゼロ。  //
                 fs1.rem2nd  = REMAIN_ALL_PINS;
-            }
-        } else {
-            fs1.rem2nd  = parseRemainPins(vTokens[3]);
-        }
-        {
-            TextParser::TextBuffer  buf3;
-            TextParser::TokenArray  vSub3;
-
-            vSub3.clear();
-            TextParser::splitText(vTokens[3], ",", buf3, vSub3, " \t");
-            for ( size_t i = 0; i < vSub3.size(); ++ i ) {
-                if ( ! strcmp(vSub3[i], "-") ) {
-                    fs1.flg2nd  |= FlagValues::MISS;
-                } else if ( ! strcmp(vSub3[i], "G") ) {
-                    fs1.flg2nd  |= FlagValues::GUTTER;
-                } else if ( ! strcmp(vSub3[i], "F") ) {
-                    fs1.flg2nd  |= FlagValues::FAUL;
-                }
             }
         }
 
@@ -365,21 +331,9 @@ DocumentFile::saveToTextStream(
                 std::stringstream   rm1;
                 std::stringstream   rm2;
 
-                writeRemainPins(fs.rem1st, rm1);
-                if ( fs.flg1st & FlagValues::GUTTER ) {
-                    rm1 <<  "G,";
-                }
-                if ( fs.flg1st & FlagValues::FAUL ) {
-                    rm1 <<  "F,";
-                }
+                writeRemainPins(fs.rem1st, fs.flg1st, rm1);
 
-                writeRemainPins(fs.rem2nd, rm2);
-                if ( fs.flg2nd & FlagValues::GUTTER ) {
-                    rm2 <<  "G,";
-                }
-                if ( fs.flg2nd & FlagValues::FAUL ) {
-                    rm2 <<  "F,";
-                }
+                writeRemainPins(fs.rem2nd, fs.flg2nd, rm2);
 
                 if ( fs.flg1st & FlagValues::GUTTER ) {
                     outStr  <<  "G";
@@ -525,29 +479,11 @@ DocumentFile::saveToTextStream(
         std::stringstream   rm2;
         std::stringstream   rm3;
 
-        writeRemainPins(fs1.rem1st, rm1);
-        if ( fs1.flg1st & FlagValues::GUTTER ) {
-            rm1 <<  "G,";
-        }
-        if ( fs1.flg1st & FlagValues::FAUL ) {
-            rm1 <<  "F,";
-        }
+        writeRemainPins(fs1.rem1st, fs1.flg1st, rm1);
 
-        writeRemainPins(fs1.rem2nd, rm2);
-        if ( fs1.flg2nd & FlagValues::GUTTER ) {
-            rm2 <<  "G,";
-        }
-        if ( fs1.flg2nd & FlagValues::FAUL ) {
-            rm2 <<  "F,";
-        }
+        writeRemainPins(fs1.rem2nd, fs1.flg2nd, rm2);
 
-        writeRemainPins(fs3.rem1st, rm3);
-        if ( fs3.flg1st & FlagValues::GUTTER ) {
-            rm3 <<  "G,";
-        }
-        if ( fs3.flg1st & FlagValues::FAUL ) {
-            rm1 <<  "F,";
-        }
+        writeRemainPins(fs3.rem1st, fs3.flg1st, rm3);
 
         outStr  <<  bf1.str()
                 <<  ","
@@ -591,7 +527,8 @@ DocumentFile::saveToTextStream(
 
 const   RemainPins
 DocumentFile::parseRemainPins(
-        const  char  *  text)
+        const  char  *  text,
+        FrameFlags    & flags)
 {
     TextParser::TextBuffer  buf2;
     TextParser::TokenArray  vSub;
@@ -607,6 +544,21 @@ DocumentFile::parseRemainPins(
         }
     }
 
+    TextParser::TextBuffer  buf3;
+    TextParser::TokenArray  vSub3;
+
+    vSub3.clear();
+    TextParser::splitText(text, ",", buf3, vSub3, " \t");
+    for ( size_t i = 0; i < vSub3.size(); ++ i ) {
+        if ( ! strcmp(vSub3[i], "-") ) {
+            flags   |= FlagValues::MISS;
+        } else if ( ! strcmp(vSub3[i], "G") ) {
+            flags   |= FlagValues::GUTTER;
+        } else if ( ! strcmp(vSub3[i], "F") ) {
+            flags   |= FlagValues::FAUL;
+        }
+    }
+
     return ( rp );
 }
 
@@ -617,6 +569,7 @@ DocumentFile::parseRemainPins(
 std::ostream  &
 DocumentFile::writeRemainPins(
         const   RemainPins  rPins,
+        const   FrameFlags  flags,
         std::ostream      & outStr)
 {
     if ( rPins != 0 ) {
@@ -627,6 +580,13 @@ DocumentFile::writeRemainPins(
         }
     } else {
         outStr  <<  "*";
+    }
+
+    if ( flags & FlagValues::GUTTER ) {
+        outStr  <<  "G,";
+    }
+    if ( flags & FlagValues::FAUL ) {
+        outStr  <<  "F,";
     }
 
     return ( outStr );
