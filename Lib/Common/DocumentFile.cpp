@@ -630,6 +630,13 @@ DocumentFile::writeRemainPins(
         outStr  <<  "*";
     }
 
+    if ( flags & FlagValues::GUTTER ) {
+        outStr  <<  "G,";
+    }
+    if ( flags & FlagValues::FAUL ) {
+        outStr  <<  "F,";
+    }
+
     return ( outStr );
 }
 
