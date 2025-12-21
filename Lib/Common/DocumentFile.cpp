@@ -544,8 +544,6 @@ DocumentFile::parseRemainPins(
         }
     }
 
-    return ( rp );
-
     TextParser::TextBuffer  buf3;
     TextParser::TokenArray  vSub3;
 
@@ -560,6 +558,8 @@ DocumentFile::parseRemainPins(
             flags   |= FlagValues::FAUL;
         }
     }
+
+    return ( rp );
 }
 
 //----------------------------------------------------------------
