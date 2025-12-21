@@ -244,6 +244,7 @@ DocumentFile::readFromTextStream(
         }
 
         //  一投目の残りピン。  //
+        fs1.rem1st  = parseRemainPins(vTokens[2], fs1.flg1st);
         if ( fs1.got1st == 0 ) {
             //  スコアがゼロ、つまりピンが全部残っている。  //
             fs1.rem1st  = REMAIN_ALL_PINS;
@@ -259,8 +260,6 @@ DocumentFile::readFromTextStream(
                     fs1.rem1st  = 0;
                 }
             }
-        } else {
-            fs1.rem1st  = parseRemainPins(vTokens[2], fs1.flg1st);
         }
         {
             TextParser::TextBuffer  buf3;
@@ -280,6 +279,7 @@ DocumentFile::readFromTextStream(
         }
 
         //  二投目の残りピン。  //
+        fs1.rem2nd  = parseRemainPins(vTokens[3], fs1.flg2nd);
         if ( fs1.got2nd == 0 ) {
             //  スコアがゼロ、つまり一投目の残ピンと同じ。  //
             fs1.rem2nd  = fs1.rem1st;
@@ -288,8 +288,6 @@ DocumentFile::readFromTextStream(
                 //  一投目ストライク、二投目ゼロ。  //
                 fs1.rem2nd  = REMAIN_ALL_PINS;
             }
-        } else {
-            fs1.rem2nd  = parseRemainPins(vTokens[3], fs1.flg2nd);
         }
         {
             TextParser::TextBuffer  buf3;
