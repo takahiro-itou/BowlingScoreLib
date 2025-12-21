@@ -193,12 +193,14 @@ private:
     //----------------------------------------------------------------
     /**   残りピンの情報を解析する。
     **
-    **  @param [in] text    残りピンを記録したテキスト。
+    **  @param [in]     text    残りピンを記録したテキスト。
+    **  @param [in,out] flags   投球に関するフラグ。
     **  @return     テキストを解析した結果を返す。
     **/
     static  const   RemainPins
     parseRemainPins(
-            const  char  *  text);
+            const  char  *  text,
+            FrameFlags    & flags);
 
     //----------------------------------------------------------------
     /**   残りピンの情報を出力する。

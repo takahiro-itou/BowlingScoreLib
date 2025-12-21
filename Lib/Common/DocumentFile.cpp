@@ -260,7 +260,7 @@ DocumentFile::readFromTextStream(
                 }
             }
         } else {
-            fs1.rem1st  = parseRemainPins(vTokens[2]);
+            fs1.rem1st  = parseRemainPins(vTokens[2], fs1.flg1st);
         }
         {
             TextParser::TextBuffer  buf3;
@@ -289,7 +289,7 @@ DocumentFile::readFromTextStream(
                 fs1.rem2nd  = REMAIN_ALL_PINS;
             }
         } else {
-            fs1.rem2nd  = parseRemainPins(vTokens[3]);
+            fs1.rem2nd  = parseRemainPins(vTokens[3], fs1.flg2nd);
         }
         {
             TextParser::TextBuffer  buf3;
@@ -561,7 +561,8 @@ DocumentFile::saveToTextStream(
 
 const   RemainPins
 DocumentFile::parseRemainPins(
-        const  char  *  text)
+        const  char  *  text,
+        FrameFlags    & flags)
 {
     TextParser::TextBuffer  buf2;
     TextParser::TokenArray  vSub;
