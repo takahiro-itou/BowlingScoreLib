@@ -261,22 +261,6 @@ DocumentFile::readFromTextStream(
                 }
             }
         }
-        {
-            TextParser::TextBuffer  buf3;
-            TextParser::TokenArray  vSub3;
-
-            vSub3.clear();
-            TextParser::splitText(vTokens[2], ",", buf3, vSub3, " \t");
-            for ( size_t i = 0; i < vSub3.size(); ++ i ) {
-                if ( ! strcmp(vSub3[i], "-") ) {
-                    fs1.flg1st  |= FlagValues::MISS;
-                } else if ( ! strcmp(vSub3[i], "G") ) {
-                    fs1.flg1st  |= FlagValues::GUTTER;
-                } else if ( ! strcmp(vSub3[i], "F") ) {
-                    fs1.flg1st  |= FlagValues::FAUL;
-                }
-            }
-        }
 
         //  二投目の残りピン。  //
         fs1.rem2nd  = parseRemainPins(vTokens[3], fs1.flg2nd);
@@ -287,22 +271,6 @@ DocumentFile::readFromTextStream(
                 //  最終フレームの例外処理。        //
                 //  一投目ストライク、二投目ゼロ。  //
                 fs1.rem2nd  = REMAIN_ALL_PINS;
-            }
-        }
-        {
-            TextParser::TextBuffer  buf3;
-            TextParser::TokenArray  vSub3;
-
-            vSub3.clear();
-            TextParser::splitText(vTokens[3], ",", buf3, vSub3, " \t");
-            for ( size_t i = 0; i < vSub3.size(); ++ i ) {
-                if ( ! strcmp(vSub3[i], "-") ) {
-                    fs1.flg2nd  |= FlagValues::MISS;
-                } else if ( ! strcmp(vSub3[i], "G") ) {
-                    fs1.flg2nd  |= FlagValues::GUTTER;
-                } else if ( ! strcmp(vSub3[i], "F") ) {
-                    fs1.flg2nd  |= FlagValues::FAUL;
-                }
             }
         }
 
@@ -577,6 +545,21 @@ DocumentFile::parseRemainPins(
     }
 
     return ( rp );
+
+    TextParser::TextBuffer  buf3;
+    TextParser::TokenArray  vSub3;
+
+    vSub3.clear();
+    TextParser::splitText(text, ",", buf3, vSub3, " \t");
+    for ( size_t i = 0; i < vSub3.size(); ++ i ) {
+        if ( ! strcmp(vSub3[i], "-") ) {
+            flags   |= FlagValues::MISS;
+        } else if ( ! strcmp(vSub3[i], "G") ) {
+            flags   |= FlagValues::GUTTER;
+        } else if ( ! strcmp(vSub3[i], "F") ) {
+            flags   |= FlagValues::FAUL;
+        }
+    }
 }
 
 //----------------------------------------------------------------
