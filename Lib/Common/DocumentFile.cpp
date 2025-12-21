@@ -366,20 +366,8 @@ DocumentFile::saveToTextStream(
                 std::stringstream   rm2;
 
                 writeRemainPins(fs.rem1st, fs.flg1st, rm1);
-                if ( fs.flg1st & FlagValues::GUTTER ) {
-                    rm1 <<  "G,";
-                }
-                if ( fs.flg1st & FlagValues::FAUL ) {
-                    rm1 <<  "F,";
-                }
 
                 writeRemainPins(fs.rem2nd, fs.flg2nd, rm2);
-                if ( fs.flg2nd & FlagValues::GUTTER ) {
-                    rm2 <<  "G,";
-                }
-                if ( fs.flg2nd & FlagValues::FAUL ) {
-                    rm2 <<  "F,";
-                }
 
                 if ( fs.flg1st & FlagValues::GUTTER ) {
                     outStr  <<  "G";
@@ -526,28 +514,10 @@ DocumentFile::saveToTextStream(
         std::stringstream   rm3;
 
         writeRemainPins(fs1.rem1st, fs1.flg1st, rm1);
-        if ( fs1.flg1st & FlagValues::GUTTER ) {
-            rm1 <<  "G,";
-        }
-        if ( fs1.flg1st & FlagValues::FAUL ) {
-            rm1 <<  "F,";
-        }
 
         writeRemainPins(fs1.rem2nd, fs1.flg2nd, rm2);
-        if ( fs1.flg2nd & FlagValues::GUTTER ) {
-            rm2 <<  "G,";
-        }
-        if ( fs1.flg2nd & FlagValues::FAUL ) {
-            rm2 <<  "F,";
-        }
 
         writeRemainPins(fs3.rem1st, fs3.flg1st, rm3);
-        if ( fs3.flg1st & FlagValues::GUTTER ) {
-            rm3 <<  "G,";
-        }
-        if ( fs3.flg1st & FlagValues::FAUL ) {
-            rm1 <<  "F,";
-        }
 
         outStr  <<  bf1.str()
                 <<  ","
