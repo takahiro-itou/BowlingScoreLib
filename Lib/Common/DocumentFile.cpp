@@ -365,7 +365,7 @@ DocumentFile::saveToTextStream(
                 std::stringstream   rm1;
                 std::stringstream   rm2;
 
-                writeRemainPins(fs.rem1st, rm1);
+                writeRemainPins(fs.rem1st, fs.flg1st, rm1);
                 if ( fs.flg1st & FlagValues::GUTTER ) {
                     rm1 <<  "G,";
                 }
@@ -373,7 +373,7 @@ DocumentFile::saveToTextStream(
                     rm1 <<  "F,";
                 }
 
-                writeRemainPins(fs.rem2nd, rm2);
+                writeRemainPins(fs.rem2nd, fs.flg2nd, rm2);
                 if ( fs.flg2nd & FlagValues::GUTTER ) {
                     rm2 <<  "G,";
                 }
@@ -525,7 +525,7 @@ DocumentFile::saveToTextStream(
         std::stringstream   rm2;
         std::stringstream   rm3;
 
-        writeRemainPins(fs1.rem1st, rm1);
+        writeRemainPins(fs1.rem1st, fs1.flg1st, rm1);
         if ( fs1.flg1st & FlagValues::GUTTER ) {
             rm1 <<  "G,";
         }
@@ -533,7 +533,7 @@ DocumentFile::saveToTextStream(
             rm1 <<  "F,";
         }
 
-        writeRemainPins(fs1.rem2nd, rm2);
+        writeRemainPins(fs1.rem2nd, fs1.flg2nd, rm2);
         if ( fs1.flg2nd & FlagValues::GUTTER ) {
             rm2 <<  "G,";
         }
@@ -541,7 +541,7 @@ DocumentFile::saveToTextStream(
             rm2 <<  "F,";
         }
 
-        writeRemainPins(fs3.rem1st, rm3);
+        writeRemainPins(fs3.rem1st, fs3.flg1st, rm3);
         if ( fs3.flg1st & FlagValues::GUTTER ) {
             rm3 <<  "G,";
         }
@@ -617,6 +617,7 @@ DocumentFile::parseRemainPins(
 std::ostream  &
 DocumentFile::writeRemainPins(
         const   RemainPins  rPins,
+        const   FrameFlags  flags,
         std::ostream      & outStr)
 {
     if ( rPins != 0 ) {

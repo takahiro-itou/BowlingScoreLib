@@ -203,13 +203,15 @@ private:
     //----------------------------------------------------------------
     /**   残りピンの情報を出力する。
     **
-    **  @param [in] rPins     残りぴんの情報。[24~
+    **  @param [in] rPins     残りぴんの情報。
+    **  @param [in] flags     投球に関するフラグ。
     **  @param[out] outStr    出力ストリーム。
     **  @return     出力ストリームの参照を返す。
     **/
     static  std::ostream  &
     writeRemainPins(
             const   RemainPins  rPins,
+            const   FrameFlags  flags,
             std::ostream      & outStr);
 
 //========================================================================
