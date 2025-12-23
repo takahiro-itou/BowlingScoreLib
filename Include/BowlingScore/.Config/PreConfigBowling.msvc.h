@@ -36,7 +36,7 @@
 **    スクリプトによって設定された名前空間。
 **/
 
-#define     BOWLINGSCORE_CNF_NS             Bowling
+#define     BOWLINGSCORE_CNF_NS             BsCore
 
 /**
 **    名前空間。
