@@ -544,17 +544,12 @@ DocumentFile::parseRemainPins(
         }
     }
 
-    TextParser::TextBuffer  buf3;
-    TextParser::TokenArray  vSub3;
-
-    vSub3.clear();
-    TextParser::splitText(text, ",", buf3, vSub3, " \t");
-    for ( size_t i = 0; i < vSub3.size(); ++ i ) {
-        if ( ! strcmp(vSub3[i], "-") ) {
+    for ( size_t i = 0; i < vSub.size(); ++ i ) {
+        if ( ! strcmp(vSub[i], "-") ) {
             flags   |= FlagValues::MISS;
-        } else if ( ! strcmp(vSub3[i], "G") ) {
+        } else if ( ! strcmp(vSub[i], "G") ) {
             flags   |= FlagValues::GUTTER;
-        } else if ( ! strcmp(vSub3[i], "F") ) {
+        } else if ( ! strcmp(vSub[i], "F") ) {
             flags   |= FlagValues::FAUL;
         }
     }
