@@ -41,6 +41,7 @@ class  DocumentFileTest : public  TestFixture
 {
     CPPUNIT_TEST_SUITE(DocumentFileTest);
     CPPUNIT_TEST(testCtor);
+    CPPUNIT_TEST(testFileOpenError);
     CPPUNIT_TEST(testReadFromTextStream);
     CPPUNIT_TEST(testSaveToTextStream);
     CPPUNIT_TEST_SUITE_END();
@@ -51,6 +52,7 @@ public:
 
 private:
     void  testCtor();
+    void  testFileOpenError();
     void  testReadFromTextStream();
     void  testSaveToTextStream();
 
@@ -67,6 +69,19 @@ CPPUNIT_TEST_SUITE_REGISTRATION( DocumentFileTest );
 void  DocumentFileTest::testCtor()
 {
     Testee  testee;
+
+    return;
+}
+
+void  DocumentFileTest::testFileOpenError()
+{
+    Testee          testee;
+    ScoreDocument   objDoc;
+
+    CPPUNIT_ASSERT_EQUAL(
+            ErrCode::FILE_OPEN_ERROR,
+            testee.readFromTextFile("/no-such-file", &objDoc)
+    );
 
     return;
 }
