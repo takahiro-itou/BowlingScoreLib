@@ -106,6 +106,10 @@ DocumentFile::readFromTextFile(
         ScoreDocument  *    ptrDoc)
 {
     std::ifstream   ifs(fileName.c_str());
+    if ( ! ifs ) {
+        return ( ErrCode::FILE_OPEN_ERROR );
+    }
+
     return  readFromTextStream(ifs, ptrDoc);
 }
 
