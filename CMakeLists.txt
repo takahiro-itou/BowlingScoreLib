@@ -9,7 +9,7 @@
 ##    要求するツールのバージョンを指定する。
 ##
 
-cmake_minimum_required(VERSION  3.0.2)
+cmake_minimum_required(VERSION  3.5...4.4)
 
 ##
 ##    パッケージの情報を指定する。
