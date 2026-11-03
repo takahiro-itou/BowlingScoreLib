@@ -15,9 +15,9 @@ Include (${common_cmake_dir}/BuildCommon/ConfigTarget.cmake)
 ##
 
 set(library_source_files
-       DocumentFile.cpp
-       ScoreDocument.cpp
-       TextParser.cpp
+        DocumentFile.cpp
+        ScoreDocument.cpp
+        TextParser.cpp
 )
 
 set(inclib_header_files

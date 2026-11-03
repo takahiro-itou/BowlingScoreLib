@@ -5,7 +5,7 @@
 
 SUBLIBS                 =  Common
 
-SUBDIRS                 =  Tests  .Config  $(SUBLIBS)  .
+SUBDIRS                 =  pch  Tests  .Config  $(SUBLIBS)  .
 
 ##
 ##    List of Installs.
