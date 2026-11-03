@@ -3,7 +3,7 @@
 **                                                                      **
 **                      ---   Bowling Score.   ---                      **
 **                                                                      **
-**          Copyright (C), 2025-2025, Takahiro Itou                     **
+**          Copyright (C), 2025-2026, Takahiro Itou                     **
 **          All Rights Reserved.                                        **
 **                                                                      **
 **          License: (See COPYING or LICENSE files)                     **
